@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Du Lịch Việt - Tư Vấn Du Lịch Chuyên Nghiệp</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#e91e63',
+                        secondary: '#57b5e7'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <!-- Header -->
+    <header class="bg-white text-primary shadow-sm">
+        <div class="bg-white">
+            <div class="max-w-[1440px] mx-auto px-4 py-2">
+                <div class="hidden lg:flex justify-between items-center text-sm">
+                    <div class="flex items-center gap-4">
+                        <span>Hotline: <strong>1900 1177</strong></span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center bg-gray-100 rounded">
+                            <input type="text" placeholder="Bạn muốn đi đâu ? 3 ngày"
+                                class="px-3 py-1 text-gray-800 text-sm border-none outline-none rounded-l bg-transparent">
+                            <button class="bg-primary px-3 py-1 rounded-r">
+                                <i class="ri-search-line text-white"></i>
+                            </button>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <div class="flex items-center gap-2">
+                                <i class="ri-phone-line"></i>
+                                <span>Hỗ trợ gọi lại</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="ri-user-line"></i>
+                                <span>Tài khoản</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-t">
+            <div class="max-w-[1440px] mx-auto px-4 py-3">
+                <div class="flex justify-between items-center">
+                    <img src="https://static.readdy.ai/image/1f4438e38b74ed87371441e676e628ff/19961e37c6343be3b010970c8451a392.png"
+                        alt="AMI Travels" class="h-12">
+                    <nav class="hidden lg:flex items-center gap-8">
+                        <a href="https://readdy.ai/home/74f5f582-7deb-47f3-bb3a-04f3a6173fc8/25385b10-8d3b-4f77-bb75-e543f3c57a09"
+                            data-readdy="true" class="text-gray-600 hover:text-primary transition-colors">GIỚI THIỆU</a>
+                        <div class="relative group">
+                            <button id="travelMenuBtn"
+                                class="text-gray-600 hover:text-primary transition-colors flex items-center gap-1">
+                                DU LỊCH
+                                <i class="ri-arrow-down-s-line"></i>
+                            </button>
+                            <div
+                                class="absolute top-full left-0 bg-white shadow-lg rounded-lg py-2 w-64 hidden group-hover:block z-50">
+                                <div class="relative group/sub hover:bg-gray-50">
+                                    <a href="https://readdy.ai/home/74f5f582-7deb-47f3-bb3a-04f3a6173fc8/dbf0a7d2-44e8-4b56-a439-c323660f1793"
+                                        data-readdy="true"
+                                        class="flex items-center justify-between px-4 py-2 hover:text-primary">
+                                        Du lịch trong nước
+                                        <i class="ri-arrow-right-s-line"></i>
+                                    </a>
+                                    <div
+                                        class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Miền
+                                            Bắc</a>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Miền
+                                            Trung</a>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Miền
+                                            Nam</a>
+                                    </div>
+                                </div>
+                                <div class="relative group/sub hover:bg-gray-50">
+                                    <a href="https://readdy.ai/home/74f5f582-7deb-47f3-bb3a-04f3a6173fc8/412ea3e8-4343-40c8-989f-0f8f590ad0db"
+                                        data-readdy="true"
+                                        class="flex items-center justify-between px-4 py-2 hover:text-primary">
+                                        Du lịch nước ngoài
+                                        <i class="ri-arrow-right-s-line"></i>
+                                    </a>
+                                    <div
+                                        class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                            Á</a>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                            Âu</a>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                            Phi</a>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                            Úc</a>
+                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                            Mỹ</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="text-gray-600 hover:text-primary transition-colors">DỊCH VỤ VISA</a>
+                        <a href="https://readdy.ai/home/74f5f582-7deb-47f3-bb3a-04f3a6173fc8/bc0b845d-e6e8-43af-b6a6-eef8045c597b"
+                            data-readdy="true" class="text-gray-600 hover:text-primary transition-colors">TIN TỨC</a>
+                        <a href="https://readdy.ai/home/74f5f582-7deb-47f3-bb3a-04f3a6173fc8/8150cd90-f547-4f98-a2b9-835337dc27e5"
+                            data-readdy="true" class="text-gray-600 hover:text-primary transition-colors">LIÊN HỆ</a>
+                        <div class="flex items-center bg-gray-100 rounded ml-4">
+                            <input type="text" placeholder="Tìm kiếm..."
+                                class="px-3 py-1 text-gray-800 text-sm border-none outline-none rounded-l bg-transparent">
+                            <button class="bg-primary px-3 py-1 rounded-r">
+                                <i class="ri-search-line text-white"></i>
+                            </button>
+                        </div>
+                    </nav>
+                    <button id="menuToggle" class="lg:hidden w-10 h-10 flex items-center justify-center">
+                        <i class="ri-menu-line text-xl"></i>
+                    </button>
+                    <div id="mobileMenu" class="fixed inset-0 bg-black/50 z-50 hidden">
+                        <div class="bg-white w-[280px] h-full ml-auto overflow-y-auto">
+                            <div class="p-4 flex justify-between items-center border-b">
+                                <div class="font-['Pacifico'] text-xl text-primary">logo</div>
+                                <button id="menuClose" class="w-10 h-10 flex items-center justify-center text-primary">
+                                    <i class="ri-close-line text-xl"></i>
+                                </button>
+                            </div>
+                            <div class="p-4 border-b space-y-4">
+                                <div class="flex items-center gap-2 text-gray-600">
+                                    <i class="ri-customer-service-line"></i>
+                                    <span>Hotline: <strong>1900 1177</strong></span>
+                                </div>
+                                <div class="flex items-center bg-gray-100 rounded">
+                                    <input type="text" placeholder="Bạn muốn đi đâu ? 3 ngày"
+                                        class="px-3 py-2 text-gray-800 text-sm border-none outline-none rounded-l bg-transparent w-full">
+                                    <button class="bg-primary px-3 py-2 rounded-r">
+                                        <i class="ri-search-line text-white"></i>
+                                    </button>
+                                </div>
+                                <div class="flex flex-col gap-3">
+                                    <a href="#" class="flex items-center gap-2 text-gray-600">
+                                        <i class="ri-phone-line"></i>
+                                        <span>Hỗ trợ gọi lại</span>
+                                    </a>
+                                    <a href="#" class="flex items-center gap-2 text-gray-600">
+                                        <i class="ri-user-line"></i>
+                                        <span>Tài khoản</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <nav class="p-4">
+                                <a href="https://readdy.ai/home/74f5f582-7deb-47f3-bb3a-04f3a6173fc8/25385b10-8d3b-4f77-bb75-e543f3c57a09"
+                                    data-readdy="true"
+                                    class="block py-3 text-gray-600 hover:text-primary transition-colors border-b">GIỚI
+                                    THIỆU</a>
+                                <div class="border-b">
+                                    <button
+                                        class="w-full py-3 text-gray-600 hover:text-primary transition-colors flex items-center justify-between"
+                                        onclick="this.nextElementSibling.classList.toggle('hidden')">
+                                        DU LỊCH
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </button>
+                                    <div class="hidden pl-4">
+                                        <div class="border-l border-gray-200">
+                                            <button
+                                                class="w-full py-3 text-gray-600 hover:text-primary transition-colors flex items-center justify-between pl-4"
+                                                onclick="this.nextElementSibling.classList.toggle('hidden')">
+                                                Du lịch trong nước
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </button>
+                                            <div class="hidden">
+                                                <a href="#"
+                                                    class="block py-3 pl-8 text-gray-600 hover:text-primary transition-colors">Miền
+                                                    Bắc</a>
+                                                <a href="#"
+                                                    class="block py-3 pl-8 text-gray-600 hover:text-primary transition-colors">Miền
+                                                    Trung</a>
+                                                <a href="#"
+                                                    class="block py-3 pl-8 text-gray-600 hover:text-primary transition-colors">Miền
+                                                    Nam</a>
+                                            </div>
+                                        </div>
+                                        <div class="border-l border-gray-200">
+                                            <button
+                                                class="w-full py-3 text-gray-600 hover:text-primary transition-colors flex items-center justify-between pl-4"
+                                                onclick="this.nextElementSibling.classList.toggle('hidden')">
+                                                Du lịch nước ngoài
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </button>
+                                            <div class="hidden">
+                                                <a href="#"
+                                                    class="block py-3 pl-8 text-gray-600 hover:text-primary transition-colors">Châu
+                                                    Á</a>
+                                                <a href="#"
+                                                    class="block py-3 pl-8 text-gray-600 hover:text-primary transition-colors">Châu
+                                                    Âu</a>
+                                                <a href="#"
+                                                    class="block py-3 pl-8 text-gray-600 hover:text-primary transition-colors">Châu
+                                                    Phi</a>
+                                                <a href="#"
+                                                    class="block py-3 pl-8 text-gray-600 hover:text-primary transition-colors">Châu
+                                                    Úc</a>
+                                                <a href="#"
+                                                    class="block py-3 pl-8 text-gray-600 hover:text-primary transition-colors">Châu
+                                                    Mỹ</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#"
+                                    class="block py-3 text-gray-600 hover:text-primary transition-colors border-b">DỊCH
+                                    VỤ VISA</a>
+                                <a href="https://readdy.ai/home/74f5f582-7deb-47f3-bb3a-04f3a6173fc8/bc0b845d-e6e8-43af-b6a6-eef8045c597b"
+                                    data-readdy="true"
+                                    class="block py-3 text-gray-600 hover:text-primary transition-colors border-b">TIN
+                                    TỨC</a>
+                                <a href="https://readdy.ai/home/74f5f582-7deb-47f3-bb3a-04f3a6173fc8/8150cd90-f547-4f98-a2b9-835337dc27e5"
+                                    data-readdy="true"
+                                    class="block py-3 text-gray-600 hover:text-primary transition-colors border-b">LIÊN
+                                    HỆ</a>
+                                <div class="pt-4">
+                                    <div class="flex items-center bg-gray-100 rounded">
+                                        <input type="text" placeholder="Tìm kiếm..."
+                                            class="px-3 py-2 text-gray-800 text-sm border-none outline-none rounded-l bg-transparent w-full">
+                                        <button class="bg-primary px-3 py-2 rounded-r">
+                                            <i class="ri-search-line text-white"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </header>
+    <!-- Hero Banner -->
+    <section class="relative h-[600px] overflow-hidden">
+        <div class="hero-slider relative h-full">
+            <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-500"
+                style="background-image: url('https://readdy.ai/api/search-image?query=Beautiful%20tropical%20travel%20destination%20with%20family%20enjoying%20vacation%2C%20blue%20sky%20with%20clouds%2C%20palm%20trees%2C%20famous%20landmarks%20in%20background%2C%20vibrant%20colors%2C%20professional%20travel%20photography%20style%2C%20bright%20and%20cheerful%20atmosphere&width=1920&height=600&seq=hero1&orientation=landscape'); background-size: cover; background-position: center;">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
+                <div class="relative h-full flex items-center px-4">
+                    <div class="w-full max-w-6xl mx-auto">
+                        <div class="text-white max-w-2xl">
+                            <h1 class="text-5xl font-bold mb-4 text-primary drop-shadow-lg">Chép Trọn Hè Vui</h1>
+                            <p class="text-xl mb-6">Khám phá thế giới cùng những tour du lịch tuyệt vời nhất</p>
+                            <div class="flex gap-4">
+                                <button
+                                    class="bg-primary text-white px-8 py-3 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Tư Vấn Ngay
+                                </button>
+                                <button
+                                    class="bg-white text-primary px-8 py-3 !rounded-button font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap">
+                                    Xem Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-500"
+                style="background-image: url('https://readdy.ai/api/search-image?query=Luxury%20beach%20resort%20with%20overwater%20bungalows%2C%20crystal%20clear%20turquoise%20water%2C%20tropical%20paradise%2C%20Maldives%20style%20vacation%20destination%2C%20professional%20travel%20photography&width=1200&height=400&seq=hero2&orientation=landscape'); background-size: cover; background-position: center;">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
+                <div class="relative h-full flex items-center px-4">
+                    <div class="w-full max-w-6xl mx-auto">
+                        <div class="text-white max-w-2xl">
+                            <h1 class="text-5xl font-bold mb-4 text-primary drop-shadow-lg">Thiên Đường Nghỉ Dưỡng</h1>
+                            <p class="text-xl mb-6">Trải nghiệm kỳ nghỉ tuyệt vời tại những resort đẳng cấp</p>
+                            <div class="flex gap-4">
+                                <button
+                                    class="bg-primary text-white px-8 py-3 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Tư Vấn Ngay
+                                </button>
+                                <button
+                                    class="bg-white text-primary px-8 py-3 !rounded-button font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap">
+                                    Xem Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-500"
+                style="background-image: url('https://readdy.ai/api/search-image?query=Ancient%20European%20city%20with%20historic%20architecture%2C%20cobblestone%20streets%2C%20charming%20cafes%2C%20cultural%20landmarks%2C%20romantic%20travel%20destination%2C%20professional%20cityscape%20photography&width=1920&height=600&seq=hero3&orientation=landscape'); background-size: cover; background-position: center;">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
+                <div class="relative h-full flex items-center px-4">
+                    <div class="w-full max-w-6xl mx-auto">
+                        <div class="text-white max-w-2xl">
+                            <h1 class="text-5xl font-bold mb-4 text-primary drop-shadow-lg">Khám Phá Châu Âu</h1>
+                            <p class="text-xl mb-6">Hành trình trải nghiệm văn hóa và lịch sử Châu Âu</p>
+                            <div class="flex gap-4">
+                                <button
+                                    class="bg-primary text-white px-8 py-3 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Tư Vấn Ngay
+                                </button>
+                                <button
+                                    class="bg-white text-primary px-8 py-3 !rounded-button font-semibold hover:bg-gray-50 transition-colors whitespace-nowrap">
+                                    Xem Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+                <button class="w-3 h-3 rounded-full bg-white/50 slider-dot" data-index="0"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 slider-dot" data-index="1"></button>
+                <button class="w-3 h-3 rounded-full bg-white/50 slider-dot" data-index="2"></button>
+            </div>
+        </div>
+    </section>
+    <!-- Quick Access Menu -->
+    <section class="py-8 bg-gray-50">
+        <style>
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .quick-access-item {
+                min-width: 200px;
+            }
+
+            @media (min-width: 1024px) {
+                .quick-access-item {
+                    min-width: auto;
+                }
+            }
+
+            .quick-access-slider {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .quick-access-slider>* {
+                scroll-snap-align: start;
+            }
+        </style>
+        <div class="max-w-[1440px] mx-auto px-4">
+            <div class="grid lg:grid-cols-5 gap-8 hidden lg:grid">
+                <a href="#"
+                    class="bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 flex items-center justify-center bg-gray-800 text-white rounded-full">
+                        <i class="ri-map-line ri-2x"></i>
+                    </div>
+                    <span class="text-sm font-medium text-center">Tour TRONG NƯỚC</span>
+                </a>
+                <a href="#"
+                    class="bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 flex items-center justify-center bg-secondary text-white rounded-full">
+                        <i class="ri-earth-line ri-2x"></i>
+                    </div>
+                    <span class="text-sm font-medium text-center">Tour NƯỚC NGOÀI</span>
+                </a>
+                <a href="#"
+                    class="bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary text-white rounded-full">
+                        <i class="ri-passport-line ri-2x"></i>
+                    </div>
+                    <span class="text-sm font-medium text-center">Dịch vụ làm VISA</span>
+                </a>
+                <a href="#"
+                    class="bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 flex items-center justify-center bg-green-500 text-white rounded-full">
+                        <i class="ri-plane-line ri-2x"></i>
+                    </div>
+                    <span class="text-sm font-medium text-center">VÉ MÁY BAY GIÁ RẺ</span>
+                </a>
+                <a href="#"
+                    class="bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="w-16 h-16 flex items-center justify-center bg-orange-500 text-white rounded-full">
+                        <i class="ri-hotel-line ri-2x"></i>
+                    </div>
+                    <span class="text-sm font-medium text-center">ĐẶT KHÁCH SẠN</span>
+                </a>
+            </div>
+            <div class="lg:hidden">
+                <div class="quick-access-slider hide-scrollbar gap-4 pb-4">
+                    <a href="#"
+                        class="quick-access-item bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 flex items-center justify-center bg-gray-800 text-white rounded-full">
+                            <i class="ri-map-line ri-2x"></i>
+                        </div>
+                        <span class="text-sm font-medium text-center">Tour TRONG NƯỚC</span>
+                    </a>
+                    <a href="#"
+                        class="quick-access-item bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 flex items-center justify-center bg-secondary text-white rounded-full">
+                            <i class="ri-earth-line ri-2x"></i>
+                        </div>
+                        <span class="text-sm font-medium text-center">Tour NƯỚC NGOÀI</span>
+                    </a>
+                    <a href="#"
+                        class="quick-access-item bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full">
+                            <i class="ri-passport-line ri-2x"></i>
+                        </div>
+                        <span class="text-sm font-medium text-center">Dịch vụ làm VISA</span>
+                    </a>
+                    <a href="#"
+                        class="quick-access-item bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 flex items-center justify-center bg-green-500 text-white rounded-full">
+                            <i class="ri-plane-line ri-2x"></i>
+                        </div>
+                        <span class="text-sm font-medium text-center">VÉ MÁY BAY GIÁ RẺ</span>
+                    </a>
+                    <a href="#"
+                        class="quick-access-item bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="w-12 h-12 flex items-center justify-center bg-orange-500 text-white rounded-full">
+                            <i class="ri-hotel-line ri-2x"></i>
+                        </div>
+                        <span class="text-sm font-medium text-center">ĐẶT KHÁCH SẠN</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Tour Categories -->
+    <section class="py-12">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="hidden md:grid md:grid-cols-3 lg:flex lg:justify-center gap-8 lg:gap-12 mb-12">
+                <div class="text-center">
+                    <img src="https://readdy.ai/api/search-image?query=Professional%20business%20team%20travel%20tour%20icon%2C%20modern%20corporate%20style%2C%20clean%20background%2C%20business%20people%20silhouettes&width=80&height=80&seq=cat1&orientation=squarish"
+                        alt="Tour Doanh Nghiệp" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                    <p class="text-sm font-medium">Tour Doanh Nghiệp</p>
+                </div>
+                <div class="text-center">
+                    <img src="https://readdy.ai/api/search-image?query=Relaxing%20beach%20resort%20vacation%20icon%2C%20tropical%20paradise%2C%20palm%20trees%20and%20beach%2C%20leisure%20travel%20concept&width=80&height=80&seq=cat2&orientation=squarish"
+                        alt="Du lịch Nghỉ Dưỡng" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                    <p class="text-sm font-medium">Du lịch Nghỉ Dưỡng</p>
+                </div>
+                <div class="text-center">
+                    <img src="https://readdy.ai/api/search-image?query=Unique%20adventure%20travel%20icon%2C%20mountain%20climbing%2C%20extreme%20sports%2C%20adventure%20tourism%20concept&width=80&height=80&seq=cat3&orientation=squarish"
+                        alt="Tour Độc Lạ" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                    <p class="text-sm font-medium">Tour Độc Lạ</p>
+                </div>
+                <div class="text-center">
+                    <img src="https://readdy.ai/api/search-image?query=Winter%20travel%20destination%20icon%2C%20snow%20mountains%2C%20skiing%2C%20cold%20weather%20tourism%20concept&width=80&height=80&seq=cat4&orientation=squarish"
+                        alt="Du lịch Mùa Đông" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                    <p class="text-sm font-medium">Du lịch Mùa Đông</p>
+                </div>
+                <div class="text-center">
+                    <img src="https://readdy.ai/api/search-image?query=Summer%20vacation%20travel%20icon%2C%20sunny%20beach%2C%20family%20fun%20activities%2C%20summer%20holiday%20concept&width=80&height=80&seq=cat5&orientation=squarish"
+                        alt="Tour Du lịch Hè" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                    <p class="text-sm font-medium">Tour Du lịch Hè</p>
+                </div>
+                <div class="text-center">
+                    <img src="https://readdy.ai/api/search-image?query=Happy%20family%20vacation%20travel%20icon%2C%20parents%20with%20children%2C%20family%20bonding%20activities%2C%20joyful%20family%20moments&width=80&height=80&seq=cat6&orientation=squarish"
+                        alt="Tour Gia Đình" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                    <p class="text-sm font-medium">Tour Gia Đình</p>
+                </div>
+            </div>
+            <div class="md:hidden overflow-x-auto pb-4 hide-scrollbar">
+                <div class="flex gap-6 touch-pan-x" style="min-width: max-content">
+                    <div class="text-center w-24">
+                        <img src="https://readdy.ai/api/search-image?query=Professional%20business%20team%20travel%20tour%20icon%2C%20modern%20corporate%20style%2C%20clean%20background%2C%20business%20people%20silhouettes&width=80&height=80&seq=cat1&orientation=squarish"
+                            alt="Tour Doanh Nghiệp" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                        <p class="text-sm font-medium">Tour Doanh Nghiệp</p>
+                    </div>
+                    <div class="text-center w-24">
+                        <img src="https://readdy.ai/api/search-image?query=Relaxing%20beach%20resort%20vacation%20icon%2C%20tropical%20paradise%2C%20palm%20trees%20and%20beach%2C%20leisure%20travel%20concept&width=80&height=80&seq=cat2&orientation=squarish"
+                            alt="Du lịch Nghỉ Dưỡng" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                        <p class="text-sm font-medium">Du lịch Nghỉ Dưỡng</p>
+                    </div>
+                    <div class="text-center w-24">
+                        <img src="https://readdy.ai/api/search-image?query=Unique%20adventure%20travel%20icon%2C%20mountain%20climbing%2C%20extreme%20sports%2C%20adventure%20tourism%20concept&width=80&height=80&seq=cat3&orientation=squarish"
+                            alt="Tour Độc Lạ" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                        <p class="text-sm font-medium">Tour Độc Lạ</p>
+                    </div>
+                    <div class="text-center w-24">
+                        <img src="https://readdy.ai/api/search-image?query=Winter%20travel%20destination%20icon%2C%20snow%20mountains%2C%20skiing%2C%20cold%20weather%20tourism%20concept&width=80&height=80&seq=cat4&orientation=squarish"
+                            alt="Du lịch Mùa Đông" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                        <p class="text-sm font-medium">Du lịch Mùa Đông</p>
+                    </div>
+                    <div class="text-center w-24">
+                        <img src="https://readdy.ai/api/search-image?query=Summer%20vacation%20travel%20icon%2C%20sunny%20beach%2C%20family%20fun%20activities%2C%20summer%20holiday%20concept&width=80&height=80&seq=cat5&orientation=squarish"
+                            alt="Tour Du lịch Hè" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                        <p class="text-sm font-medium">Tour Du lịch Hè</p>
+                    </div>
+                    <div class="text-center w-24">
+                        <img src="https://readdy.ai/api/search-image?query=Happy%20family%20vacation%20travel%20icon%2C%20parents%20with%20children%2C%20family%20bonding%20activities%2C%20joyful%20family%20moments&width=80&height=80&seq=cat6&orientation=squarish"
+                            alt="Tour Gia Đình" class="w-16 h-16 mx-auto mb-3 rounded-lg object-cover">
+                        <p class="text-sm font-medium">Tour Gia Đình</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Featured Tours -->
+    <section class="py-12 bg-gray-50">
+        <style>
+            .hide-scrollbar::-webkit-scrollbar {
+                display: none;
+            }
+
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+            .tour-card {
+                width: 300px;
+                flex-shrink: 0;
+            }
+
+            @media (max-width: 768px) {
+                .tour-card {
+                    width: 280px;
+                }
+            }
+
+            .touch-pan-x {
+                touch-action: pan-x;
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+            }
+
+            .touch-pan-x>* {
+                scroll-snap-align: center;
+            }
+        </style>
+        <div class="max-w-[1440px] mx-auto px-4">
+            <h2 class="text-2xl font-bold text-center mb-8">TOUR GIỜ CHÓT</h2>
+            <div class="overflow-x-auto pb-4 hide-scrollbar">
+                <div class="flex gap-6" style="min-width: max-content">
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Beautiful%20Russian%20architecture%20Saint%20Petersburg%2C%20colorful%20historic%20buildings%2C%20church%20domes%2C%20European%20travel%20destination%2C%20professional%20travel%20photography&width=300&height=200&seq=tour1&orientation=landscape"
+                                alt="Nga - Phần Lan" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-primary text-white px-2 py-1 rounded text-xs">HOT
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Thượng Hải - Vô Tích - Ô Trấn - Hàng Châu</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 5 ngày 4 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 15/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">19.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">16.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Modern%20Shanghai%20skyline%20with%20Oriental%20Pearl%20Tower%2C%20futuristic%20cityscape%2C%20China%20travel%20destination%2C%20urban%20architecture%20photography&width=300&height=200&seq=tour2&orientation=landscape"
+                                alt="Trung Quốc" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-secondary text-white px-2 py-1 rounded text-xs">NEW
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Disneyland - Thượng Hải - Cô Trấn Xitang - Hàng Châu - Ô Trấn
+                            </h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 5 ngày 4 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 13/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">23.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">20.499.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=European%20travel%20adventure%2C%20young%20woman%20with%20backpack%20exploring%20historic%20European%20city%2C%20cobblestone%20streets%2C%20traditional%20architecture&width=300&height=200&seq=tour3&orientation=landscape"
+                                alt="Châu Âu" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-orange-500 text-white px-2 py-1 rounded text-xs">SALE
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Tour Châu Âu mùa Hè - Tour Đông Âu - Đức - Slovakia - Hungary
+                                - Áo</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 9 ngày 7 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 20/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">89.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">78.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Beautiful%20Japanese%20landscape%20with%20Mount%20Fuji%2C%20cherry%20blossoms%2C%20traditional%20Japanese%20architecture%2C%20serene%20travel%20destination%20photography&width=300&height=200&seq=tour4&orientation=landscape"
+                                alt="Nhật Bản" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">HOT
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Hà Nội - Bắc Kinh Quán Sư Viện - Vạn Lý Trường Thành</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 4 ngày 3 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 25/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">15.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">12.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!-- Domestic Tours -->
+    <section class="py-12">
+        <div class="max-w-[1440px] mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">TOUR TRONG NƯỚC</h2>
+                <a href="#" class="text-primary hover:underline">Xem tất cả</a>
+            </div>
+            <div class="overflow-x-auto pb-4 hide-scrollbar">
+                <div class="flex gap-6" style="min-width: max-content">
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Beautiful%20Vietnamese%20landscape%20Halong%20Bay%2C%20limestone%20karsts%2C%20emerald%20waters%2C%20traditional%20junk%20boats%2C%20UNESCO%20world%20heritage%20site&width=300&height=200&seq=domestic1&orientation=landscape"
+                                alt="Hạ Long" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-primary text-white px-2 py-1 rounded text-xs">HOT
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Tour Đà Nẵng - Hội An - Phố Cổ - Làng Gốm Thanh Hà</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 3 ngày 2 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 10/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">5.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">4.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Sapa%20terraced%20rice%20fields%20Vietnam%2C%20mountain%20landscape%2C%20ethnic%20minority%20villages%2C%20misty%20mountains%2C%20Vietnamese%20highland%20tourism&width=300&height=200&seq=domestic2&orientation=landscape"
+                                alt="Sapa" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-secondary text-white px-2 py-1 rounded text-xs">NEW
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Sapa - Fansipan - Bản Cát Cát - Thác Bạc</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 2 ngày 1 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 12/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">3.499.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">2.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Phu%20Quoc%20island%20Vietnam%2C%20pristine%20beaches%2C%20crystal%20clear%20water%2C%20tropical%20paradise%2C%20coconut%20palms%2C%20beach%20resort%20destination&width=300&height=200&seq=domestic3&orientation=landscape"
+                                alt="Phú Quốc" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-orange-500 text-white px-2 py-1 rounded text-xs">SALE
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Phú Quốc - Cáp Treo Hòn Thơm - Safari</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 3 ngày 2 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 15/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">8.499.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">6.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Dalat%20Vietnam%20flower%20city%2C%20pine%20forests%2C%20French%20colonial%20architecture%2C%20cool%20mountain%20climate%2C%20romantic%20destination&width=300&height=200&seq=domestic4&orientation=landscape"
+                                alt="Đà Lạt" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">HOT
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Đà Lạt - Thác Elephant - Làng Hoa Vạn Thành</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 3 ngày 2 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 18/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">4.799.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">3.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!-- Asia Tours -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-[1440px] mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">TOUR CHÂU Á</h2>
+                <a href="#" class="text-primary hover:underline">Xem tất cả</a>
+            </div>
+            <div class="overflow-x-auto pb-4 hide-scrollbar">
+                <div class="flex gap-6" style="min-width: max-content">
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Beautiful%20Japanese%20temple%20with%20cherry%20blossoms%2C%20Mount%20Fuji%20in%20background%2C%20traditional%20architecture%2C%20spring%20season%2C%20professional%20travel%20photography&width=300&height=200&seq=asia1&orientation=landscape"
+                                alt="Nhật Bản" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-primary text-white px-2 py-1 rounded text-xs">HOT
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Nhật Bản - Tokyo - Phú Sĩ - Osaka</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 6 ngày 5 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 25/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 8 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">35.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">29.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Korean%20palace%20with%20traditional%20hanbok%20wearing%20tourists%2C%20beautiful%20autumn%20colors%2C%20Seoul%20landmarks%2C%20cultural%20tourism&width=300&height=200&seq=asia2&orientation=landscape"
+                                alt="Hàn Quốc" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-secondary text-white px-2 py-1 rounded text-xs">NEW
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Hàn Quốc - Seoul - Nami - Everland</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 5 ngày 4 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 20/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 12 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">28.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">24.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Singapore%20modern%20cityscape%20with%20Marina%20Bay%20Sands%2C%20Gardens%20by%20the%20Bay%2C%20luxury%20travel%20destination%2C%20night%20scene&width=300&height=200&seq=asia3&orientation=landscape"
+                                alt="Singapore" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-orange-500 text-white px-2 py-1 rounded text-xs">SALE
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Singapore - Malaysia - Indonesia</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 6 ngày 5 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 15/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 15 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">25.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">21.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Thailand%20tropical%20beach%20resort%2C%20luxury%20overwater%20bungalows%2C%20crystal%20clear%20water%2C%20paradise%20destination%2C%20professional%20resort%20photography&width=300&height=200&seq=asia4&orientation=landscape"
+                                alt="Thái Lan" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">HOT
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Thái Lan - Bangkok - Pattaya</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 5 ngày 4 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 10/08/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 20 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">15.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">12.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!-- International Tours -->
+    <section class="py-12">
+        <div class="max-w-[1440px] mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">TOUR DU LỊCH ÂU-ÚC-MỸ-PHI</h2>
+                <a href="#" class="text-primary hover:underline">Xem tất cả</a>
+            </div>
+            <div class="overflow-x-auto pb-4 hide-scrollbar">
+                <div class="flex gap-6" style="min-width: max-content">
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Paris%20Eiffel%20Tower%20with%20beautiful%20sunset%2C%20romantic%20European%20cityscape%2C%20iconic%20landmarks%2C%20luxury%20travel%20photography&width=300&height=200&seq=int1&orientation=landscape"
+                                alt="Pháp" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-primary text-white px-2 py-1 rounded text-xs">HOT
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Pháp - Đức - Ý - Thụy Sĩ</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 12 ngày 11 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 01/09/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 6 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">129.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">119.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Sydney%20Opera%20House%20and%20Harbour%20Bridge%20at%20sunset%2C%20iconic%20Australian%20landmarks%2C%20modern%20cityscape%2C%20luxury%20travel&width=300&height=200&seq=int2&orientation=landscape"
+                                alt="Úc" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-secondary text-white px-2 py-1 rounded text-xs">NEW
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Úc - Sydney - Melbourne - Gold Coast</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 7 ngày 6 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 10/09/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 10 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">89.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">79.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=New%20York%20City%20skyline%20at%20night%2C%20Times%20Square%20lights%2C%20iconic%20American%20landmarks%2C%20urban%20luxury%20travel&width=300&height=200&seq=int3&orientation=landscape"
+                                alt="Mỹ" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-orange-500 text-white px-2 py-1 rounded text-xs">SALE
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Mỹ - New York - Las Vegas - Los Angeles</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 11 ngày 10 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 15/09/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 8 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">139.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">129.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="tour-card bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                        <div class="relative">
+                            <img src="https://readdy.ai/api/search-image?query=Egyptian%20pyramids%20at%20sunset%2C%20ancient%20wonders%2C%20desert%20landscape%2C%20luxury%20archaeological%20tourism&width=300&height=200&seq=int4&orientation=landscape"
+                                alt="Ai Cập" class="w-full h-48 object-cover">
+                            <div class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded text-xs">HOT
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-semibold mb-2">Ai Cập - Cairo - Luxor - Alexandria</h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-calendar-line"></i>
+                                <span>Lịch khởi hành: 8 ngày 7 đêm</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                                <i class="ri-time-line"></i>
+                                <span>Khởi hành: 20/09/2025</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-user-line"></i>
+                                <span>Số chỗ còn: 12 chỗ</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-gray-500 line-through text-sm">99.999.000 đ</span>
+                                    <span class="text-primary font-bold text-lg">89.999.000 đ</span>
+                                </div>
+                                <button
+                                    class="bg-primary text-white px-4 py-2 !rounded-button text-sm hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    Đặt Tour
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!-- Travel Tips -->
+    <section class="py-12 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">Kinh nghiệm du lịch</h2>
+                <a href="#" class="text-primary hover:underline">Xem tất cả</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://readdy.ai/api/search-image?query=Travel%20packing%20essentials%2C%20organized%20luggage%2C%20travel%20accessories%2C%20professional%20flat%20lay%20photography&width=400&height=250&seq=tip1&orientation=landscape"
+                        alt="Kinh nghiệm du lịch" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">10 Bí quyết xếp hành lý thông minh cho chuyến du lịch</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Những mẹo hữu ích giúp bạn tối ưu không gian
+                            vali, mang theo đầy đủ vật dụng cần thiết mà vẫn gọn nhẹ.</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <i class="ri-eye-line"></i>
+                                2.5K
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <i class="ri-time-line"></i>
+                                25/07/2025
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://readdy.ai/api/search-image?query=International%20passport%20with%20visas%2C%20travel%20documents%2C%20planning%20world%20trip%2C%20professional%20documentation%20photography&width=400&height=250&seq=tip2&orientation=landscape"
+                        alt="Thủ tục visa" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">Hướng dẫn thủ tục xin visa du lịch các nước châu Âu</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Quy trình, hồ sơ và những lưu ý quan trọng
+                            khi xin visa Schengen cho chuyến du lịch châu Âu.</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <i class="ri-eye-line"></i>
+                                3.2K
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <i class="ri-time-line"></i>
+                                20/07/2025
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://readdy.ai/api/search-image?query=Travel%20budget%20planning%2C%20money%20saving%20tips%2C%20financial%20planning%20for%20vacation%2C%20professional%20finance%20photography&width=400&height=250&seq=tip3&orientation=landscape"
+                        alt="Tiết kiệm chi phí" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">Cách tiết kiệm chi phí khi du lịch nước ngoài</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Những bí quyết giúp bạn du lịch tiết kiệm
+                            nhưng vẫn đảm bảo trải nghiệm tuyệt vời.</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <i class="ri-eye-line"></i>
+                                4.1K
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <i class="ri-time-line"></i>
+                                15/07/2025
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- News -->
+    <section class="py-12">
+        <div class="max-w-[1440px] mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold">Tin tức</h2>
+                <a href="#" class="text-primary hover:underline">Xem tất cả</a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://readdy.ai/api/search-image?query=New%20tourist%20destination%20opening%20ceremony%2C%20luxury%20resort%20inauguration%2C%20tourism%20development%20news&width=300&height=200&seq=news1&orientation=landscape"
+                        alt="Tin tức du lịch" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2 line-clamp-2">Khai trương khu nghỉ dưỡng 5 sao tại Phú Quốc</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Thêm một điểm đến sang trọng mới tại đảo ngọc
+                            Phú Quốc, hứa hẹn mang đến trải nghiệm độc đáo.</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <i class="ri-time-line"></i>
+                                21/07/2025
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://readdy.ai/api/search-image?query=International%20flight%20promotion%2C%20airline%20tickets%20discount%2C%20travel%20deals%20announcement&width=300&height=200&seq=news2&orientation=landscape"
+                        alt="Khuyến mãi" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2 line-clamp-2">Chương trình ưu đãi vé máy bay đi châu Âu</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Cơ hội săn vé máy bay giá rẻ đi châu Âu trong
+                            mùa thu này với nhiều ưu đãi hấp dẫn.</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <i class="ri-time-line"></i>
+                                19/07/2025
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://readdy.ai/api/search-image?query=New%20travel%20policy%20announcement%2C%20international%20tourism%20regulations%2C%20travel%20industry%20news&width=300&height=200&seq=news3&orientation=landscape"
+                        alt="Chính sách mới" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2 line-clamp-2">Chính sách mới về visa du lịch Nhật Bản</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Những thay đổi trong quy định xin visa du
+                            lịch Nhật Bản, áp dụng từ tháng 8/2025.</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <i class="ri-time-line"></i>
+                                18/07/2025
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <img src="https://readdy.ai/api/search-image?query=Travel%20awards%20ceremony%2C%20luxury%20tourism%20achievement%2C%20industry%20recognition%20event&width=300&height=200&seq=news4&orientation=landscape"
+                        alt="Giải thưởng" class="w-full h-40 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2 line-clamp-2">Du lịch Việt đạt giải thưởng quốc tế</h3>
+                        <p class="text-gray-600 text-sm mb-3 line-clamp-2">Vinh dự nhận giải thưởng "Đơn vị lữ hành tốt
+                            nhất châu Á" năm 2025.</p>
+                        <div class="flex items-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1">
+                                <i class="ri-time-line"></i>
+                                15/07/2025
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <!-- Consultation Form -->
+    <section class="py-16 bg-gradient-to-r from-primary to-secondary">
+        <div class="max-w-[1440px] mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">Đăng Ký Tư Vấn Miễn Phí</h2>
+            <p class="text-white/90 mb-8">Để lại thông tin để nhận tư vấn chi tiết về các tour du lịch phù hợp nhất</p>
+            <div class="bg-white rounded-xl p-8 max-w-2xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <input type="text" placeholder="Họ và tên *"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                    <input type="tel" placeholder="Số điện thoại *"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <input type="email" placeholder="Email"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+                    <select
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary pr-8">
+                        <option>Chọn dịch vụ quan tâm</option>
+                        <option>Tour du lịch</option>
+                        <option>Đặt khách sạn</option>
+                        <option>Vé máy bay</option>
+                        <option>Dịch vụ visa</option>
+                        <option>Thuê xe</option>
+                    </select>
+                </div>
+                <textarea placeholder="Ghi chú thêm..."
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary mb-6"
+                    rows="3"></textarea>
+                <button
+                    class="w-full bg-primary text-white py-4 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
+                    Đăng Ký Tư Vấn Ngay
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-[1440px] mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <img src="https://static.readdy.ai/image/1f4438e38b74ed87371441e676e628ff/19961e37c6343be3b010970c8451a392.png"
+                        alt="AMI Travels" class="h-12 mb-4">
+                    <p class="text-gray-400 mb-4">Công ty du lịch hàng đầu Việt Nam, mang đến những trải nghiệm du lịch
+                        tuyệt vời nhất.</p>
+                    <div class="flex gap-4">
+                        <div class="w-8 h-8 flex items-center justify-center bg-primary rounded-full">
+                            <i class="ri-facebook-fill"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center bg-secondary rounded-full">
+                            <i class="ri-twitter-fill"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center bg-red-500 rounded-full">
+                            <i class="ri-youtube-fill"></i>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Dịch Vụ</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Tour trong nước</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Tour nước ngoài</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Vé máy bay</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Đặt khách sạn</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Dịch vụ visa</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Hỗ Trợ</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Tư vấn trực tuyến</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Hướng dẫn đặt tour</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Chính sách hoàn hủy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Câu hỏi thường gặp</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Liên Hệ</h3>
+                    <div class="space-y-3 text-gray-400">
+                        <div class="flex items-center gap-3">
+                            <i class="ri-phone-line"></i>
+                            <span>1900 1177</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="ri-mail-line"></i>
+                            <span>info@dulichviet.com</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <i class="ri-map-pin-line"></i>
+                            <span>123 Nguyễn Huệ, Q1, TP.HCM</span>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <h3 class="font-semibold mb-4">Chấp Nhận Thanh Toán</h3>
+                        <div class="flex items-center gap-4">
+                            <i class="ri-visa-fill text-3xl text-blue-500"></i>
+                            <i class="ri-mastercard-fill text-3xl text-orange-500"></i>
+                            <i class="ri-bank-card-fill text-3xl text-green-500"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Du Lịch Việt. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Chat Widget -->
+    <div class="fixed bottom-6 right-6 z-50">
+        <button id="chatToggle"
+            class="w-14 h-14 bg-primary text-white rounded-full shadow-lg hover:bg-primary/90 transition-colors flex items-center justify-center">
+            <i class="ri-message-3-line ri-xl"></i>
+        </button>
+        <div id="chatBox" class="absolute bottom-16 right-0 w-80 bg-white rounded-lg shadow-xl border hidden">
+            <div class="bg-primary text-white p-4 rounded-t-lg">
+                <h3 class="font-semibold">Hỗ trợ trực tuyến</h3>
+                <p class="text-sm opacity-90">Chúng tôi luôn sẵn sàng hỗ trợ bạn</p>
+            </div>
+            <div class="p-4 h-64 overflow-y-auto">
+                <div class="mb-4">
+                    <div class="bg-gray-100 p-3 rounded-lg mb-2">
+                        <p class="text-sm">Xin chào! Tôi có thể giúp gì cho bạn?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 border-t">
+                <div class="flex gap-2">
+                    <input type="text" placeholder="Nhập tin nhắn..."
+                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary">
+                    <button
+                        class="bg-primary text-white px-4 py-2 !rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
+                        <i class="ri-send-plane-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script id="chatWidget">
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatToggle = document.getElementById('chatToggle');
+            const chatBox = document.getElementById('chatBox');
+            chatToggle.addEventListener('click', function () {
+                chatBox.classList.toggle('hidden');
+            });
+        });
+    </script>
+    <script id="consultationForm">
+        document.addEventListener('DOMContentLoaded', function () {
+            const consultationForm = document.querySelector('section form');
+            if (consultationForm) {
+                consultationForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    alert('Cảm ơn bạn đã đăng ký! Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.');
+                });
+            }
+        });
+    </script>
+    <script id="mobileNav">
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuClose = document.getElementById('menuClose');
+            const travelMenuBtn = document.getElementById('travelMenuBtn');
+            let currentDropdown = null;
+            function closeDropdown(dropdown) {
+                if (dropdown) {
+                    dropdown.classList.add('hidden');
+                }
+            }
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.group')) {
+                    const dropdowns = document.querySelectorAll('.group > div');
+                    dropdowns.forEach(dropdown => {
+                        dropdown.classList.add('hidden');
+                    });
+                }
+            });
+            if (travelMenuBtn) {
+                travelMenuBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const dropdown = this.closest('.group').querySelector('.absolute');
+                    if (currentDropdown && currentDropdown !== dropdown) {
+                        closeDropdown(currentDropdown);
+                    }
+                    dropdown.classList.toggle('hidden');
+                    currentDropdown = dropdown;
+                });
+            }
+            function toggleMenu() {
+                mobileMenu.classList.toggle('hidden');
+                document.body.classList.toggle('overflow-hidden');
+            }
+            menuToggle.addEventListener('click', toggleMenu);
+            menuClose.addEventListener('click', toggleMenu);
+            mobileMenu.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
+    <script id="touchSlider">
+        document.addEventListener('DOMContentLoaded', function () {
+            const sliders = document.querySelectorAll('.quick-access-slider');
+            sliders.forEach(slider => {
+                let isDragging = false;
+                let startPosition = 0;
+                let currentTranslate = 0;
+                let prevTranslate = 0;
+                function touchStart(event) {
+                    isDragging = true;
+                    startPosition = getPositionX(event);
+                    slider.style.cursor = 'grabbing';
+                }
+                function touchMove(event) {
+                    if (isDragging) {
+                        const currentPosition = getPositionX(event);
+                        currentTranslate = prevTranslate + currentPosition - startPosition;
+                    }
+                }
+                function touchEnd() {
+                    isDragging = false;
+                    prevTranslate = currentTranslate;
+                    slider.style.cursor = 'grab';
+                }
+                function getPositionX(event) {
+                    return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+                }
+                slider.addEventListener('mousedown', touchStart);
+                slider.addEventListener('mousemove', touchMove);
+                slider.addEventListener('mouseup', touchEnd);
+                slider.addEventListener('mouseleave', touchEnd);
+                slider.addEventListener('touchstart', touchStart);
+                slider.addEventListener('touchmove', touchMove);
+                slider.addEventListener('touchend', touchEnd);
+            });
+            const heroSlider = {
+                slides: document.querySelectorAll('.hero-slide'),
+                dots: document.querySelectorAll('.slider-dot'),
+                currentSlide: 0,
+                slideInterval: null,
+                init() {
+                    if (this.slides.length === 0) return;
+                    this.slides[0].style.opacity = '1';
+                    this.dots[0].style.backgroundColor = 'rgb(255 255 255)';
+                    this.autoPlay();
+                    this.setupDotControls();
+                },
+                showSlide(index) {
+                    this.slides[this.currentSlide].style.opacity = '0';
+                    this.dots[this.currentSlide].style.backgroundColor = 'rgb(255 255 255 / 0.5)';
+                    this.currentSlide = index;
+                    this.slides[this.currentSlide].style.opacity = '1';
+                    this.dots[this.currentSlide].style.backgroundColor = 'rgb(255 255 255)';
+                },
+                nextSlide() {
+                    const next = (this.currentSlide + 1) % this.slides.length;
+                    this.showSlide(next);
+                },
+                autoPlay() {
+                    this.slideInterval = setInterval(() => this.nextSlide(), 5000);
+                },
+                setupDotControls() {
+                    this.dots.forEach((dot, index) => {
+                        dot.addEventListener('click', () => {
+                            clearInterval(this.slideInterval);
+                            this.showSlide(index);
+                            this.autoPlay();
+                        });
+                    });
+                }
+            };
+            heroSlider.init();
+        });
+    </script>
+</body>
+
+</html>
