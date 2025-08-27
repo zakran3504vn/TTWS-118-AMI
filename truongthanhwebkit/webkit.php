@@ -547,7 +547,7 @@ function getProductsByFieldId($conn, $fieldId) {
 //hàm insert dữ liệu liên hệ - trang contact
 function insertContactCustomer($conn, $name, $email, $phone, $address, $subject, $content) {
     // Câu truy vấn SQL để chèn dữ liệu
-    $query = "INSERT INTO contact_customer (name, email, phone, address, subject, content, created_at) 
+    $query = "INSERT INTO contact_messages (full_name, email, phone, address, subject, content, created_at) 
               VALUES (?, ?, ?, ?, ?, ?, NOW())";
     
     // Chuẩn bị truy vấn để tránh SQL Injection

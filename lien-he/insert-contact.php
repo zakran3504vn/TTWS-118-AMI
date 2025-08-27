@@ -1,24 +1,28 @@
 <?php
 include('../config/db_connection.php');
-include('../truongthanhwebkit/webkit.php');
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Get form data
-    $name = $_POST['fullName'];
+    $name = $_POST['full_name'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
     $subject = $_POST['subject'];
     $content = $_POST['message'];
-    $address = "";
 
-    $result = insertContactCustomer($conn, $name, $email, $phone, $address, $subject, $content);
-    if($result['success'] == true){
-        header('location: ./index.php?success=1');
+    $sql = "INSERT INTO contact_messages (full_name, phone, email, subject, message, created_at)
+            VALUES (?, ?, ?, ?, ?, NOW())";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $name, $phone, $email, $subject, $content);
+
+    if ($stmt->execute()) {
+        echo "OK";
+    } else {
+        echo "ERROR";
     }
-    else {
-        header('location: ./index.php?error=1');
-    }
+
+    $stmt->close();
+    $conn->close();
 }
 
 ?>
