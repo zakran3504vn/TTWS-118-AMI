@@ -155,11 +155,11 @@
                         <div class="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full -ml-16 -mb-16"></div>
                         <h2 class="text-2xl font-bold mb-2">Gửi Tin Nhắn</h2>
                         <p class="text-gray-500 mb-8">Hãy để lại thông tin, chúng tôi sẽ liên hệ với bạn sớm nhất</p>
-                        <form class="space-y-6 relative">
+                        <form class="space-y-6 relative" >
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="relative">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên *</label>
-                                    <div class="relative">
+                                    <div class="relative" name="full_name">
                                         <i
                                             class="ri-user-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                                         <input type="text" placeholder="Nhập họ và tên của bạn"
@@ -167,7 +167,7 @@
                                             required>
                                     </div>
                                 </div>
-                                <div class="relative">
+                                <div class="relative" name="phone">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại *</label>
                                     <div class="relative">
                                         <i
@@ -178,7 +178,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="relative">
+                            <div class="relative" name="email">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
                                 <div class="relative">
                                     <i class="ri-mail-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
@@ -187,7 +187,7 @@
                                         required>
                                 </div>
                             </div>
-                            <div class="relative">
+                            <div class="relative" name="subject">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Chủ đề</label>
                                 <div class="relative">
                                     <i
@@ -204,7 +204,7 @@
                                         class="ri-arrow-down-s-line absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                                 </div>
                             </div>
-                            <div class="relative">
+                            <div class="relative" name="message">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Nội dung tin nhắn *</label>
                                 <div class="relative">
                                     <i class="ri-message-2-line absolute left-4 top-4 text-gray-400"></i>
