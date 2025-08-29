@@ -103,19 +103,19 @@
                                 class="px-4 py-2 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors whitespace-nowrap">
                                 Tất cả
                                 </a>
-                                <a href="/tin-tuc/tin-tuc-moi-nhat"
+                                <a href="tin-tuc-moi-nhat"
                                 class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
                                 Tin tức mới nhất
                                 </a>
-                                <a href="/tin-tuc/cam-nang-du-lich"
+                                <a href="cam-nang-du-lich"
                                 class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
                                 Cẩm nang du lịch
                                 </a>
-                                <a href="/tin-tuc/khuyen-mai-tour"
+                                <a href="khuyen-mai-tour"
                                 class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
                                 Khuyến mãi tour
                                 </a>
-                                <a href="/tin-tuc/tin-nganh"
+                                <a href="tin-nganh"
                                 class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
                                 Tin ngành
                                 </a>

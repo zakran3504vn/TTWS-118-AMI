@@ -2,7 +2,10 @@
     include('../config/db_connection.php');
     include('../truongthanhwebkit/webkit.php');
 
+    // Default to "all" if no slug provided
     $slug = $_GET['slug'] ?? 'all';
+
+    // Get data using slug
     $result = getDataNews($conn, $slug);
 
     if ($result && count($result) > 0) {
