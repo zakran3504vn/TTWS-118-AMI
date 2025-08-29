@@ -2,12 +2,12 @@
     include('../config/db_connection.php');
     include('../truongthanhwebkit/webkit.php');
 
-    $result = getDataNews($conn);
-    if ($result && count($result) > 0) {
-        foreach($result as $row) {
-            // Format date as "d Tháng m, Y"
-            $date = date('d', strtotime($row['created_at'])) . ' Tháng ' . date('m, Y', strtotime($row['created_at']));
+    $slug = $_GET['slug'] ?? 'all';
+    $result = getDataNews($conn, $slug);
 
+    if ($result && count($result) > 0) {
+        foreach ($result as $row) {
+            $date = date('d \T\h\á\n\g m, Y', strtotime($row['created_at']));
             echo '
             <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col md:flex-row">
                 <img src="'.$row['image'].'" alt="'.$row['title'].'" class="w-full md:w-64 h-auto object-cover">

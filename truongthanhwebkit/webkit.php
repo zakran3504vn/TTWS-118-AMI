@@ -376,29 +376,34 @@ function getPaginatedNews($conn, $page = 1, $perPage = 9)
 }
 
 // Hàm lấy danh sách tin tức
-function getDataNews($conn) {
-     // Khởi tạo biến kết quả
-    $result = array();
- 
-    // Câu truy vấn SQL để lấy tất cả dữ liệu từ bảng products
+function getDataNews($conn, $slug = 'all') {
+    $result = [];
     $query = "SELECT * FROM news";
-    
-    // Thực thi truy vấn
+
+    if ($slug !== 'all') {
+        // Map slug back to category
+        $map = [
+            'tin-tuc-moi-nhat' => 'Tin tức mới nhất',
+            'cam-nang-du-lich' => 'Cẩm nang du lịch',
+            'khuyen-mai-tour'  => 'Khuyến mãi tour',
+            'tin-nganh'        => 'Tin ngành'
+        ];
+        if (isset($map[$slug])) {
+            $category = $conn->real_escape_string($map[$slug]);
+            $query .= " WHERE category = '$category'";
+        }
+    }
+
+    $query .= " ORDER BY created_at DESC";
     $stmt = $conn->query($query);
-    
-    // Kiểm tra và lấy dữ liệu
     if ($stmt) {
         while ($row = $stmt->fetch_assoc()) {
-            $result[] = $row; // Thêm từng dòng dữ liệu vào mảng kết quả
+            $result[] = $row;
         }
-    } else {
-        // Xử lý lỗi nếu truy vấn thất bại
-        $result = array('error' => 'Không thể lấy dữ liệu từ bảng news: ' . $conn->error);
     }
-    
-    // Trả về kết quả
     return $result;
 }
+
 
 // Hàm lấy ra chi tiết tin tức dựa vào slug
 function getNewsDetails($conn, $slug)
@@ -425,6 +430,19 @@ function getNewsDetails($conn, $slug)
 
     // Trả về kết quả
     return $news;
+}
+
+//Hàm biến title VIETNAMESE thành slug
+function slugify($text) {
+    // Convert Vietnamese accents to ASCII
+    $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
+    // Replace non letters/numbers with -
+    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+    // Trim - from start/end
+    $text = trim($text, '-');
+    // Lowercase
+    $text = strtolower($text);
+    return !empty($text) ? $text : 'n-a';
 }
 
 // Hàm lấy danh sách lĩnh vực
@@ -691,4 +709,6 @@ function getAllServices($conn)
     // Trả về kết quả
     return $services;
 }
+
+
 ?>
