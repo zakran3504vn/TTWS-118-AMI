@@ -1,6 +1,6 @@
 <?php
     include('../config/db_connection.php');
-    include('../truongthanhwebkit/webkit.php');
+    include_once('../truongthanhwebkit/webkit.php');
 
     $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
     $result = getDataNews($conn, $filter);

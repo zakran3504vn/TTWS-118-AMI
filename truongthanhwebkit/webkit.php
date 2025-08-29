@@ -299,20 +299,30 @@ function getOutstandingProducts($conn) {
 
 // Chức năng để có được các mục tin tức hàng đầu nơi isTop = 'true'
 function getTopNews($conn, $limit = 2) {
-    $sql = "SELECT news_id, news_name, news_content, new_summary, news_author, news_img, slug, create_time, update_time, isTop 
+    $sql = "SELECT id, title, summary, image, created_at, isTop
             FROM news 
             WHERE isTop = ? 
-            ORDER BY create_time DESC 
+            ORDER BY created_at DESC 
             LIMIT ?";
+    
     $stmt = $conn->prepare($sql);
-    $isTop = 'true'; // Match ENUM value
-    $stmt->bind_param('si', $isTop, $limit); // 'si' for string and integer
+
+    // If ENUM('true','false')
+    $isTop = 'true';
+    $stmt->bind_param('si', $isTop, $limit);
+
+    // If TINYINT(1) (just change line above):
+    // $isTop = 1;
+    // $stmt->bind_param('ii', $isTop, $limit);
+
     $stmt->execute();
     $result = $stmt->get_result();
     $topNews = $result->fetch_all(MYSQLI_ASSOC);
     $stmt->close();
+
     return $topNews;
 }
+
 // Hàm lấy danh sách 5 tin tức mới nhất
 function getLatestNews($conn) {
     $sql = "SELECT news_id, news_name, news_content, new_summary, news_author, news_img, slug, create_time 
