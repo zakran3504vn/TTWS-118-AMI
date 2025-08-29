@@ -299,7 +299,7 @@ function getOutstandingProducts($conn) {
 
 // Chức năng để có được các mục tin tức hàng đầu nơi isTop = 'true'
 function getTopNews($conn, $limit = 2) {
-    $sql = "SELECT id, title, summary, image, created_at, isTop
+    $sql = "SELECT id, title, summary, image, created_at
             FROM news 
             WHERE isTop = ? 
             ORDER BY created_at DESC 
