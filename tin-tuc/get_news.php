@@ -2,11 +2,8 @@
     include('../config/db_connection.php');
     include('../truongthanhwebkit/webkit.php');
 
-    // Default to "all" if no slug provided
-    $slug = $_GET['slug'] ?? 'all';
-
-    // Get data using slug
-    $result = getDataNews($conn, $slug);
+    $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
+    $result = getDataNews($conn, $filter);
 
     if ($result && count($result) > 0) {
         foreach ($result as $row) {
@@ -20,12 +17,10 @@
                     <p class="text-gray-600 mb-4">'.$row['summary'].'</p>
                     <div class="flex items-center gap-6 text-sm text-gray-500">
                         <span class="flex items-center gap-2">
-                            <i class="ri-time-line"></i>
-                            '.$date.'
+                            <i class="ri-time-line"></i> '.$date.'
                         </span>
                         <span class="flex items-center gap-2">
-                            <i class="ri-eye-line"></i>
-                            '.$row['views'].' lượt xem
+                            <i class="ri-eye-line"></i> '.$row['views'].' lượt xem
                         </span>
                     </div>
                 </div>

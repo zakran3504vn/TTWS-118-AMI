@@ -376,33 +376,35 @@ function getPaginatedNews($conn, $page = 1, $perPage = 9)
 }
 
 // Hàm lấy danh sách tin tức
-function getDataNews($conn, $slug = 'all') {
-    $result = [];
-    $query = "SELECT * FROM news";
+function getDataNews($conn, $filter = 'all') {
+    $result = array();
 
-    if ($slug !== 'all') {
-        // Map slug back to category
-        $map = [
-            'tin-tuc-moi-nhat' => 'Tin tức mới nhất',
-            'cam-nang-du-lich' => 'Cẩm nang du lịch',
-            'khuyen-mai-tour'  => 'Khuyến mãi tour',
-            'tin-nganh'        => 'Tin ngành'
-        ];
-        if (isset($map[$slug])) {
-            $category = $conn->real_escape_string($map[$slug]);
-            $query .= " WHERE category = '$category'";
-        }
+    if ($filter === 'all') {
+        $query = "SELECT * FROM news ORDER BY created_at DESC";
+    } else {
+        $query = "SELECT * FROM news WHERE category = ? ORDER BY created_at DESC";
     }
 
-    $query .= " ORDER BY created_at DESC";
-    $stmt = $conn->query($query);
+    if ($filter === 'all') {
+        $stmt = $conn->query($query);
+    } else {
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $filter);
+        $stmt->execute();
+        $stmt = $stmt->get_result();
+    }
+
     if ($stmt) {
         while ($row = $stmt->fetch_assoc()) {
             $result[] = $row;
         }
+    } else {
+        $result = array('error' => 'Không thể lấy dữ liệu từ bảng news: ' . $conn->error);
     }
+
     return $result;
 }
+
 
 
 // Hàm lấy ra chi tiết tin tức dựa vào slug

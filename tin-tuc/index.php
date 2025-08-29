@@ -93,33 +93,7 @@
                 <div class="lg:w-3/4">
                     <div class="mb-8">
                         <div class="flex flex-wrap gap-4 mb-6">
-                            <div class="relative">
-                                <input type="text" placeholder="Tìm kiếm tin tức..."
-                                    class="w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-primary">
-                                <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            </div>
-                            <div class="flex gap-2 overflow-x-auto pb-2">
-                                <a href="/tin-tuc/" 
-                                class="px-4 py-2 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                Tất cả
-                                </a>
-                                <a href="tin-tuc-moi-nhat"
-                                class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
-                                Tin tức mới nhất
-                                </a>
-                                <a href="cam-nang-du-lich"
-                                class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
-                                Cẩm nang du lịch
-                                </a>
-                                <a href="khuyen-mai-tour"
-                                class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
-                                Khuyến mãi tour
-                                </a>
-                                <a href="tin-nganh"
-                                class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
-                                Tin ngành
-                                </a>
-                            </div>
+                            <div class="relative"> <input type="text" placeholder="Tìm kiếm tin tức..." class="w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-primary"> <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i> </div> <div class="flex gap-2 overflow-x-auto pb-2" id="filter-buttons"> <button class="px-4 py-2 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors whitespace-nowrap" data-filter="all">Tất cả</button> <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap" data-filter="Tin tức mới nhất">Tin tức mới nhất</button> <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap" data-filter="Cẩm nang du lịch">Cẩm nang du lịch</button> <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap" data-filter="Khuyến mãi tour">Khuyến mãi tour</button> <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap" data-filter="Tin ngành">Tin ngành</button> </div>
                         </div>
 
                         <!-- display articles -->
@@ -214,36 +188,34 @@
     include ("../includes/cta.php");
     ?>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const container = document.getElementById("news-container");
-            const buttons = document.querySelectorAll("[data-filter]");
+        document.addEventListener("DOMContentLoaded", () => {
+        const buttons = document.querySelectorAll("#filter-buttons button");
+        const container = document.getElementById("news-container");
 
-            // Function to load news
-            function loadNews(filter = "all") {
-                fetch("get_news.php?filter=" + encodeURIComponent(filter))
-                    .then(response => response.text())
-                    .then(data => {
-                        container.innerHTML = data;
-                    })
-                    .catch(err => {
-                        container.innerHTML = "<p class='text-red-500'>Lỗi tải dữ liệu.</p>";
-                    });
-            }
+        buttons.forEach(button => {
+            button.addEventListener("click", () => {
+            const filter = button.getAttribute("data-filter");
 
-            // Load all news on first load
-            loadNews();
+            // update active button style
+            buttons.forEach(btn => btn.classList.remove("bg-primary", "text-white"));
+            buttons.forEach(btn => btn.classList.add("bg-gray-100", "text-gray-600"));
+            button.classList.remove("bg-gray-100", "text-gray-600");
+            button.classList.add("bg-primary", "text-white");
 
-            // Handle button clicks
-            buttons.forEach(btn => {
-                btn.addEventListener("click", function () {
-                    buttons.forEach(b => b.classList.remove("bg-blue-500", "text-white"));
-                    this.classList.add("bg-blue-500", "text-white"); // highlight active
-                    loadNews(this.dataset.filter);
+            // fetch filtered news
+            fetch("get_news.php?filter=" + encodeURIComponent(filter))
+                .then(res => res.text())
+                .then(html => {
+                container.innerHTML = html;
+                })
+                .catch(err => {
+                container.innerHTML = "<p class='text-center text-red-500'>Lỗi tải dữ liệu.</p>";
+                console.error(err);
                 });
             });
         });
+        });
     </script>
-
 </body>
 
 </html>
