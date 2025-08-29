@@ -99,28 +99,34 @@
                                 <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                             </div>
                             <div class="flex gap-2 overflow-x-auto pb-2">
-                                <button
-                                    class="px-4 py-2 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors whitespace-nowrap">Tất
-                                    cả</button>
-                                <button
-                                    class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">Tin
-                                    tức mới nhất</button>
-                                <button
-                                    class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">Cẩm
-                                    nang du lịch</button>
-                                <button
-                                    class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">Khuyến
-                                    mãi tour</button>
-                                <button
-                                    class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">Tin
-                                    ngành</button>
+                                <a href="/tin-tuc/" 
+                                class="px-4 py-2 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                Tất cả
+                                </a>
+                                <a href="/tin-tuc/tin-tuc-moi-nhat"
+                                class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
+                                Tin tức mới nhất
+                                </a>
+                                <a href="/tin-tuc/cam-nang-du-lich"
+                                class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
+                                Cẩm nang du lịch
+                                </a>
+                                <a href="/tin-tuc/khuyen-mai-tour"
+                                class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
+                                Khuyến mãi tour
+                                </a>
+                                <a href="/tin-tuc/tin-nganh"
+                                class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">
+                                Tin ngành
+                                </a>
                             </div>
                         </div>
-                        <div class="grid gap-8">
-                            <h2 class="text-2xl font-bold mb-6">Tin tức mới nhất</h2>
-                                
+
+                        <!-- display articles -->
+                        <div id="news-container" class="grid gap-8">
                             <?php include "get_news.php"; ?>
                         </div>
+
                         <div class="mt-8 flex justify-center">
                             <nav class="flex items-center gap-2">
                                 <button
@@ -207,6 +213,37 @@
     include ("../includes/footer_child.php");
     include ("../includes/cta.php");
     ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById("news-container");
+            const buttons = document.querySelectorAll("[data-filter]");
+
+            // Function to load news
+            function loadNews(filter = "all") {
+                fetch("get_news.php?filter=" + encodeURIComponent(filter))
+                    .then(response => response.text())
+                    .then(data => {
+                        container.innerHTML = data;
+                    })
+                    .catch(err => {
+                        container.innerHTML = "<p class='text-red-500'>Lỗi tải dữ liệu.</p>";
+                    });
+            }
+
+            // Load all news on first load
+            loadNews();
+
+            // Handle button clicks
+            buttons.forEach(btn => {
+                btn.addEventListener("click", function () {
+                    buttons.forEach(b => b.classList.remove("bg-blue-500", "text-white"));
+                    this.classList.add("bg-blue-500", "text-white"); // highlight active
+                    loadNews(this.dataset.filter);
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
