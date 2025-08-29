@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e1b5e',
+                        primary: '#e91e63',
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
@@ -131,26 +131,7 @@
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="font-semibold mb-4">Danh mục</h3>
                         <div class="space-y-2">
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Tin tức mới nhất</span>
-                                <span class="text-sm text-gray-500">25</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Cẩm nang du lịch</span>
-                                <span class="text-sm text-gray-500">18</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Khuyến mãi tour</span>
-                                <span class="text-sm text-gray-500">12</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Tin ngành</span>
-                                <span class="text-sm text-gray-500">8</span>
-                            </a>
+                            <?php include "get_categories.php"; ?>
                         </div>
                     </div>
                 </div>

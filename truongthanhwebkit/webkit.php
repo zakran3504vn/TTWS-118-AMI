@@ -721,6 +721,21 @@ function getAllServices($conn)
     // Trả về kết quả
     return $services;
 }
+function getCategoryCounts($conn) {
+    $counts = [];
 
+    $sql = "SELECT category, COUNT(*) as total 
+            FROM news 
+            GROUP BY category";
+    $result = $conn->query($sql);
+
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $counts[$row['category']] = $row['total'];
+        }
+    }
+
+    return $counts;
+}
 
 ?>

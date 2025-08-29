@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e1b5e',
+                        primary: '#e91e63',
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
@@ -199,11 +199,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">16.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
                                 <a href="./detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR    
                                 </a>
                             </div>
@@ -231,12 +231,12 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">16.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
                                 <a href="./detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                    XEM TOUR
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    XEM TOUR    
                                 </a>
                             </div>
                         </div>
@@ -263,12 +263,12 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">16.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
                                 <a href="./detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                    XEM TOUR
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    XEM TOUR    
                                 </a>
                             </div>
                         </div>

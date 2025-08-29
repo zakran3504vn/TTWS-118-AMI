@@ -19,23 +19,7 @@
                             </button>
                             <div
                                 class="absolute top-full left-0 bg-white shadow-lg rounded-lg py-2 w-64 hidden group-hover:block z-50">
-                                <div class="relative group/sub hover:bg-gray-50">
-                                    <a href="./du-lich/index.php"
-                                        data-readdy="true"
-                                        class="flex items-center justify-between px-4 py-2 hover:text-primary">
-                                        Du lịch trong nước
-                                        <i class="ri-arrow-right-s-line"></i>
-                                    </a>
-                                    <div
-                                        class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Miền
-                                            Bắc</a>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Miền
-                                            Trung</a>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Miền
-                                            Nam</a>
-                                    </div>
-                                </div>
+                                
                                 <div class="relative group/sub hover:bg-gray-50">
                                     <a href="./du-lich/index.php"
                                         data-readdy="true"
@@ -45,15 +29,15 @@
                                     </a>
                                     <div
                                         class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                        <a href="./du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
                                             Á</a>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                        <a href="./du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
                                             Âu</a>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                        <a href="./du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
                                             Phi</a>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                        <a href="./du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
                                             Úc</a>
-                                        <a href="#" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
+                                        <a href="./du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
                                             Mỹ</a>
                                     </div>
                                 </div>
@@ -117,25 +101,6 @@
                                         <i class="ri-arrow-down-s-line"></i>
                                     </button>
                                     <div class="hidden pl-4">
-                                        <div class="border-l border-gray-200">
-                                            <button
-                                                class="w-full py-3 text-black font-medium text-l hover:text-primary transition-colors flex items-center justify-between pl-4"
-                                                onclick="this.nextElementSibling.classList.toggle('hidden')">
-                                                Du lịch trong nước
-                                                <i class="ri-arrow-down-s-line"></i>
-                                            </button>
-                                            <div class="hidden">
-                                                <a href="#"
-                                                    class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Miền
-                                                    Bắc</a>
-                                                <a href="#"
-                                                    class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Miền
-                                                    Trung</a>
-                                                <a href="#"
-                                                    class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Miền
-                                                    Nam</a>
-                                            </div>
-                                        </div>
                                         <div class="border-l border-gray-200">
                                             <button
                                                 class="w-full py-3 text-black font-medium text-l hover:text-primary transition-colors flex items-center justify-between pl-4"
