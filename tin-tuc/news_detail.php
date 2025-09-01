@@ -1,3 +1,4 @@
+<!-- File: news_detail.php -->
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -70,12 +71,38 @@
 
 <body class="bg-white">
     <?php
-        include ("../includes/header_child.php");
+    include("../includes/header_child.php");
+
+    // Get news ID from URL
+    $newsId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+    // Fetch data from get_news_detail.php
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, "http://$_SERVER[HTTP_HOST]" . dirname($_SERVER['PHP_SELF']) . "/get_news_detail.php?id=$newsId");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $data = json_decode($response, true);
+
+    // Check for errors
+    if (isset($data['error'])) {
+        echo '<div class="max-w-6xl mx-auto px-4 py-8 text-center text-red-500">'
+            . htmlspecialchars($data['error']) . '</div>';
+        include("../includes/footer_child.php");
+        include("../includes/cta.php");
+        echo '</body></html>';
+        exit;
+    }
+
+    $news = $data['news'];
+    $relatedNews = $data['related_news'];
     ?>
+
     <div class="bg-gradient-to-r from-primary/90 to-primary text-white py-16">
         <div class="max-w-6xl mx-auto px-4 text-center">
-            <h1 class="text-4xl font-bold mb-4">Khai trương khu nghỉ dưỡng 5 sao mới tại Phú Quốc</h1>
-            <p class="text-xl opacity-90">Tin tức mới nhất</p>
+            <h1 class="text-4xl font-bold mb-4"><?php echo htmlspecialchars($news['title']); ?></h1>
+            <p class="text-xl opacity-90"><?php echo htmlspecialchars($news['category']); ?></p>
         </div>
     </div>
     <div class="bg-gray-50 py-4">
@@ -85,7 +112,7 @@
                 <i class="ri-arrow-right-s-line"></i>
                 <a href="./index.php" class="hover:text-primary">Tin tức</a>
                 <i class="ri-arrow-right-s-line"></i>
-                <span class="text-primary">Tên bài viết</span>
+                <span class="text-primary"><?php echo htmlspecialchars($news['title']); ?></span>
             </div>
         </div>
     </div>
@@ -94,32 +121,24 @@
             <div class="flex flex-col lg:flex-row gap-8">
                 <div class="lg:w-3/4">
                     <article class="bg-white rounded-lg shadow-sm overflow-hidden p-6">
-                        <img src="https://readdy.ai/api/search-image?query=Travel%20guide%20book%20with%20map%2C%20passport%2C%20camera%2C%20and%20travel%20accessories%2C%20flat%20lay%20photography%2C%20travel%20planning%20concept&width=400&height=300&seq=news2&orientation=landscape"
-                            alt="Resort mới" class=" h-auto object-cover rounded-lg mb-6">
+                        <img src="<?php echo htmlspecialchars($news['image']); ?>"
+                            alt="<?php echo htmlspecialchars($news['title']); ?>"
+                            class="h-auto object-cover rounded-lg mb-6">
                         <div class="flex items-center gap-6 text-sm text-gray-500 mb-6">
                             <span class="flex items-center gap-2">
                                 <i class="ri-time-line"></i>
-                                21/07/2025
+                                <?php echo $news['formatted_date']; ?>
                             </span>
                             <span class="flex items-center gap-2">
                                 <i class="ri-eye-line"></i>
-                                2.5K lượt xem
+                                <?php echo $news['formatted_views']; ?>
                             </span>
                         </div>
                         <div class="w-full text-2xl text-black mb-8 mx-auto">
-                            <h3 class="text-2xl font-semibold mb-3">Top 10 điểm đến không thể bỏ qua khi du
-                                            lịch
-                                            Nhật Bản mùa thu</h3>
-                            <p class="text-justify">Phú Quốc, hòn đảo ngọc của Việt Nam, vừa chào đón một thành viên mới trong hệ thống nghỉ
-                                dưỡng cao cấp: Khu nghỉ dưỡng 5 sao Premier Residences Phú Quốc Emerald Bay. Được khai
-                                trương chính thức vào ngày 21/07/2025, resort này hứa hẹn sẽ mang đến những trải nghiệm
-                                sang trọng và độc đáo cho du khách trong và ngoài nước.</p>
-
-                            <h3 class="text-primary font-bold">Giới thiệu về khu nghỉ dưỡng</h3>
-                            <p class="text-justify">Phú Quốc, hòn đảo ngọc của Việt Nam, vừa chào đón một thành viên mới trong hệ thống nghỉ
-                                dưỡng cao cấp: Khu nghỉ dưỡng 5 sao Premier Residences Phú Quốc Emerald Bay. Được khai
-                                trương chính thức vào ngày 21/07/2025, resort này hứa hẹn sẽ mang đến những trải nghiệm
-                                sang trọng và độc đáo cho du khách trong và ngoài nước.</p>
+                            <h3 class="text-2xl font-semibold mb-3"><?php echo htmlspecialchars($news['title']); ?></h3>
+                            <p class="text-justify"><?php echo htmlspecialchars($news['summary']); ?></p>
+                            <h3 class="text-primary font-bold">Giới thiệu chi tiết</h3>
+                            <p class="text-justify"><?php echo htmlspecialchars($news['summary']); ?></p>
                         </div>
                         <div class="flex items-center gap-4 mb-8">
                             <h3 class="font-semibold">Chia sẻ bài viết:</h3>
@@ -140,48 +159,45 @@
                     <div class="mt-12">
                         <h2 class="text-2xl font-bold mb-6">Bài viết liên quan</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <a href="#" class="block">
-                                <img src="https://readdy.ai/api/search-image?query=Travel%20guide%20book%20with%20map%2C%20passport%2C%20camera%2C%20and%20travel%20accessories%2C%20flat%20lay%20photography%2C%20travel%20planning%20concept&width=400&height=300&seq=news2&orientation=landscape"
-                                    alt="Cẩm nang du lịch" class="w-full h-40 object-cover rounded-lg mb-4">
-                                <h4 class="font-semibold mb-2">Top 10 điểm đến không thể bỏ qua khi du lịch Nhật Bản mùa
-                                    thu</h4>
-                                <p class="text-sm text-gray-500">20/07/2025</p>
-                            </a>
-                            <a href="#" class="block">
-                                <img src="https://readdy.ai/api/search-image?query=Special%20travel%20deal%20promotion%2C%20discount%20offer%20banner%2C%20summer%20vacation%20sale%2C%20marketing%20campaign%20visual&width=400&height=300&seq=news3&orientation=landscape"
-                                    alt="Khuyến mãi tour" class="w-full h-40 object-cover rounded-lg mb-4">
-                                <h4 class="font-semibold mb-2">Ưu đãi đặc biệt: Giảm 30% tour châu Âu mùa thu</h4>
-                                <p class="text-sm text-gray-500">19/07/2025</p>
-                            </a>
-                            <a href="#" class="block">
-                                <img src="https://readdy.ai/api/search-image?query=International%20tourism%20conference%2C%20business%20meeting%20room%2C%20professional%20event%20photography%2C%20travel%20industry%20gathering&width=400&height=300&seq=news4&orientation=landscape"
-                                    alt="Tin ngành" class="w-full h-40 object-cover rounded-lg mb-4">
-                                <h4 class="font-semibold mb-2">Hội nghị Du lịch Quốc tế 2025 tại Việt Nam</h4>
-                                <p class="text-sm text-gray-500">18/07/2025</p>
-                            </a>
+                            <?php
+                            if (!empty($relatedNews)) {
+                                foreach ($relatedNews as $related) {
+                                    echo '
+                                    <a href="news_detail.php?id=' . $related['id'] . '" class="block">
+                                        <img src="' . htmlspecialchars($related['image']) . '"
+                                            alt="' . htmlspecialchars($related['title']) . '"
+                                            class="w-full h-40 object-cover rounded-lg mb-4">
+                                        <h4 class="font-semibold mb-2">' . htmlspecialchars($related['title']) . '</h4>
+                                        <p class="text-sm text-gray-500">' . $related['formatted_date'] . '</p>
+                                    </a>';
+                                }
+                            } else {
+                                echo '<p class="text-gray-500">Không có bài viết liên quan.</p>';
+                            }
+                            ?>
                         </div>
                     </div>
                 </div>
                 <div class="lg:w-1/4">
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="font-semibold mb-4">Bài viết nổi bật</h3>
-                            <div class="flex flex-col gap-4">
-                                <?php include "get_top_news.php"; ?>
-                            </div>
+                        <div class="flex flex-col gap-4">
+                            <?php include "get_top_news.php"; ?>
+                        </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="font-semibold mb-4">Danh mục</h3>
-                            <div class="space-y-2">
-                                <?php include "get_categories.php"; ?>
-                            </div>
+                        <div class="space-y-2">
+                            <?php include "get_categories.php"; ?>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
     <?php
-    include ("../includes/footer_child.php");
-    include ("../includes/cta.php");
+    include("../includes/footer_child.php");
+    include("../includes/cta.php");
     ?>
 </body>
 

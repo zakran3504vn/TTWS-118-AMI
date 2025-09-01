@@ -756,4 +756,5 @@ function getRelatedNews($conn, $category, $currentId, $limit = 3) {
     $stmt->close();
     return $related;
 }
+
 ?>
