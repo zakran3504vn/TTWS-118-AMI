@@ -51,28 +51,54 @@ function getAllDataProducts($conn) {
 }
 
 //Hàm lấy phân trang sản phẩm
-function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4) {
+function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '') {
     $offset = ($page - 1) * $perPage;
-    $filter = mysqli_real_escape_string($conn, $filter);
-
-    // Build query based on filter
-    $where = ($filter === 'all') ? '' : "WHERE category = '$filter'";
-    $query = "SELECT * FROM news $where ORDER BY created_at DESC LIMIT $perPage OFFSET $offset";
-    $result = $conn->query($query);
-    $news = [];
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $news[] = $row;
-        }
+    
+    // Base query
+    $sql = "SELECT SQL_CALC_FOUND_ROWS n.* FROM news n WHERE 1=1";
+    $params = [];
+    $types = "";
+    
+    // Add search condition if search term exists
+    if (!empty($search)) {
+        $sql .= " AND (title LIKE ? OR summary LIKE ?)";
+        $searchTerm = "%{$search}%";
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;
+        $types .= "ss";
     }
-
-    // Calculate total pages
-    $totalQuery = "SELECT COUNT(*) as total FROM news $where";
-    $totalResult = $conn->query($totalQuery);
-    $total = $totalResult ? $totalResult->fetch_assoc()['total'] : 0;
-    $totalPages = ceil($total / $perPage);
-
-    return ['news' => $news, 'total_pages' => $totalPages, 'current_page' => $page];
+    
+    // Add filter condition
+    if ($filter !== 'all') {
+        $sql .= " AND category = ?";
+        $params[] = $filter;
+        $types .= "s";
+    }
+    
+    // Add pagination
+    $sql .= " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+    $params[] = $perPage;
+    $params[] = $offset;
+    $types .= "ii";
+    
+    // Prepare and execute the query
+    $stmt = $conn->prepare($sql);
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $news = $result->fetch_all(MYSQLI_ASSOC);
+    
+    // Get total records for pagination
+    $totalResult = $conn->query("SELECT FOUND_ROWS()");
+    $totalRows = $totalResult->fetch_array()[0];
+    $totalPages = ceil($totalRows / $perPage);
+    
+    return [
+        'news' => $news,
+        'total_pages' => $totalPages
+    ];
 }
 
 //Hàm lấy danh sách danh mục
@@ -724,7 +750,7 @@ function getCategoryCounts($conn) {
 }
 
 function getNewsDetails($conn, $news_id) {
-    $sql = "SELECT title, content, summary, image_url, category, views, published_at, slug 
+    $sql = "SELECT title, content, summary, image, category, views, created_at 
             FROM news 
             WHERE id = ?";
     $stmt = $conn->prepare($sql);
@@ -741,23 +767,17 @@ function updateNewsViews($conn, $news_id) {
     $stmt->execute();
 }
 
-function getRelatedNews($conn, $category, $currentId, $limit = 3) {
-    $category = mysqli_real_escape_string($conn, $category);
-    $currentId = (int)$currentId;
-    $query = "SELECT * FROM news WHERE category = ? AND id != ? ORDER BY created_at DESC LIMIT ?";
-    $stmt = $conn->prepare($query);
-    if ($stmt === false) {
-        return ['error' => 'Lỗi chuẩn bị truy vấn: ' . $conn->error];
-    }
-    $stmt->bind_param("sii", $category, $currentId, $limit);
+function getRelatedNews($conn, $category, $current_id, $limit = 3) {
+    $sql = "SELECT id, title, image, created_at
+            FROM news 
+            WHERE category = ? AND id != ? 
+            ORDER BY created_at DESC 
+            LIMIT ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sii", $category, $current_id, $limit);
     $stmt->execute();
     $result = $stmt->get_result();
-    $related = [];
-    while ($row = $result->fetch_assoc()) {
-        $related[] = $row;
-    }
-    $stmt->close();
-    return $related;
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
 
 ?>
