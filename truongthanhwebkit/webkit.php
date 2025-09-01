@@ -51,44 +51,28 @@ function getAllDataProducts($conn) {
 }
 
 //Hàm lấy phân trang sản phẩm
-function getPaginatedProducts($conn, $page = 1, $perPage = 10) {
-    // Đảm bảo page là số dương
-    $page = max(1, (int)$page);
-    
-    // Tính offset
+function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4) {
     $offset = ($page - 1) * $perPage;
-    
-    // Đếm tổng số sản phẩm
-    $totalQuery = "SELECT COUNT(*) as total FROM products";
-    $totalResult = $conn->query($totalQuery);
-    $totalRow = $totalResult->fetch_assoc();
-    $totalProducts = $totalRow['total'];
-    
-    // Tính tổng số trang
-    $totalPages = ceil($totalProducts / $perPage);
-    
-    // Truy vấn lấy sản phẩm theo trang
-    $query = "SELECT * FROM products LIMIT $perPage OFFSET $offset";
-    $stmt = $conn->query($query);
-    
-    // Lấy dữ liệu sản phẩm
-    $products = array();
-    if ($stmt) {
-        while ($row = $stmt->fetch_assoc()) {
-            $products[] = $row;
+    $filter = mysqli_real_escape_string($conn, $filter);
+
+    // Build query based on filter
+    $where = ($filter === 'all') ? '' : "WHERE category = '$filter'";
+    $query = "SELECT * FROM news $where ORDER BY created_at DESC LIMIT $perPage OFFSET $offset";
+    $result = $conn->query($query);
+    $news = [];
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $news[] = $row;
         }
-    } else {
-        $products = array('error' => 'Không thể lấy dữ liệu: ' . $conn->error);
     }
-    
-    // Trả về kết quả
-    return array(
-        'products' => $products,
-        'current_page' => $page,
-        'total_pages' => $totalPages,
-        'per_page' => $perPage,
-        'total_products' => $totalProducts
-    );
+
+    // Calculate total pages
+    $totalQuery = "SELECT COUNT(*) as total FROM news $where";
+    $totalResult = $conn->query($totalQuery);
+    $total = $totalResult ? $totalResult->fetch_assoc()['total'] : 0;
+    $totalPages = ceil($total / $perPage);
+
+    return ['news' => $news, 'total_pages' => $totalPages, 'current_page' => $page];
 }
 
 //Hàm lấy danh sách danh mục
@@ -343,47 +327,47 @@ function getLatestNews($conn) {
 }
 
 
-// Hàm lấy phân trang tin tức
-function getPaginatedNews($conn, $page = 1, $perPage = 9)
-{
-    // Đảm bảo page là số dương
-    $page = max(1, (int)$page);
+// // Hàm lấy phân trang tin tức
+// function getPaginatedNews($conn, $page = 1, $perPage = 4)
+// {
+//     // Đảm bảo page là số dương
+//     $page = max(1, (int)$page);
 
-    // Tính offset
-    $offset = ($page - 1) * $perPage;
+//     // Tính offset
+//     $offset = ($page - 1) * $perPage;
 
-    // Đếm tổng số tin tức
-    $totalQuery = "SELECT COUNT(*) as total FROM news";
-    $totalResult = $conn->query($totalQuery);
-    $totalRow = $totalResult->fetch_assoc();
-    $totalNews = $totalRow['total'];
+//     // Đếm tổng số tin tức
+//     $totalQuery = "SELECT COUNT(*) as total FROM news";
+//     $totalResult = $conn->query($totalQuery);
+//     $totalRow = $totalResult->fetch_assoc();
+//     $totalNews = $totalRow['total'];
 
-    // Tính tổng số trang
-    $totalPages = ceil($totalNews / $perPage);
+//     // Tính tổng số trang
+//     $totalPages = ceil($totalNews / $perPage);
 
-    // Truy vấn lấy tin tức theo trang, bao gồm cả cột slug
-    $query = "SELECT news_id, news_name, news_content, news_summary, news_author, news_img, slug, create_time, update_time, isTop FROM news LIMIT $perPage OFFSET $offset";
-    $stmt = $conn->query($query);
+//     // Truy vấn lấy tin tức theo trang, bao gồm cả cột slug
+//     $query = "SELECT id, title,  summary,  image, created_at , update_time, isTop FROM news LIMIT $perPage OFFSET $offset";
+//     $stmt = $conn->query($query);
 
-    // Lấy dữ liệu tin tức
-    $news = array();
-    if ($stmt) {
-        while ($row = $stmt->fetch_assoc()) {
-            $news[] = $row;
-        }
-    } else {
-        $news = array('error' => 'Không thể lấy dữ liệu: ' . $conn->error);
-    }
+//     // Lấy dữ liệu tin tức
+//     $news = array();
+//     if ($stmt) {
+//         while ($row = $stmt->fetch_assoc()) {
+//             $news[] = $row;
+//         }
+//     } else {
+//         $news = array('error' => 'Không thể lấy dữ liệu: ' . $conn->error);
+//     }
 
-    // Trả về kết quả
-    return array(
-        'news' => $news,
-        'current_page' => $page,
-        'total_pages' => $totalPages,
-        'per_page' => $perPage,
-        'total_news' => $totalNews
-    );
-}
+//     // Trả về kết quả
+//     return array(
+//         'news' => $news,
+//         'current_page' => $page,
+//         'total_pages' => $totalPages,
+//         'per_page' => $perPage,
+//         'total_news' => $totalNews
+//     );
+// }
 
 // Hàm lấy danh sách tin tức
 function getDataNews($conn, $filter = 'all') {
@@ -418,31 +402,31 @@ function getDataNews($conn, $filter = 'all') {
 
 
 // Hàm lấy ra chi tiết tin tức dựa vào slug
-function getNewsDetails($conn, $slug)
-{
-    // Khởi tạo mảng kết quả
-    $news = array();
+// function getNewsDetails($conn, $slug)
+// {
+//     // Khởi tạo mảng kết quả
+//     $news = array();
 
-    // Bảo vệ slug chống SQL injection
-    $slug = mysqli_real_escape_string($conn, $slug);
+//     // Bảo vệ slug chống SQL injection
+//     $slug = mysqli_real_escape_string($conn, $slug);
 
-    // Câu truy vấn SQL để lấy chi tiết tin tức
-    $query = "SELECT * FROM news WHERE slug = '$slug' LIMIT 1";
+//     // Câu truy vấn SQL để lấy chi tiết tin tức
+//     $query = "SELECT * FROM news WHERE slug = '$slug' LIMIT 1";
 
-    // Thực thi truy vấn
-    $stmt = $conn->query($query);
+//     // Thực thi truy vấn
+//     $stmt = $conn->query($query);
 
-    // Kiểm tra và lấy dữ liệu
-    if ($stmt && $stmt->num_rows > 0) {
-        $news = $stmt->fetch_assoc(); // Lấy dòng dữ liệu đầu tiên
-    } else {
-        // Trả về lỗi nếu không tìm thấy
-        $news = array('error' => 'Không tìm thấy tin tức với slug: ' . $slug);
-    }
+//     // Kiểm tra và lấy dữ liệu
+//     if ($stmt && $stmt->num_rows > 0) {
+//         $news = $stmt->fetch_assoc(); // Lấy dòng dữ liệu đầu tiên
+//     } else {
+//         // Trả về lỗi nếu không tìm thấy
+//         $news = array('error' => 'Không tìm thấy tin tức với slug: ' . $slug);
+//     }
 
-    // Trả về kết quả
-    return $news;
-}
+//     // Trả về kết quả
+//     return $news;
+// }
 
 //Hàm biến title VIETNAMESE thành slug
 function slugify($text) {
@@ -721,6 +705,7 @@ function getAllServices($conn)
     // Trả về kết quả
     return $services;
 }
+
 function getCategoryCounts($conn) {
     $counts = [];
 
@@ -738,4 +723,37 @@ function getCategoryCounts($conn) {
     return $counts;
 }
 
+function getNewsDetails($conn, $newsId) {
+    $newsId = (int)$newsId; // Ensure ID is an integer
+    $query = "SELECT * FROM news WHERE id = ? LIMIT 1";
+    $stmt = $conn->prepare($query);
+    if ($stmt === false) {
+        return ['error' => 'Lỗi chuẩn bị truy vấn: ' . $conn->error];
+    }
+    $stmt->bind_param("i", $newsId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $news = $result->fetch_assoc();
+    $stmt->close();
+    return $news ? $news : ['error' => 'Không tìm thấy bài viết với ID: ' . $newsId];
+}
+
+function getRelatedNews($conn, $category, $currentId, $limit = 3) {
+    $category = mysqli_real_escape_string($conn, $category);
+    $currentId = (int)$currentId;
+    $query = "SELECT * FROM news WHERE category = ? AND id != ? ORDER BY created_at DESC LIMIT ?";
+    $stmt = $conn->prepare($query);
+    if ($stmt === false) {
+        return ['error' => 'Lỗi chuẩn bị truy vấn: ' . $conn->error];
+    }
+    $stmt->bind_param("sii", $category, $currentId, $limit);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $related = [];
+    while ($row = $result->fetch_assoc()) {
+        $related[] = $row;
+    }
+    $stmt->close();
+    return $related;
+}
 ?>

@@ -124,7 +124,7 @@
                         <div class="flex items-center gap-4 mb-8">
                             <h3 class="font-semibold">Chia sẻ bài viết:</h3>
                             <a href="#"
-                                class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-full hover:bg-primary/90">
+                                class="w-8 h-8 flex items-center justify-center bg-[#3b5998] text-white rounded-full hover:bg-[#3b5998]/90">
                                 <i class="ri-facebook-fill"></i>
                             </a>
                             <a href="#"
@@ -165,60 +165,15 @@
                 <div class="lg:w-1/4">
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="font-semibold mb-4">Bài viết nổi bật</h3>
-                        <div class="space-y-4">
-                            <a href="#" class="flex gap-4 group">
-                                <img src="https://readdy.ai/api/search-image?query=Beautiful%20cherry%20blossom%20season%20in%20Japan%2C%20spring%20travel%2C%20pink%20sakura%20trees%2C%20cultural%20destination&width=100&height=100&seq=feat1&orientation=squarish"
-                                    alt="Du lịch Nhật Bản" class="w-20 h-20 rounded object-cover">
-                                <div class="flex-1">
-                                    <h4 class="font-medium group-hover:text-primary transition-colors">Mùa hoa anh đào
-                                        2025 tại Nhật Bản</h4>
-                                    <p class="text-sm text-gray-500 mt-1">15/07/2025</p>
-                                </div>
-                            </a>
-                            <a href="#" class="flex gap-4 group">
-                                <img src="https://readdy.ai/api/search-image?query=European%20christmas%20market%2C%20winter%20travel%2C%20festive%20decorations%2C%20holiday%20atmosphere&width=100&height=100&seq=feat2&orientation=squarish"
-                                    alt="Du lịch châu Âu" class="w-20 h-20 rounded object-cover">
-                                <div class="flex-1">
-                                    <h4 class="font-medium group-hover:text-primary transition-colors">Khám phá chợ
-                                        Giáng sinh châu Âu</h4>
-                                    <p class="text-sm text-gray-500 mt-1">14/07/2025</p>
-                                </div>
-                            </a>
-                            <a href="#" class="flex gap-4 group">
-                                <img src="https://readdy.ai/api/search-image?query=Luxury%20cruise%20ship%20at%20sunset%2C%20ocean%20travel%2C%20vacation%20lifestyle%2C%20maritime%20tourism&width=100&height=100&seq=feat3&orientation=squarish"
-                                    alt="Du thuyền" class="w-20 h-20 rounded object-cover">
-                                <div class="flex-1">
-                                    <h4 class="font-medium group-hover:text-primary transition-colors">Trải nghiệm du
-                                        thuyền 5 sao</h4>
-                                    <p class="text-sm text-gray-500 mt-1">13/07/2025</p>
-                                </div>
-                            </a>
-                        </div>
+                            <div class="flex flex-col gap-4">
+                                <?php include "get_top_news.php"; ?>
+                            </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="font-semibold mb-4">Danh mục</h3>
-                        <div class="space-y-2">
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Tin tức mới nhất</span>
-                                <span class="text-sm text-gray-500">25</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Cẩm nang du lịch</span>
-                                <span class="text-sm text-gray-500">18</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Khuyến mãi tour</span>
-                                <span class="text-sm text-gray-500">12</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Tin ngành</span>
-                                <span class="text-sm text-gray-500">8</span>
-                            </a>
-                        </div>
+                            <div class="space-y-2">
+                                <?php include "get_categories.php"; ?>
+                            </div>
                     </div>
                 </div>
             </div>

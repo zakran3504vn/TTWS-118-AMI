@@ -2,7 +2,7 @@
 include('../config/db_connection.php');
 include_once('../truongthanhwebkit/webkit.php');
 
-$topNews = getTopNews($conn, 5);
+$topNews = getTopNews($conn, 3);
 
 if ($topNews && count($topNews) > 0) {
     foreach ($topNews as $row) {
