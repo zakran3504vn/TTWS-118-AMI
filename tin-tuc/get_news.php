@@ -8,7 +8,7 @@
 
     if ($result['news'] && count($result['news']) > 0) {
         foreach ($result['news'] as $row) {
-            $date = date('d \T\h\á\n\g m, Y', strtotime($row['created_at']));
+            $date = date('d/m/Y', strtotime($row['created_at']));
             echo '
             <a href="news_detail.php?id='.$row['id'].'" class="group block">
                 <article class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col md:flex-row">
