@@ -723,19 +723,22 @@ function getCategoryCounts($conn) {
     return $counts;
 }
 
-function getNewsDetails($conn, $newsId) {
-    $newsId = (int)$newsId; // Ensure ID is an integer
-    $query = "SELECT * FROM news WHERE id = ? LIMIT 1";
-    $stmt = $conn->prepare($query);
-    if ($stmt === false) {
-        return ['error' => 'Lỗi chuẩn bị truy vấn: ' . $conn->error];
-    }
-    $stmt->bind_param("i", $newsId);
+function getNewsDetails($conn, $news_id) {
+    $sql = "SELECT title, content, summary, image_url, category, views, published_at, slug 
+            FROM news 
+            WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $news_id);
     $stmt->execute();
     $result = $stmt->get_result();
-    $news = $result->fetch_assoc();
-    $stmt->close();
-    return $news ? $news : ['error' => 'Không tìm thấy bài viết với ID: ' . $newsId];
+    return $result->fetch_assoc();
+}
+
+function updateNewsViews($conn, $news_id) {
+    $sql = "UPDATE news SET views = views + 1 WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $news_id);
+    $stmt->execute();
 }
 
 function getRelatedNews($conn, $category, $currentId, $limit = 3) {
