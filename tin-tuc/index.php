@@ -107,7 +107,7 @@
                         </div>
                         <!-- display articles -->
                         <div id="news-container" class="grid gap-8">
-                            <?php include "get_news.php"; ?>
+                            <?php include "./tin-tuc/get_news.php"; ?>
                         </div>
 
                         <div class="mt-8 flex justify-center">
@@ -177,7 +177,7 @@
             });
 
             function fetchNews(searchTerm = '') {
-                fetch(`get_news.php?filter=${encodeURIComponent(currentFilter)}&page=${currentPage}&search=${encodeURIComponent(searchTerm)}`)
+                fetch(`./tin-tuc/get_news.php?filter=${encodeURIComponent(currentFilter)}&page=${currentPage}&search=${encodeURIComponent(searchTerm)}`)
                     .then(res => res.text())
                     .then(html => {
                         container.innerHTML = html;
