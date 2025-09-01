@@ -93,22 +93,7 @@
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <article
-                                class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col">
-                                <img src="https://readdy.ai/api/search-image?query=Luxury%20resort%20pool%20with%20ocean%20view%2C%20tropical%20paradise%2C%20palm%20trees%2C%20sunset%20lighting%2C%20professional%20hotel%20photography%2C%20high-end%20vacation%20destination&width=400&height=300&seq=news1&orientation=landscape"
-                                    alt="Resort mới" class="w-full h-48 object-cover">
-                                <div class="p-4 flex-1 flex flex-col">
-                                    <span class="text-primary rounded text-l mb-3 inline-block w-fit">Ngày đăng: 21/07/2025</span>
-                                    <h3 class="text-lg font-semibold mb-2">Khai trương khu nghỉ dưỡng 5 sao mới tại
-                                        Phú
-                                        Quốc</h3>
-                                    <p class="text-gray-600 mb-4 text-sm">Thêm một điểm đến sang trọng mới tại đảo ngọc Phú
-                                        Quốc, hứa hẹn mang đến trải nghiệm độc đáo cho du khách với nhiều tiện ích
-                                        đẳng
-                                        cấp quốc tế.</p>
-                                    <a href="./detail_visa.php" class="mt-1 bg-primary text-white px-3 py-1 rounded text-sm hover:bg-secondary transition-colors self-start">Đọc thêm</a>
-                                </div>
-                            </article>
+                            <?php include('.\get_news.php'); ?>
                         </div>
                         <div class="mt-8 flex justify-center">
                             <nav class="flex items-center gap-2">
@@ -141,4 +126,146 @@
     include ("../includes/cta.php");
     ?>
 </body>
+<script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("news-container");
+            const pagNav = document.getElementById("pagination-nav");
+            const searchInput = document.getElementById('searchInput');
+            let currentFilter = 'all';
+            let currentPage = 1;
+            let searchTimeout;
+
+            // Initial fetch
+            fetchNews();
+            
+            // Search input handler with debounce
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = e.target.value.trim();
+                    currentPage = 1;
+                    fetchNews(searchTerm);
+                }, 300);
+            });
+
+            // Fetch news with current filter, page, and optional search term
+            function fetchNews(searchTerm = '') {
+                fetch(`get_news.php?filter=${encodeURIComponent(currentFilter)}&page=${currentPage}&search=${encodeURIComponent(searchTerm)}`)
+                    .then(res => res.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                        updatePaginationFromData();
+                    })
+                    .catch(err => {
+                        container.innerHTML = "<p class='text-center text-red-500'>Lỗi tải dữ liệu.</p>";
+                        console.error(err);
+                    });
+            }
+
+            // Update pagination based on hidden metadata
+            function updatePaginationFromData() {
+                const paginationData = document.getElementById('pagination-data');
+                if (paginationData) {
+                    const totalPages = parseInt(paginationData.dataset.totalPages);
+                    updatePagination(totalPages);
+                }
+            }
+
+            // Create pagination buttons
+            function updatePagination(totalPages) {
+                pagNav.innerHTML = '';
+
+                // Previous button
+                const prevPage = currentPage > 1 ? currentPage - 1 : null;
+                const prevButton = createPagButton('<i class="ri-arrow-left-s-line"></i>', prevPage);
+                pagNav.appendChild(prevButton);
+
+                // Page number buttons: 1, 2, 3, ..., N layout
+                if (totalPages <= 3) {
+                    // Show all pages if 3 or fewer
+                    for (let i = 1; i <= totalPages; i++) {
+                        const button = createPagButton(i, i);
+                        if (i === currentPage) {
+                            button.classList.add('bg-primary', 'text-white');
+                            button.classList.remove('border', 'hover:bg-gray-50');
+                        }
+                        pagNav.appendChild(button);
+                    }
+                } else {
+                    // Always show page 1
+                    const firstButton = createPagButton(1, 1);
+                    if (currentPage === 1) {
+                        firstButton.classList.add('bg-primary', 'text-white');
+                        firstButton.classList.remove('border', 'hover:bg-gray-50');
+                    }
+                    pagNav.appendChild(firstButton);
+
+                    // Add ellipsis if current page is far from 1
+                    if (currentPage > 3) {
+                        const ellipsis = createEllipsis();
+                        pagNav.appendChild(ellipsis);
+                    }
+
+                    // Show current page and one page before/after (if they exist)
+                    const startPage = Math.max(2, currentPage - 1);
+                    const endPage = Math.min(totalPages - 1, currentPage + 1);
+                    for (let i = startPage; i <= endPage; i++) {
+                        const button = createPagButton(i, i);
+                        if (i === currentPage) {
+                            button.classList.add('bg-primary', 'text-white');
+                            button.classList.remove('border', 'hover:bg-gray-50');
+                        }
+                        pagNav.appendChild(button);
+                    }
+
+                    // Add ellipsis if current page is far from last page
+                    if (currentPage < totalPages - 2) {
+                        const ellipsis = createEllipsis();
+                        pagNav.appendChild(ellipsis);
+                    }
+
+                    // Always show last page (N)
+                    if (totalPages > 1) {
+                        const lastButton = createPagButton(totalPages, totalPages);
+                        if (currentPage === totalPages) {
+                            lastButton.classList.add('bg-primary', 'text-white');
+                            lastButton.classList.remove('border', 'hover:bg-gray-50');
+                        }
+                        pagNav.appendChild(lastButton);
+                    }
+                }
+
+                // Next button
+                const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+                const nextButton = createPagButton('<i class="ri-arrow-right-s-line"></i>', nextPage);
+                pagNav.appendChild(nextButton);
+            }
+
+            // Create individual pagination button
+            function createPagButton(content, page) {
+                const button = document.createElement('button');
+                button.innerHTML = content;
+                button.classList.add('w-10', 'h-10', 'flex', 'items-center', 'justify-center', 'rounded-full', 'transition-colors');
+                if (page) {
+                    button.classList.add('border', 'hover:bg-gray-50');
+                    button.addEventListener('click', () => {
+                        currentPage = page;
+                        fetchNews();
+                    });
+                } else {
+                    button.classList.add('border', 'text-gray-300');
+                    button.disabled = true;
+                }
+                return button;
+            }
+            
+            // Create ellipsis element
+            function createEllipsis() {
+                const span = document.createElement('span');
+                span.textContent = '...';
+                span.classList.add('w-10', 'h-10', 'flex', 'items-center', 'justify-center', 'text-gray-500');
+                return span;
+            }
+        });
+    </script>
 </html>
