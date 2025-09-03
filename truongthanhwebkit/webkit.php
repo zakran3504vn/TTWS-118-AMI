@@ -51,11 +51,63 @@ function getAllDataProducts($conn) {
 }
 
 //Hàm lấy phân trang sản phẩm
-function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '') {
+function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '', $excludeCategory = '') {
+    $offset = ($page - 1) * $perPage;
+    
+    // Base query with category exclusion
+    $sql = "SELECT SQL_CALC_FOUND_ROWS n.* FROM news n 
+            WHERE category NOT LIKE ?";
+    $params = ["%$excludeCategory%"];
+    $types = "s";
+    
+    // Add search condition if search term exists
+    if (!empty($search)) {
+        $sql .= " AND (title LIKE ? OR summary LIKE ?)";
+        $searchTerm = "%{$search}%";
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;
+        $types .= "ss";
+    }
+    
+    // Add filter condition if not 'all'
+    if ($filter !== 'all') {
+        $sql .= " AND category = ?";
+        $params[] = $filter;
+        $types .= "s";
+    }
+    
+    // Add pagination
+    $sql .= " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+    $params[] = $perPage;
+    $params[] = $offset;
+    $types .= "ii";
+    
+    // Prepare and execute
+    $stmt = $conn->prepare($sql);
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $news = $result->fetch_all(MYSQLI_ASSOC);
+    
+    // Get total records for pagination
+    $totalResult = $conn->query("SELECT FOUND_ROWS()");
+    $totalRows = $totalResult->fetch_array()[0];
+    $totalPages = ceil($totalRows / $perPage);
+    
+    return [
+        'news' => $news,
+        'total_pages' => $totalPages
+    ];
+}
+
+//Hàm lấy phân trang sản phẩm
+function getPaginatedVisaNews($conn, $filter, $page = 1, $perPage = 4, $search = '') {
     $offset = ($page - 1) * $perPage;
     
     // Base query
-    $sql = "SELECT SQL_CALC_FOUND_ROWS n.* FROM news n WHERE 1=1";
+    $sql = "SELECT SQL_CALC_FOUND_ROWS n.* FROM news n WHERE category = 'Visa'";
     $params = [];
     $types = "";
     
@@ -100,7 +152,6 @@ function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '')
         'total_pages' => $totalPages
     ];
 }
-
 //Hàm lấy danh sách danh mục
 function getAllCategories($conn) {
     // Khởi tạo mảng kết quả

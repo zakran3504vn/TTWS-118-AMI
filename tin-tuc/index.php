@@ -107,7 +107,7 @@
                         </div>
                         <!-- display articles -->
                         <div id="news-container" class="grid gap-8">
-                            <?php include "./tin-tuc/get_news.php"; ?>
+                            <?php include "./get_news.php"; ?>
                         </div>
 
                         <div class="mt-8 flex justify-center">
