@@ -6,9 +6,7 @@
     $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
     $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-    // Add category exclusion
-    $excludeCategory = '';
-    $result = getPaginatedNews($conn, $filter, $page, 4, $search, $excludeCategory);
+    $result = getPaginatedVisaNews($conn, $filter, $page, 4, $search);
 
     if ($result['news'] && count($result['news']) > 0) {
         foreach ($result['news'] as $row) {

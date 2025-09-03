@@ -102,6 +102,42 @@ function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '',
     ];
 }
 
+//Hàm lấy phân trang sản phẩm
+function getPaginatedVisaNews($conn, $filter, $page = 1, $perPage = 4, $search = '') {
+    $offset = ($page - 1) * $perPage;
+    
+    // Base query with category exclusion
+    $sql = "SELECT * FROM news 
+        WHERE category LIKE '%visa%' 
+        OR category LIKE '%Visa%'";
+    $params = [];
+    $types = "s";
+    
+    // Add pagination
+    $sql .= " ORDER BY created_at DESC LIMIT ? OFFSET ?";
+    $params[] = $perPage;
+    $params[] = $offset;
+    $types .= "ii";
+    
+    // Prepare and execute
+    $stmt = $conn->prepare($sql);
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $news = $result->fetch_all(MYSQLI_ASSOC);
+    
+    // Get total records for pagination
+    $totalResult = $conn->query("SELECT FOUND_ROWS()");
+    $totalRows = $totalResult->fetch_array()[0];
+    $totalPages = ceil($totalRows / $perPage);
+    
+    return [
+        'news' => $news,
+        'total_pages' => $totalPages
+    ];
+}
 //Hàm lấy danh sách danh mục
 function getAllCategories($conn) {
     // Khởi tạo mảng kết quả
