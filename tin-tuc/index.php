@@ -177,7 +177,7 @@
             });
 
             function fetchNews(searchTerm = '') {
-                fetch(`get_news.php?filter=${encodeURIComponent(currentFilter)}&page=${currentPage}&search=${encodeURIComponent(searchTerm)}`)
+                fetch(`./tin-tuc/get_news.php?filter=${encodeURIComponent(currentFilter)}&page=${currentPage}&search=${encodeURIComponent(searchTerm)}`)
                     .then(res => res.text())
                     .then(html => {
                         container.innerHTML = html;
