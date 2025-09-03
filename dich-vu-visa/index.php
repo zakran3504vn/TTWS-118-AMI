@@ -93,7 +93,7 @@
                             </div>
                         </div>
                         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <?php include('.\get_news.php'); ?>
+                            <?php include('./get_visa_news.php'); ?>
                         </div>
                         <div class="mt-8 flex justify-center">
                             <nav class="flex items-center gap-2">

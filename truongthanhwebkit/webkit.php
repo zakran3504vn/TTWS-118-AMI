@@ -51,13 +51,14 @@ function getAllDataProducts($conn) {
 }
 
 //Hàm lấy phân trang sản phẩm
-function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '') {
+function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '', $excludeCategory = '') {
     $offset = ($page - 1) * $perPage;
     
-    // Base query
-    $sql = "SELECT SQL_CALC_FOUND_ROWS n.* FROM news n WHERE 1=1";
-    $params = [];
-    $types = "";
+    // Base query with category exclusion
+    $sql = "SELECT SQL_CALC_FOUND_ROWS n.* FROM news n 
+            WHERE category NOT LIKE ?";
+    $params = ["%$excludeCategory%"];
+    $types = "s";
     
     // Add search condition if search term exists
     if (!empty($search)) {
@@ -68,7 +69,7 @@ function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '')
         $types .= "ss";
     }
     
-    // Add filter condition
+    // Add filter condition if not 'all'
     if ($filter !== 'all') {
         $sql .= " AND category = ?";
         $params[] = $filter;
@@ -81,11 +82,11 @@ function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '')
     $params[] = $offset;
     $types .= "ii";
     
-    // Prepare and execute the query
+    // Prepare and execute
     $stmt = $conn->prepare($sql);
     if (!empty($params)) {
         $stmt->bind_param($types, ...$params);
-    }
+    }    
     $stmt->execute();
     $result = $stmt->get_result();
     $news = $result->fetch_all(MYSQLI_ASSOC);
