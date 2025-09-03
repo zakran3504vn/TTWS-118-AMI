@@ -106,12 +106,26 @@ function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '',
 function getPaginatedVisaNews($conn, $filter, $page = 1, $perPage = 4, $search = '') {
     $offset = ($page - 1) * $perPage;
     
-    // Base query with category exclusion
-    $sql = "SELECT * FROM news 
-        WHERE category LIKE '%visa%' 
-        OR category LIKE '%Visa%'";
+    // Base query
+    $sql = "SELECT SQL_CALC_FOUND_ROWS n.* FROM news n WHERE category = 'Visa'";
     $params = [];
-    $types = "s";
+    $types = "";
+    
+    // Add search condition if search term exists
+    if (!empty($search)) {
+        $sql .= " AND (title LIKE ? OR summary LIKE ?)";
+        $searchTerm = "%{$search}%";
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;
+        $types .= "ss";
+    }
+    
+    // Add filter condition
+    if ($filter !== 'all') {
+        $sql .= " AND category = ?";
+        $params[] = $filter;
+        $types .= "s";
+    }
     
     // Add pagination
     $sql .= " ORDER BY created_at DESC LIMIT ? OFFSET ?";
@@ -119,7 +133,7 @@ function getPaginatedVisaNews($conn, $filter, $page = 1, $perPage = 4, $search =
     $params[] = $offset;
     $types .= "ii";
     
-    // Prepare and execute
+    // Prepare and execute the query
     $stmt = $conn->prepare($sql);
     if (!empty($params)) {
         $stmt->bind_param($types, ...$params);
