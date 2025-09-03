@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e1b5e',
+                        primary: '#e91e63',
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
@@ -63,57 +63,38 @@
             </div>
         </div>
     </div>
-    <section id="history" class="py-16">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Lịch sử phát triển</h2>
-            <div class="grid lg:grid-cols-2 gap-8 items-center">
-                <img src="https://readdy.ai/api/search-image?query=Professional%20travel%20agency%20office%20with%20modern%20design%2C%20travel%20posters%2C%20world%20map%2C%20clean%20workspace%2C%20corporate%20environment&width=600&height=400&seq=history&orientation=landscape"
-                    alt="History" class="rounded-lg shadow-lg">
-                <div class="space-y-8">
-                    <div class="flex gap-4">
-                        <div
-                            class="w-16 h-16 flex-shrink-0 bg-primary text-white rounded-full flex items-center justify-center font-bold">
-                            2010</div>
-                        <div>
-                            <h3 class="font-semibold mb-2">Thành lập công ty</h3>
-                            <p class="text-gray-600">Khởi đầu với văn phòng đầu tiên tại TP.HCM, chuyên cung cấp dịch vụ
-                                du lịch trong nước.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div
-                            class="w-16 h-16 flex-shrink-0 bg-primary text-white rounded-full flex items-center justify-center font-bold">
-                            2015</div>
-                        <div>
-                            <h3 class="font-semibold mb-2">Mở rộng thị trường</h3>
-                            <p class="text-gray-600">Phát triển mạng lưới chi nhánh toàn quốc và bắt đầu cung cấp dịch
-                                vụ du lịch quốc tế.</p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div
-                            class="w-16 h-16 flex-shrink-0 bg-primary text-white rounded-full flex items-center justify-center font-bold">
-                            2020</div>
-                        <div>
-                            <h3 class="font-semibold mb-2">Chuyển đổi số</h3>
-                            <p class="text-gray-600">Đầu tư mạnh mẽ vào công nghệ, ra mắt nền tảng đặt tour trực tuyến.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div
-                            class="w-16 h-16 flex-shrink-0 bg-primary text-white rounded-full flex items-center justify-center font-bold">
-                            2025</div>
-                        <div>
-                            <h3 class="font-semibold mb-2">Phát triển bền vững</h3>
-                            <p class="text-gray-600">Trở thành một trong những công ty du lịch hàng đầu Việt Nam với hơn
-                                50 chi nhánh.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <section id="about" class="py-16 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+    
+    <!-- Ảnh minh họa -->
+    <div>
+      <img src="https://readdy.ai/api/search-image?query=Professional%20travel%20agency%20office%20with%20modern%20design%2C%20travel%20posters%2C%20world%20map%2C%20clean%20workspace%2C%20corporate%20environment&width=600&height=400&seq=history&orientation=landscape"
+           alt="Ami Travels" 
+           class="rounded-lg shadow-lg w-full h-auto object-cover">
+    </div>
+
+    <!-- Nội dung giới thiệu -->
+    <div class="text-gray-700 space-y-6">
+      <h2 class="text-3xl font-bold text-gray-900">Giới thiệu về Ami Travels</h2>
+      <p class="text-lg leading-relaxed">
+        <span class="font-semibold text-primary">Ami Travels</span> là công ty du lịch uy tín tại Việt Nam, 
+        chuyên cung cấp các dịch vụ du lịch trong nước và quốc tế. Với đội ngũ nhân viên chuyên nghiệp, 
+        tận tâm và am hiểu, chúng tôi mang đến cho khách hàng những hành trình trọn vẹn, an toàn và đáng nhớ.
+      </p>
+      <p class="text-lg leading-relaxed">
+        Chúng tôi cung cấp đa dạng các chương trình du lịch từ nghỉ dưỡng, khám phá, 
+        đến du lịch kết hợp hội nghị – sự kiện. Ami Travels luôn chú trọng cá nhân hóa trải nghiệm, 
+        để mỗi chuyến đi đều trở thành một kỷ niệm khó quên.
+      </p>
+      <p class="text-lg leading-relaxed">
+        Với khát vọng phát triển bền vững, Ami Travels không ngừng mở rộng mạng lưới đối tác trong và ngoài nước, 
+        ứng dụng công nghệ hiện đại để nâng cao chất lượng dịch vụ, trở thành người bạn đồng hành tin cậy 
+        của hàng triệu du khách.
+      </p>
+    </div>
+  </div>
+</section>
+
     <section id="vision" class="py-16 bg-gray-50">
         <div class="max-w-6xl mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12">Tầm nhìn & Sứ mệnh</h2>
@@ -180,58 +161,6 @@
                     <h3 class="font-bold mb-4 group-hover:text-white">Đồng đội</h3>
                     <p class="text-gray-600 group-hover:text-white/90">Xây dựng môi trường làm việc chuyên nghiệp và gắn
                         kết</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="achievements" class="py-16">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Thành tựu đạt được</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="text-4xl font-bold text-primary mb-2" id="counter1">500,000+</div>
-                    <p class="text-gray-600">Khách hàng tin tưởng</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="text-4xl font-bold text-primary mb-2" id="counter2">1,000+</div>
-                    <p class="text-gray-600">Tour du lịch đã tổ chức</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="text-4xl font-bold text-primary mb-2" id="counter3">50+</div>
-                    <p class="text-gray-600">Chi nhánh toàn quốc</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="text-4xl font-bold text-primary mb-2" id="counter4">98%</div>
-                    <p class="text-gray-600">Khách hàng hài lòng</p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="certificates" class="py-16 bg-gray-50">
-        <div class="max-w-6xl mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12">Chứng nhận & Giải thưởng</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="ri-award-line text-primary text-3xl"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Top 10 Công ty Du lịch</h3>
-                    <p class="text-gray-600">Được bình chọn bởi Hiệp hội Du lịch Việt Nam năm 2025</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="ri-medal-line text-primary text-3xl"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Chứng nhận ISO 9001:2015</h3>
-                    <p class="text-gray-600">Hệ thống quản lý chất lượng đạt chuẩn quốc tế</p>
-                </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mb-6 mx-auto">
-                        <i class="ri-trophy-line text-primary text-3xl"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Thương hiệu uy tín</h3>
-                    <p class="text-gray-600">Top 3 công ty lữ hành được yêu thích nhất 2024</p>
                 </div>
             </div>
         </div>

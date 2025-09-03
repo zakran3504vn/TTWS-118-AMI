@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e1b5e',
+                        primary: '#ea1f63',
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
@@ -59,7 +59,7 @@
                 <div class="relative h-full flex items-center px-4">
                     <div class="w-full max-w-6xl mx-auto">
                         <div class="text-white max-w-2xl">
-                            <h1 class="text-5xl font-bold mb-4 text-primary drop-shadow-lg">Chép Trọn Hè Vui</h1>
+                            <h1 class="text-5xl font-bold mb-4 text-primary drop-shadow-lg">Giữ Trọn Hè Vui</h1>
                             <p class="text-xl mb-6">Khám phá thế giới cùng những tour du lịch tuyệt vời nhất</p>
                             <div class="flex gap-4">
                                 <button
@@ -103,8 +103,8 @@
                 <div class="relative h-full flex items-center px-4">
                     <div class="w-full max-w-6xl mx-auto">
                         <div class="text-white max-w-2xl">
-                            <h1 class="text-5xl font-bold mb-4 text-primary drop-shadow-lg">Khám Phá Châu Âu</h1>
-                            <p class="text-xl mb-6">Hành trình trải nghiệm văn hóa và lịch sử Châu Âu</p>
+                            <h1 class="text-5xl font-bold mb-4 text-primary drop-shadow-lg">Khám Phá Australia</h1>
+                            <p class="text-xl mb-6">Hành trình trải nghiệm văn hóa và lịch sử Australia</p>
                             <div class="flex gap-4">
                                 <button
                                     class="bg-primary text-white px-8 py-3 !rounded-button font-semibold hover:bg-primary/90 transition-colors whitespace-nowrap">
@@ -133,10 +133,10 @@
             <div class="hidden lg:grid lg:grid-cols-4 gap-8 justify-items-center">
                 <a href="#"
                     class="bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
-                    <div class="w-16 h-16 flex items-center justify-center bg-gray-800 text-white rounded-full">
+                    <div class="w-16 h-16 flex items-center justify-center bg-primary text-white rounded-full">
                         <i class="ri-map-line ri-2x"></i>
                     </div>
-                    <span class="text-sm font-medium text-center">TOUR TRONG NƯỚC</span>
+                    <span class="text-sm font-medium text-center">TOUR AUTRALIA</span>
                 </a>
                 <a href="#"
                     class="bg-white rounded-lg p-4 flex flex-col items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
@@ -309,11 +309,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">16.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
                                 <a href="./du-lich/detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </a>
                             </div>
@@ -341,11 +341,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">16.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
                                 <a href="./du-lich/detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </a>
                             </div>
@@ -373,11 +373,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">16.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
                                 <a href="./du-lich/detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </a>
                             </div>
@@ -405,11 +405,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">16.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
                                 <a href="./du-lich/detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </a>
                             </div>
@@ -420,7 +420,7 @@
         </div>
     </section>
     <!-- International Tours -->
-    <section class="py-12 bg-[#3c9fd8]">
+    <section class="py-12 bg-gray-100">
         <div class="max-w-[1440px] mx-auto px-4">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="text-4xl font-bold text-primary">TOUR DU LỊCH ÂU-ÚC-MỸ-PHI</h2>
@@ -451,11 +451,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">129.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">119.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">129.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">119.999.000 đ</span>
                                 </div>
                                 <button
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </button>
                             </div>
@@ -483,11 +483,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-sm">89.999.000 đ</span>
-                                    <span class="text-primary font-bold text-lg">79.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">129.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">119.999.000 đ</span>
                                 </div>
                                 <button
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </button>
                             </div>
@@ -515,11 +515,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-sm">139.999.000 đ</span>
-                                    <span class="text-primary font-bold text-lg">129.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">129.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">119.999.000 đ</span>
                                 </div>
                                 <button
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </button>
                             </div>
@@ -547,11 +547,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-sm">99.999.000 đ</span>
-                                    <span class="text-primary font-bold text-lg">89.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">129.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">119.999.000 đ</span>
                                 </div>
                                 <button
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </button>
                             </div>
@@ -593,11 +593,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-xl">35.999.000 đ</span>
-                                    <span class="text-primary font-bold text-2xl">29.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">35.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">29.999.000 đ</span>
                                 </div>
                                 <button
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </button>
                             </div>
@@ -625,11 +625,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-sm">28.999.000 đ</span>
-                                    <span class="text-primary font-bold text-lg">24.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">35.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">29.999.000 đ</span>
                                 </div>
                                 <button
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </button>
                             </div>
@@ -657,11 +657,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-sm">25.999.000 đ</span>
-                                    <span class="text-primary font-bold text-lg">21.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">35.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">29.999.000 đ</span>
                                 </div>
                                 <button
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </button>
                             </div>
@@ -689,11 +689,11 @@
                             </div>
                             <div class="flex justify-between items-center">
                                 <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-sm">15.999.000 đ</span>
-                                    <span class="text-primary font-bold text-lg">12.999.000 đ</span>
+                                    <span class="text-gray-500 line-through text-lg">35.999.000 đ</span>
+                                    <span class="text-primary font-bold text-xl">29.999.000 đ</span>
                                 </div>
                                 <button
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-xl hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </button>
                             </div>
@@ -705,7 +705,7 @@
     </section>
 
     <!-- Travel Tips -->
-    <section class="py-12 bg-[#3c9fd8]">
+    <section class="py-12 bg-gray-100">
         <div class="max-w-[1440px] mx-auto px-4">
             <div class="flex justify-between items-center mb-8">
                 <h2 class="text-4xl font-bold text-primary">DỊCH VỤ VISA</h2>

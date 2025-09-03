@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e1b5e',
+                        primary: '#e91e63',
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
@@ -298,7 +298,7 @@
                                 <label class="block text-sm font-medium mb-2">Số lượng khách</label>
                                 <div class="space-y-4">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-sm">Người lớn (>12 tuổi)</span>
+                                        <span class="text-sm">Người lớn (>6 tuổi)</span>
                                         <div class="flex items-center">
                                             <button type="button"
                                                 class="w-8 h-8 border border-gray-300 rounded-l-lg flex items-center justify-center hover:bg-gray-50 transition-colors decrease-adult">
@@ -314,7 +314,7 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-sm">Trẻ em (4-11 tuổi)</span>
+                                        <span class="text-sm">Trẻ em (<6)</span>
                                         <div class="flex items-center">
                                             <button type="button"
                                                 class="w-8 h-8 border border-gray-300 rounded-l-lg flex items-center justify-center hover:bg-gray-50 transition-colors decrease-child">
@@ -329,22 +329,6 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm">Trẻ nhỏ (<4 tuổi)</span>
-                                                <div class="flex items-center">
-                                                    <button type="button"
-                                                        class="w-8 h-8 border border-gray-300 rounded-l-lg flex items-center justify-center hover:bg-gray-50 transition-colors decrease-infant">
-                                                        <i class="ri-subtract-line"></i>
-                                                    </button>
-                                                    <input type="number" value="0" min="0"
-                                                        class="w-12 h-8 border-y border-gray-300 text-center text-sm focus:outline-none infant-count"
-                                                        readonly>
-                                                    <button type="button"
-                                                        class="w-8 h-8 border border-gray-300 rounded-r-lg flex items-center justify-center hover:bg-gray-50 transition-colors increase-infant">
-                                                        <i class="ri-add-line"></i>
-                                                    </button>
-                                                </div>
-                                    </div>
                                 </div>
                             </div>
                             <div>
@@ -354,63 +338,12 @@
                                     placeholder="Nhập yêu cầu đặc biệt (nếu có)"></textarea>
                             </div>
                             <div class="border-t pt-6">
-                                <h4 class="text-sm font-medium mb-4">Phương thức thanh toán</h4>
-                                <div class="space-y-3">
-                                    <label class="flex items-center gap-3 cursor-pointer">
-                                        <div class="relative">
-                                            <input type="radio" name="payment" value="bank"
-                                                class="sr-only payment-radio" checked>
-                                            <div
-                                                class="w-4 h-4 border-2 border-gray-300 rounded-full flex items-center justify-center payment-radio-circle">
-                                                <div class="w-2 h-2 bg-primary rounded-full hidden"></div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <i class="ri-bank-line text-gray-600"></i>
-                                            <span class="text-sm">Chuyển khoản ngân hàng</span>
-                                        </div>
-                                    </label>
-                                    <label class="flex items-center gap-3 cursor-pointer">
-                                        <div class="relative">
-                                            <input type="radio" name="payment" value="card"
-                                                class="sr-only payment-radio">
-                                            <div
-                                                class="w-4 h-4 border-2 border-gray-300 rounded-full flex items-center justify-center payment-radio-circle">
-                                                <div class="w-2 h-2 bg-primary rounded-full hidden"></div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <i class="ri-bank-card-line text-gray-600"></i>
-                                            <span class="text-sm">Thanh toán thẻ (VISA/Master/JCB)</span>
-                                        </div>
-                                    </label>
-                                    <label class="flex items-center gap-3 cursor-pointer">
-                                        <div class="relative">
-                                            <input type="radio" name="payment" value="cash"
-                                                class="sr-only payment-radio">
-                                            <div
-                                                class="w-4 h-4 border-2 border-gray-300 rounded-full flex items-center justify-center payment-radio-circle">
-                                                <div class="w-2 h-2 bg-primary rounded-full hidden"></div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <i class="ri-money-dollar-box-line text-gray-600"></i>
-                                            <span class="text-sm">Thanh toán tiền mặt tại văn phòng</span>
-                                        </div>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="border-t pt-6">
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-sm">Người lớn (4.999.000đ x 1)</span>
                                     <span class="font-medium">4.999.000đ</span>
                                 </div>
                                 <div class="flex items-center justify-between mb-2">
                                     <span class="text-sm">Trẻ em (2.499.000đ x 0)</span>
-                                    <span class="font-medium">0đ</span>
-                                </div>
-                                <div class="flex items-center justify-between mb-4">
-                                    <span class="text-sm">Trẻ nhỏ (0đ x 0)</span>
                                     <span class="font-medium">0đ</span>
                                 </div>
                                 <div class="flex items-center justify-between border-t pt-4">

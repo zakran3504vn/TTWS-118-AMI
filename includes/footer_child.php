@@ -20,29 +20,28 @@
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">Dịch Vụ</h3>
+                    <h3 class="text-xl font-bold mb-4">Dịch Vụ</h3>
                     <ul class="space-y-2 text-black">
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Tour trong nước</a></li>
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Tour nước ngoài</a></li>
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Vé máy bay</a></li>
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Đặt khách sạn</a></li>
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Dịch vụ visa</a></li>
+                        <li><a href="#" class="font-semibold hover:text-[#3997cb] transition-colors">Tour nước ngoài</a></li>
+                        <li><a href="#" class="font-semibold hover:text-[#3997cb] transition-colors">Vé máy bay</a></li>
+                        <li><a href="#" class="font-semibold hover:text-[#3997cb] transition-colors">Đặt khách sạn</a></li>
+                        <li><a href="#" class="font-semibold hover:text-[#3997cb] transition-colors">Dịch vụ visa</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">Hỗ Trợ</h3>
+                    <h3 class="text-xl font-bold mb-4">Hỗ Trợ</h3>
                     <ul class="space-y-2 text-black">
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Tư vấn trực tuyến</a></li>
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Hướng dẫn đặt tour</a></li>
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Chính sách hoàn hủy</a></li>
-                        <li><a href="#" class="hover:text-[#3997cb] transition-colors">Câu hỏi thường gặp</a></li>
+                        <li><a href="#" class="font-semibold hover:text-[#3997cb] transition-colors">Tư vấn trực tuyến</a></li>
+                        <li><a href="#" class="font-semibold hover:text-[#3997cb] transition-colors">Hướng dẫn đặt tour</a></li>
+                        <li><a href="#" class="font-semibold hover:text-[#3997cb] transition-colors">Chính sách hoàn hủy</a></li>
+                        <li><a href="#" class="font-semibold hover:text-[#3997cb] transition-colors">Câu hỏi thường gặp</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">Liên Hệ</h3>
+                    <h3 class="text-xl font-bold mb-4">Liên Hệ</h3>
                     <div class="space-y-3 text-black">
                         <div class="mb-6">
-                            <h4 class="text-xl font-semibold">Văn phòng tại Việt Nam</h4>
+                            <h4 class="text-xl font-bold">Văn phòng tại Việt Nam</h4>
                             <div class="flex items-center gap-3 mt-2">
                                 <i class="ri-map-pin-line"></i>
                                 <span>Số 2 Ngõ 1 Phố Phùng Chí Kiên, Phường Nghĩa Đô, TP Hà Nội</span>
@@ -53,7 +52,7 @@
                             </div>
                         </div>
                         <div>
-                            <h4 class="text-xl font-semibold">Văn phòng tại Australia</h4>
+                            <h4 class="text-xl font-bold">Văn phòng tại Australia</h4>
                             <div class="flex items-center gap-3 mt-2">
                                 <i class="ri-map-pin-line"></i>
                                 <span>4 Meredith St, Broadmeadows VIC 3047</span>
@@ -71,7 +70,7 @@
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-black">
-                <p>&copy; 2025 Du Lịch Việt. Tất cả quyền được bảo lưu.</p>
+                <p>&copy; 2025 Ami Travels. Designed & Supported by <a href="htpps://truongthanhweb.com">Trường Thành Web.</a></p>
             </div>
         </div>
     </footer>

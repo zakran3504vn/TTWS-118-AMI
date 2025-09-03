@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1e1b5e',
+                        primary: '#e91e63',
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
@@ -93,152 +93,26 @@
                 <div class="lg:w-3/4">
                     <div class="mb-8">
                         <div class="flex flex-wrap gap-4 mb-6">
-                            <div class="relative">
-                                <input type="text" placeholder="Tìm kiếm tin tức..."
-                                    class="w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-primary">
-                                <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                            </div>
-                            <div class="flex gap-2 overflow-x-auto pb-2">
-                                <button
-                                    class="px-4 py-2 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors whitespace-nowrap">Tất
-                                    cả</button>
-                                <button
-                                    class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">Tin
-                                    tức mới nhất</button>
-                                <button
-                                    class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">Cẩm
-                                    nang du lịch</button>
-                                <button
-                                    class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">Khuyến
-                                    mãi tour</button>
-                                <button
-                                    class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap">Tin
-                                    ngành</button>
+                            <div class="relative"> 
+                                <input type="text" id="searchInput" placeholder="Tìm kiếm tin tức..." class="w-64 pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-primary"> 
+                                <i class="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i> 
+                            </div> 
+                            <div class="flex gap-2 overflow-x-auto pb-2" id="filter-buttons"> 
+                                <button class="px-4 py-2 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors whitespace-nowrap" data-filter="all">Tất cả</button>
+                                <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap" data-filter="Tin tức mới nhất">Tin tức mới nhất</button> 
+                                <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap" data-filter="Cẩm nang du lịch">Cẩm nang du lịch</button> 
+                                <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap" data-filter="Khuyến mãi tour">Khuyến mãi tour</button> 
+                                <button class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap" data-filter="Tin ngành">Tin ngành</button> 
                             </div>
                         </div>
-                        <div class="grid gap-8">
-                            <a href="./detail_new.php" class="block">
-                                <article
-                                    class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col md:flex-row">
-                                    <img src="https://readdy.ai/api/search-image?query=Luxury%20resort%20pool%20with%20ocean%20view%2C%20tropical%20paradise%2C%20palm%20trees%2C%20sunset%20lighting%2C%20professional%20hotel%20photography%2C%20high-end%20vacation%20destination&width=400&height=300&seq=news1&orientation=landscape"
-                                        alt="Resort mới" class="w-full md:w-64 h-auto object-cover">
-                                    <div class="p-6 flex-1">
-                                        <span class="text-sm text-primary mb-2 inline-block">Tin tức mới nhất</span>
-                                        <h3 class="text-xl font-semibold mb-3">Khai trương khu nghỉ dưỡng 5 sao mới tại
-                                            Phú
-                                            Quốc</h3>
-                                        <p class="text-gray-600 mb-4">Thêm một điểm đến sang trọng mới tại đảo ngọc Phú
-                                            Quốc, hứa hẹn mang đến trải nghiệm độc đáo cho du khách với nhiều tiện ích
-                                            đẳng
-                                            cấp quốc tế.</p>
-                                        <div class="flex items-center gap-6 text-sm text-gray-500">
-                                            <span class="flex items-center gap-2">
-                                                <i class="ri-time-line"></i>
-                                                21/07/2025
-                                            </span>
-                                            <span class="flex items-center gap-2">
-                                                <i class="ri-eye-line"></i>
-                                                2.5K lượt xem
-                                            </span>
-                                        </div>
-                                    </div>
-                                </article>
-                            </a>
-                            <a href="./detail_new.php" class="block">
-                                <article
-                                    class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col md:flex-row">
-                                    <img src="https://readdy.ai/api/search-image?query=Travel%20guide%20book%20with%20map%2C%20passport%2C%20camera%2C%20and%20travel%20accessories%2C%20flat%20lay%20photography%2C%20travel%20planning%20concept&width=400&height=300&seq=news2&orientation=landscape"
-                                        alt="Cẩm nang du lịch" class="w-full md:w-64 h-auto object-cover">
-                                    <div class="p-6 flex-1">
-                                        <span class="text-sm text-primary mb-2 inline-block">Cẩm nang du lịch</span>
-                                        <h3 class="text-xl font-semibold mb-3">Top 10 điểm đến không thể bỏ qua khi du
-                                            lịch
-                                            Nhật Bản mùa thu</h3>
-                                        <p class="text-gray-600 mb-4">Khám phá những địa điểm tuyệt đẹp với lá phong đỏ,
-                                            những lễ hội truyền thống và ẩm thực đặc sắc của xứ sở hoa anh đào trong mùa
-                                            thu.</p>
-                                        <div class="flex items-center gap-6 text-sm text-gray-500">
-                                            <span class="flex items-center gap-2">
-                                                <i class="ri-time-line"></i>
-                                                20/07/2025
-                                            </span>
-                                            <span class="flex items-center gap-2">
-                                                <i class="ri-eye-line"></i>
-                                                1.8K lượt xem
-                                            </span>
-                                        </div>
-                                    </div>
-                                </article>
-                            </a>
-                            <a href="./detail_new.php" class="block">
-                                <article
-                                    class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col md:flex-row">
-                                    <img src="https://readdy.ai/api/search-image?query=Special%20travel%20deal%20promotion%2C%20discount%20offer%20banner%2C%20summer%20vacation%20sale%2C%20marketing%20campaign%20visual&width=400&height=300&seq=news3&orientation=landscape"
-                                        alt="Khuyến mãi tour" class="w-full md:w-64 h-auto object-cover">
-                                    <div class="p-6 flex-1">
-                                        <span class="text-sm text-primary mb-2 inline-block">Khuyến mãi tour</span>
-                                        <h3 class="text-xl font-semibold mb-3">Ưu đãi đặc biệt: Giảm 30% tour châu Âu
-                                            mùa
-                                            thu</h3>
-                                        <p class="text-gray-600 mb-4">Cơ hội đặc biệt để khám phá châu Âu với chi phí
-                                            tiết
-                                            kiệm. Áp dụng cho các tour khởi hành từ tháng 9 đến tháng 11/2025.</p>
-                                        <div class="flex items-center gap-6 text-sm text-gray-500">
-                                            <span class="flex items-center gap-2">
-                                                <i class="ri-time-line"></i>
-                                                19/07/2025
-                                            </span>
-                                            <span class="flex items-center gap-2">
-                                                <i class="ri-eye-line"></i>
-                                                3.2K lượt xem
-                                            </span>
-                                        </div>
-                                    </div>
-                                </article>
-                            </a>
-                            <a href="./detail_new.php" class="block">
-                                <article
-                                    class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow flex flex-col md:flex-row">
-                                    <img src="https://readdy.ai/api/search-image?query=International%20tourism%20conference%2C%20business%20meeting%20room%2C%20professional%20event%20photography%2C%20travel%20industry%20gathering&width=400&height=300&seq=news4&orientation=landscape"
-                                        alt="Tin ngành" class="w-full md:w-64 h-auto object-cover">
-                                    <div class="p-6 flex-1">
-                                        <span class="text-sm text-primary mb-2 inline-block">Tin ngành</span>
-                                        <h3 class="text-xl font-semibold mb-3">Hội nghị Du lịch Quốc tế 2025 tại Việt
-                                            Nam
-                                        </h3>
-                                        <p class="text-gray-600 mb-4">Sự kiện quy tụ các chuyên gia hàng đầu trong ngành
-                                            du
-                                            lịch, thảo luận về xu hướng và giải pháp phát triển du lịch bền vững.</p>
-                                        <div class="flex items-center gap-6 text-sm text-gray-500">
-                                            <span class="flex items-center gap-2">
-                                                <i class="ri-time-line"></i>
-                                                18/07/2025
-                                            </span>
-                                            <span class="flex items-center gap-2">
-                                                <i class="ri-eye-line"></i>
-                                                1.5K lượt xem
-                                            </span>
-                                        </div>
-                                    </div>
-                                </article>
-                            </a>
+                        <!-- display articles -->
+                        <div id="news-container" class="grid gap-8">
+                            <?php include "./tin-tuc/get_news.php"; ?>
                         </div>
+
                         <div class="mt-8 flex justify-center">
-                            <nav class="flex items-center gap-2">
-                                <button
-                                    class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-gray-50 transition-colors">
-                                    <i class="ri-arrow-left-s-line"></i>
-                                </button>
-                                <button
-                                    class="w-10 h-10 flex items-center justify-center rounded-full bg-primary text-white">1</button>
-                                <button
-                                    class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-gray-50 transition-colors">2</button>
-                                <button
-                                    class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-gray-50 transition-colors">3</button>
-                                <button
-                                    class="w-10 h-10 flex items-center justify-center rounded-full border hover:bg-gray-50 transition-colors">
-                                    <i class="ri-arrow-right-s-line"></i>
-                                </button>
+                            <nav id="pagination-nav" class="flex items-center gap-2">
+                                <!-- Pagination buttons will be generated by JavaScript -->
                             </nav>
                         </div>
                     </div>
@@ -246,59 +120,14 @@
                 <div class="lg:w-1/4">
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="font-semibold mb-4">Bài viết nổi bật</h3>
-                        <div class="space-y-4">
-                            <a href="#" class="flex gap-4 group">
-                                <img src="https://readdy.ai/api/search-image?query=Beautiful%20cherry%20blossom%20season%20in%20Japan%2C%20spring%20travel%2C%20pink%20sakura%20trees%2C%20cultural%20destination&width=100&height=100&seq=feat1&orientation=squarish"
-                                    alt="Du lịch Nhật Bản" class="w-20 h-20 rounded object-cover">
-                                <div class="flex-1">
-                                    <h4 class="font-medium group-hover:text-black transition-colors">Mùa hoa anh đào
-                                        2025 tại Nhật Bản</h4>
-                                    <p class="text-sm text-gray-500 mt-1">15/07/2025</p>
-                                </div>
-                            </a>
-                            <a href="#" class="flex gap-4 group">
-                                <img src="https://readdy.ai/api/search-image?query=European%20christmas%20market%2C%20winter%20travel%2C%20festive%20decorations%2C%20holiday%20atmosphere&width=100&height=100&seq=feat2&orientation=squarish"
-                                    alt="Du lịch châu Âu" class="w-20 h-20 rounded object-cover">
-                                <div class="flex-1">
-                                    <h4 class="font-medium group-hover:text-primary transition-colors">Khám phá chợ
-                                        Giáng sinh châu Âu</h4>
-                                    <p class="text-sm text-gray-500 mt-1">14/07/2025</p>
-                                </div>
-                            </a>
-                            <a href="#" class="flex gap-4 group">
-                                <img src="https://readdy.ai/api/search-image?query=Luxury%20cruise%20ship%20at%20sunset%2C%20ocean%20travel%2C%20vacation%20lifestyle%2C%20maritime%20tourism&width=100&height=100&seq=feat3&orientation=squarish"
-                                    alt="Du thuyền" class="w-20 h-20 rounded object-cover">
-                                <div class="flex-1">
-                                    <h4 class="font-medium group-hover:text-primary transition-colors">Trải nghiệm du
-                                        thuyền 5 sao</h4>
-                                    <p class="text-sm text-gray-500 mt-1">13/07/2025</p>
-                                </div>
-                            </a>
-                        </div>
+                            <div class="flex flex-col gap-4">
+                                <?php include "get_top_news.php"; ?>
+                            </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="font-semibold mb-4">Danh mục</h3>
                         <div class="space-y-2">
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Tin tức mới nhất</span>
-                                <span class="text-sm text-gray-500">25</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Cẩm nang du lịch</span>
-                                <span class="text-sm text-gray-500">18</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Khuyến mãi tour</span>
-                                <span class="text-sm text-gray-500">12</span>
-                            </a>
-                            <a href="#"
-                                class="flex items-center justify-between py-2 hover:text-primary transition-colors">
-                                <span>Tin ngành</span>
-                                <span class="text-sm text-gray-500">8</span>
-                            </a>
+                            <?php include "get_categories.php"; ?>
                         </div>
                     </div>
                 </div>
@@ -309,6 +138,159 @@
     include ("../includes/footer_child.php");
     include ("../includes/cta.php");
     ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const buttons = document.querySelectorAll("#filter-buttons button");
+            const container = document.getElementById("news-container");
+            const pagNav = document.getElementById("pagination-nav");
+            const searchInput = document.getElementById('searchInput');
+            let currentFilter = 'all';
+            let currentPage = 1;
+            let searchTimeout;
+
+            // Initial fetch
+            fetchNews();
+
+            // Filter button click handlers
+            buttons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const filter = button.getAttribute("data-filter");
+                    buttons.forEach(btn => {
+                        btn.classList.remove("bg-primary", "text-white");
+                        btn.classList.add("bg-gray-100", "text-gray-600");
+                    });
+                    button.classList.remove("bg-gray-100", "text-gray-600");
+                    button.classList.add("bg-primary", "text-white");
+                    currentFilter = filter;
+                    currentPage = 1;
+                    fetchNews();
+                });
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const searchTerm = e.target.value.trim();
+                    currentPage = 1;
+                    fetchNews(searchTerm);
+                }, 300);
+            });
+
+            function fetchNews(searchTerm = '') {
+                fetch(`./tin-tuc/get_news.php?filter=${encodeURIComponent(currentFilter)}&page=${currentPage}&search=${encodeURIComponent(searchTerm)}`)
+                    .then(res => res.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                        updatePaginationFromData();
+                    })
+                    .catch(err => {
+                        container.innerHTML = "<p class='text-center text-red-500'>Lỗi tải dữ liệu.</p>";
+                        console.error(err);
+                    });
+            }
+
+            function updatePaginationFromData() {
+                const paginationData = document.getElementById('pagination-data');
+                if (paginationData) {
+                    const totalPages = parseInt(paginationData.dataset.totalPages);
+                    updatePagination(totalPages);
+                }
+            }
+
+            function updatePagination(totalPages) {
+                pagNav.innerHTML = '';
+
+                // Previous button
+                const prevPage = currentPage > 1 ? currentPage - 1 : null;
+                const prevButton = createPagButton('<i class="ri-arrow-left-s-line"></i>', prevPage);
+                pagNav.appendChild(prevButton);
+
+                // Page number buttons: 1, 2, 3, ..., N layout
+                if (totalPages <= 3) {
+                    // Show all pages if 3 or fewer
+                    for (let i = 1; i <= totalPages; i++) {
+                        const button = createPagButton(i, i);
+                        if (i === currentPage) {
+                            button.classList.add('bg-primary', 'text-white');
+                            button.classList.remove('border', 'hover:bg-gray-50');
+                        }
+                        pagNav.appendChild(button);
+                    }
+                } else {
+                    // Always show page 1
+                    const firstButton = createPagButton(1, 1);
+                    if (currentPage === 1) {
+                        firstButton.classList.add('bg-primary', 'text-white');
+                        firstButton.classList.remove('border', 'hover:bg-gray-50');
+                    }
+                    pagNav.appendChild(firstButton);
+
+                    // Add ellipsis if current page is far from 1
+                    if (currentPage > 3) {
+                        const ellipsis = createEllipsis();
+                        pagNav.appendChild(ellipsis);
+                    }
+
+                    // Show current page and one page before/after (if they exist)
+                    const startPage = Math.max(2, currentPage - 1);
+                    const endPage = Math.min(totalPages - 1, currentPage + 1);
+                    for (let i = startPage; i <= endPage; i++) {
+                        const button = createPagButton(i, i);
+                        if (i === currentPage) {
+                            button.classList.add('bg-primary', 'text-white');
+                            button.classList.remove('border', 'hover:bg-gray-50');
+                        }
+                        pagNav.appendChild(button);
+                    }
+
+                    // Add ellipsis if current page is far from last page
+                    if (currentPage < totalPages - 2) {
+                        const ellipsis = createEllipsis();
+                        pagNav.appendChild(ellipsis);
+                    }
+
+                    // Always show last page (N)
+                    if (totalPages > 1) {
+                        const lastButton = createPagButton(totalPages, totalPages);
+                        if (currentPage === totalPages) {
+                            lastButton.classList.add('bg-primary', 'text-white');
+                            lastButton.classList.remove('border', 'hover:bg-gray-50');
+                        }
+                        pagNav.appendChild(lastButton);
+                    }
+                }
+
+                // Next button
+                const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+                const nextButton = createPagButton('<i class="ri-arrow-right-s-line"></i>', nextPage);
+                pagNav.appendChild(nextButton);
+            }
+
+            function createPagButton(content, page) {
+                const button = document.createElement('button');
+                button.innerHTML = content;
+                button.classList.add('w-10', 'h-10', 'flex', 'items-center', 'justify-center', 'rounded-full', 'transition-colors');
+                if (page) {
+                    button.classList.add('border', 'hover:bg-gray-50');
+                    button.addEventListener('click', () => {
+                        currentPage = page;
+                        fetchNews();
+                    });
+                } else {
+                    button.classList.add('border', 'text-gray-300');
+                    button.disabled = true;
+                }
+                return button;
+            }
+
+            function createEllipsis() {
+                const span = document.createElement('span');
+                span.textContent = '...';
+                span.classList.add('w-10', 'h-10', 'flex', 'items-center', 'justify-center', 'text-gray-500');
+                return span;
+            }
+        });
+    </script>
 </body>
 
 </html>
