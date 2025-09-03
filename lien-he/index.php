@@ -155,14 +155,13 @@
                         <div class="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full -ml-16 -mb-16"></div>
                         <h2 class="text-2xl font-bold mb-2">Gửi Tin Nhắn</h2>
                         <p class="text-gray-500 mb-8">Hãy để lại thông tin, chúng tôi sẽ liên hệ với bạn sớm nhất</p>
-                        <form class="space-y-6 relative">
+                        <form class="space-y-6 relative" id="contactForm">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div class="relative">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên *</label>
                                     <div class="relative">
-                                        <i
-                                            class="ri-user-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                        <input type="text" placeholder="Nhập họ và tên của bạn"
+                                        <i class="ri-user-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                        <input type="text" name="full_name" placeholder="Nhập họ và tên của bạn"
                                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                                             required>
                                     </div>
@@ -170,9 +169,8 @@
                                 <div class="relative">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại *</label>
                                     <div class="relative">
-                                        <i
-                                            class="ri-phone-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                        <input type="tel" placeholder="Nhập số điện thoại của bạn"
+                                        <i class="ri-phone-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                        <input type="tel" name="phone" placeholder="Nhập số điện thoại của bạn"
                                             class="w-full pl-11 pr-4 py-3 bg-gray-50 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                                             required>
                                     </div>
@@ -182,7 +180,7 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
                                 <div class="relative">
                                     <i class="ri-mail-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                    <input type="email" placeholder="Nhập địa chỉ email của bạn"
+                                    <input type="email" name="email" placeholder="Nhập địa chỉ email của bạn"
                                         class="w-full pl-11 pr-4 py-3 bg-gray-50 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
                                         required>
                                 </div>
@@ -190,9 +188,8 @@
                             <div class="relative">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Chủ đề</label>
                                 <div class="relative">
-                                    <i
-                                        class="ri-chat-1-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                    <select
+                                    <i class="ri-chat-1-line absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                    <select name="subject"
                                         class="w-full pl-11 pr-4 py-3 bg-gray-50 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all appearance-none">
                                         <option>Tư vấn tour du lịch</option>
                                         <option>Đặt vé máy bay</option>
@@ -200,15 +197,14 @@
                                         <option>Dịch vụ visa</option>
                                         <option>Khác</option>
                                     </select>
-                                    <i
-                                        class="ri-arrow-down-s-line absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                    <i class="ri-arrow-down-s-line absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                                 </div>
                             </div>
                             <div class="relative">
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Nội dung tin nhắn *</label>
                                 <div class="relative">
                                     <i class="ri-message-2-line absolute left-4 top-4 text-gray-400"></i>
-                                    <textarea rows="4" placeholder="Nhập nội dung tin nhắn của bạn"
+                                    <textarea name="message" rows="4" placeholder="Nhập nội dung tin nhắn của bạn"
                                         class="w-full pl-11 pr-4 py-3 bg-gray-50 border-none rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all resize-none"
                                         required></textarea>
                                 </div>
@@ -254,22 +250,33 @@
     include ("../includes/cta.php");
     ?>
     <script id="contactForm">
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.querySelector('form');
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('contactForm');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            fetch('insert-contact.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Find the closest container with relative positioning
+                const formContainer = form.closest('.bg-white.rounded-xl.shadow-lg.p-8.relative');
                 const notification = document.createElement('div');
-                notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50 flex items-center gap-2';
+                notification.className = 'absolute bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2';
+                notification.style.transform = 'translateY(-100%)';
+                notification.style.transition = 'transform 0.3s';
                 notification.innerHTML = `
-<i class="ri-checkbox-circle-line"></i>
-<span>Cảm ơn bạn đã gửi tin nhắn! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.</span>
-`;
-                document.body.appendChild(notification);
+                    <i class="ri-checkbox-circle-line"></i>
+                    <span>Cảm ơn bạn đã gửi tin nhắn! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.</span>
+                `;
+                formContainer.appendChild(notification);
                 setTimeout(() => {
-                    notification.style.transform = 'translateX(0)';
+                    notification.style.transform = 'translateY(0)';
                 }, 100);
                 setTimeout(() => {
-                    notification.style.transform = 'translateX(110%)';
+                    notification.style.transform = 'translateY(-100%)';
                     setTimeout(() => {
                         notification.remove();
                     }, 300);
@@ -277,6 +284,7 @@
                 form.reset();
             });
         });
+    });
     </script>
 </body>
 
