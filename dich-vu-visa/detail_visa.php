@@ -186,7 +186,7 @@
                                 $related_news = getRelatedNews($conn, $news['category'], $news_id, 3);
                                 foreach($related_news as $related): 
                             ?>
-                            <a href="news_detail.php?id=<?php echo $related['id']; ?>" class="block">
+                            <a href="detail_visa.php?id=<?php echo $related['id']; ?>" class="block">
                                 <img src="<?php echo htmlspecialchars($related['image']); ?>"
                                         alt="<?php echo htmlspecialchars($related['title']); ?>" 
                                         class="w-full h-40 object-cover rounded-lg mb-4">
@@ -203,7 +203,7 @@
                     <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
                         <h3 class="font-semibold mb-4">Bài viết nổi bật</h3>
                             <div class="flex flex-col gap-4">
-                                <?php include "./get_top_news.php"; ?>
+                                <?php include "get_top_visa.php"; ?>
                             </div>
                     </div>
                 </div>
