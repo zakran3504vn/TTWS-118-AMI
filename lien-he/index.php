@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#e91e63',
+
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
@@ -249,7 +249,7 @@
     include ("../includes/footer_child.php");
     include ("../includes/cta.php");
     ?>
-    <script id="contactForm">
+<script id="contactForm">
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('contactForm');
         form.addEventListener('submit', function (e) {
@@ -285,7 +285,7 @@
             });
         });
     });
-    </script>
+</script>
 </body>
 
 </html>

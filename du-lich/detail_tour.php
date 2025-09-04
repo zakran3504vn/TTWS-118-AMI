@@ -481,7 +481,6 @@
             const form = document.getElementById('bookingForm');
             const adultCount = document.querySelector('.adult-count');
             const childCount = document.querySelector('.child-count');
-            const infantCount = document.querySelector('.infant-count');
             let selectedHotelPrice = 0;
             document.querySelectorAll('.hotel-option').forEach(hotel => {
                 hotel.addEventListener('click', function () {
@@ -519,20 +518,6 @@
                     updateTotal();
                 }
             });
-            document.querySelector('.decrease-infant').addEventListener('click', () => {
-                const value = parseInt(infantCount.value);
-                if (value > 0) {
-                    infantCount.value = value - 1;
-                    updateTotal();
-                }
-            });
-            document.querySelector('.increase-infant').addEventListener('click', () => {
-                const value = parseInt(infantCount.value);
-                if (value < 10) {
-                    infantCount.value = value + 1;
-                    updateTotal();
-                }
-            });
             function updateTotal() {
                 const adultPrice = 4999000;
                 const childPrice = 2499000;
@@ -540,15 +525,6 @@
                 const formattedTotal = new Intl.NumberFormat('vi-VN').format(total) + 'đ';
                 document.querySelector('.text-xl.font-bold.text-primary').textContent = formattedTotal;
             }
-            const paymentRadios = document.querySelectorAll('.payment-radio');
-            paymentRadios.forEach(radio => {
-                radio.addEventListener('change', function () {
-                    document.querySelectorAll('.payment-radio-circle div').forEach(dot => dot.classList.add('hidden'));
-                    if (this.checked) {
-                        this.closest('label').querySelector('.payment-radio-circle div').classList.remove('hidden');
-                    }
-                });
-            });
             const termsCheckbox = document.querySelector('.terms-checkbox');
             termsCheckbox.addEventListener('change', function () {
                 const checkmark = this.closest('label').querySelector('i');
