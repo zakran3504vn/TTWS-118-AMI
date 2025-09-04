@@ -271,26 +271,26 @@
                         <form id="bookingForm" class="space-y-6">
                             <div>
                                 <label class="block text-sm font-medium mb-2">Họ và tên</label>
-                                <input type="text" required
+                                <input type="text" name="full_name" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm"
                                     placeholder="Nhập họ và tên">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Số điện thoại</label>
-                                <input type="tel" required
+                                <input type="tel" name="phone" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm"
                                     placeholder="Nhập số điện thoại">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Email</label>
-                                <input type="email" required
+                                <input type="email" name="email" required
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm"
                                     placeholder="Nhập địa chỉ email">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Ngày khởi hành</label>
                                 <div class="relative">
-                                    <input type="date" required min=""
+                                    <input type="date" name="departure_date" required min=""
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm appearance-none departure-date">
                                 </div>
                             </div>
@@ -304,7 +304,7 @@
                                                 class="w-8 h-8 border border-gray-300 rounded-l-lg flex items-center justify-center hover:bg-gray-50 transition-colors decrease-adult">
                                                 <i class="ri-subtract-line"></i>
                                             </button>
-                                            <input type="number" value="1" min="1"
+                                            <input type="number" name="adult_quantity" value="1" min="1"
                                                 class="w-12 h-8 border-y border-gray-300 text-center text-sm focus:outline-none adult-count"
                                                 readonly>
                                             <button type="button"
@@ -320,7 +320,7 @@
                                                 class="w-8 h-8 border border-gray-300 rounded-l-lg flex items-center justify-center hover:bg-gray-50 transition-colors decrease-child">
                                                 <i class="ri-subtract-line"></i>
                                             </button>
-                                            <input type="number" value="0" min="0"
+                                            <input type="number" name="child_quantity" value="0" min="0"
                                                 class="w-12 h-8 border-y border-gray-300 text-center text-sm focus:outline-none child-count"
                                                 readonly>
                                             <button type="button"
@@ -333,36 +333,39 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Ghi chú</label>
-                                <textarea
+                                <textarea name="notes"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm h-24 resize-none"
                                     placeholder="Nhập yêu cầu đặc biệt (nếu có)"></textarea>
                             </div>
                             <div class="border-t pt-6">
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm">Người lớn (4.999.000đ x 1)</span>
-                                    <span class="font-medium">4.999.000đ</span>
+                                    <span class="text-sm">Người lớn (4.999.000đ x <span class="adult-count-text">1</span>)</span>
+                                    <span class="font-medium adult-total">4.999.000đ</span>
                                 </div>
                                 <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm">Trẻ em (2.499.000đ x 0)</span>
-                                    <span class="font-medium">0đ</span>
+                                    <span class="text-sm">Trẻ em (2.499.000đ x <span class="child-count-text">0</span>)</span>
+                                    <span class="font-medium child-total">0đ</span>
+                                </div>
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-sm">Khách sạn (<span class="hotel-price-text">0</span>đ)</span>
+                                    <span class="font-medium hotel-total">0đ</span>
                                 </div>
                                 <div class="flex items-center justify-between border-t pt-4">
                                     <span class="font-medium">Tổng tiền</span>
-                                    <span class="text-xl font-bold text-primary">4.999.000đ</span>
+                                    <span class="text-xl font-bold text-primary total-amount">4.999.000đ</span>
                                 </div>
                             </div>
                             <div class="space-y-4">
-                                <label class="flex items-center gap-3 cursor-pointer">
-                                    <div class="relative">
-                                        <input type="checkbox" required class="sr-only terms-checkbox">
-                                        <div
-                                            class="w-4 h-4 border-2 border-gray-300 rounded flex items-center justify-center">
-                                            <i class="ri-check-line text-primary text-xs hidden"></i>
-                                        </div>
-                                    </div>
-                                    <span class="text-sm">Tôi đồng ý với <a href="#"
-                                            class="text-primary hover:underline">điều khoản</a> và <a href="#"
-                                            class="text-primary hover:underline">điều kiện</a> đặt tour</span>
+                                <label class="flex items-center gap-3 cursor-pointer select-none">
+                                    <input type="checkbox" name="terms_accepted" required class="terms-checkbox sr-only">
+                                    <span class="relative flex items-center terms-checkbox-area">
+                                        <span class="w-5 h-5 border-2 border-gray-300 rounded transition-colors flex items-center justify-center terms-custom-checkbox">
+                                            <svg class="hidden w-3 h-3 text-primary" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 16 16">
+                                                <path d="M4 8l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    <span class="text-sm">Tôi đồng ý với <a href="#" class="text-primary hover:underline">điều khoản</a> và <a href="#" class="text-primary hover:underline">điều kiện</a> đặt tour</span>
                                 </label>
                                 <button type="submit"
                                     class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
@@ -462,84 +465,185 @@
             border-color: #e91e63;
         }
     </style>
-    <script id="formControls">
+    <script id="bookingForm">
         document.addEventListener('DOMContentLoaded', function () {
-            const mainImage = document.querySelector('.main-image');
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            const departureDate = document.querySelector('.departure-date');
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0];
-            departureDate.setAttribute('min', formattedDate);
-            galleryItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    const newSrc = this.querySelector('img').src;
-                    mainImage.src = newSrc;
-                    galleryItems.forEach(item => item.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
             const form = document.getElementById('bookingForm');
-            const adultCount = document.querySelector('.adult-count');
-            const childCount = document.querySelector('.child-count');
+            const adultCountInput = form.querySelector('.adult-count');
+            const childCountInput = form.querySelector('.child-count');
+            const adultCountText = form.querySelector('.adult-count-text');
+            const childCountText = form.querySelector('.child-count-text');
+            const adultTotal = form.querySelector('.adult-total');
+            const childTotal = form.querySelector('.child-total');
+            const hotelPriceText = form.querySelector('.hotel-price-text');
+            const hotelTotal = form.querySelector('.hotel-total');
+            const totalAmount = form.querySelector('.total-amount');
+            const termsCheckbox = form.querySelector('.terms-checkbox');
+            const customBox = form.querySelector('.terms-custom-checkbox');
+            const checkmark = customBox.querySelector('svg');
+            const area = form.querySelector('.terms-checkbox-area');
+            const departureDate = form.querySelector('.departure-date');
+
+            const adultPrice = 4999000;
+            const childPrice = 2499000;
             let selectedHotelPrice = 0;
+
+            // Set minimum date to today
+            const today = new Date();
+            departureDate.setAttribute('min', today.toISOString().split('T')[0]);
+
+            function updateTotals() {
+                const adults = parseInt(adultCountInput.value) || 1;
+                const children = parseInt(childCountInput.value) || 0;
+                const adultTotalPrice = adults * adultPrice;
+                const childTotalPrice = children * childPrice;
+                const total = adultTotalPrice + childTotalPrice + selectedHotelPrice;
+
+                adultCountText.textContent = adults;
+                childCountText.textContent = children;
+                adultTotal.textContent = adultTotalPrice.toLocaleString('vi-VN') + 'đ';
+                childTotal.textContent = childTotalPrice.toLocaleString('vi-VN') + 'đ';
+                hotelPriceText.textContent = selectedHotelPrice.toLocaleString('vi-VN');
+                hotelTotal.textContent = selectedHotelPrice.toLocaleString('vi-VN') + 'đ';
+                totalAmount.textContent = total.toLocaleString('vi-VN') + 'đ';
+            }
+
+            // Remove existing event listeners by cloning buttons
+            const buttons = form.querySelectorAll('.increase-adult, .decrease-adult, .increase-child, .decrease-child');
+            buttons.forEach(button => {
+                const newButton = button.cloneNode(true);
+                button.parentNode.replaceChild(newButton, button);
+            });
+
+            // Add event listeners for adult/child quantity buttons
+            form.querySelector('.increase-adult').addEventListener('click', () => {
+                const value = parseInt(adultCountInput.value) || 1;
+                if (value < 10) {
+                    adultCountInput.value = value + 1;
+                    updateTotals();
+                }
+            });
+
+            form.querySelector('.decrease-adult').addEventListener('click', () => {
+                const value = parseInt(adultCountInput.value) || 1;
+                if (value > 1) {
+                    adultCountInput.value = value - 1;
+                    updateTotals();
+                }
+            });
+
+            form.querySelector('.increase-child').addEventListener('click', () => {
+                const value = parseInt(childCountInput.value) || 0;
+                if (value < 10) {
+                    childCountInput.value = value + 1;
+                    updateTotals();
+                }
+            });
+
+            form.querySelector('.decrease-child').addEventListener('click', () => {
+                const value = parseInt(childCountInput.value) || 0;
+                if (value > 0) {
+                    childCountInput.value = value - 1;
+                    updateTotals();
+                }
+            });
+
+            // Hotel selection
             document.querySelectorAll('.hotel-option').forEach(hotel => {
                 hotel.addEventListener('click', function () {
                     document.querySelectorAll('.hotel-option').forEach(h => h.classList.remove('border-primary'));
                     this.classList.add('border-primary');
-                    selectedHotelPrice = parseInt(this.dataset.price);
-                    updateTotal();
+                    selectedHotelPrice = parseInt(this.dataset.price) || 0;
+                    updateTotals();
                 });
             });
-            document.querySelector('.decrease-adult').addEventListener('click', () => {
-                const value = parseInt(adultCount.value);
-                if (value > 1) {
-                    adultCount.value = value - 1;
-                    updateTotal();
-                }
-            });
-            document.querySelector('.increase-adult').addEventListener('click', () => {
-                const value = parseInt(adultCount.value);
-                if (value < 10) {
-                    adultCount.value = value + 1;
-                    updateTotal();
-                }
-            });
-            document.querySelector('.decrease-child').addEventListener('click', () => {
-                const value = parseInt(childCount.value);
-                if (value > 0) {
-                    childCount.value = value - 1;
-                    updateTotal();
-                }
-            });
-            document.querySelector('.increase-child').addEventListener('click', () => {
-                const value = parseInt(childCount.value);
-                if (value < 10) {
-                    childCount.value = value + 1;
-                    updateTotal();
-                }
-            });
-            function updateTotal() {
-                const adultPrice = 4999000;
-                const childPrice = 2499000;
-                const total = (parseInt(adultCount.value) * adultPrice) + (parseInt(childCount.value) * childPrice);
-                const formattedTotal = new Intl.NumberFormat('vi-VN').format(total) + 'đ';
-                document.querySelector('.text-xl.font-bold.text-primary').textContent = formattedTotal;
-            }
-            const termsCheckbox = document.querySelector('.terms-checkbox');
+
+            // Checkbox toggle
             termsCheckbox.addEventListener('change', function () {
-                const checkmark = this.closest('label').querySelector('i');
                 if (this.checked) {
+                    customBox.classList.add('border-primary');
                     checkmark.classList.remove('hidden');
                 } else {
+                    customBox.classList.remove('border-primary');
                     checkmark.classList.add('hidden');
                 }
             });
+
+            area.addEventListener('click', function (e) {
+                e.preventDefault();
+                termsCheckbox.checked = !termsCheckbox.checked;
+                termsCheckbox.dispatchEvent(new Event('change'));
+            });
+
+            // AJAX form submission
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
-                alert('Đặt tour thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.');
+                const formData = new FormData(form);
+                formData.append('tour_id', 1); // Adjust as needed
+                formData.append('total_amount', parseInt(adultCountInput.value) * adultPrice + parseInt(childCountInput.value) * childPrice + selectedHotelPrice);
+
+                fetch('insert_bookings.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const formContainer = form.closest('.space-y-6');
+                    const notification = document.createElement('div');
+                    notification.className = `absolute bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 ${
+                        data.status === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                    }`;
+                    notification.style.transform = 'translateY(-100%)';
+                    notification.style.transition = 'transform 0.3s';
+                    notification.innerHTML = `
+                        <i class="ri-${data.status === 'success' ? 'checkbox-circle-line' : 'error-warning-line'}"></i>
+                        <span>${data.message}</span>
+                    `;
+                    formContainer.appendChild(notification);
+                    setTimeout(() => {
+                        notification.style.transform = 'translateY(0)';
+                    }, 100);
+                    setTimeout(() => {
+                        notification.style.transform = 'translateY(-100%)';
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 300);
+                    }, 3000);
+                    if (data.status === 'success') {
+                        form.reset();
+                        adultCountInput.value = 1;
+                        childCountInput.value = 0;
+                        selectedHotelPrice = 0;
+                        document.querySelectorAll('.hotel-option').forEach(h => h.classList.remove('border-primary'));
+                        updateTotals();
+                        termsCheckbox.checked = false;
+                        termsCheckbox.dispatchEvent(new Event('change'));
+                    }
+                })
+                .catch(error => {
+                    const formContainer = form.closest('.space-y-6');
+                    const notification = document.createElement('div');
+                    notification.className = 'absolute bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2';
+                    notification.style.transform = 'translateY(-100%)';
+                    notification.style.transition = 'transform 0.3s';
+                    notification.innerHTML = `
+                        <i class="ri-error-warning-line"></i>
+                        <span>Lỗi khi gửi yêu cầu. Vui lòng thử lại.</span>
+                    `;
+                    formContainer.appendChild(notification);
+                    setTimeout(() => {
+                        notification.style.transform = 'translateY(0)';
+                    }, 100);
+                    setTimeout(() => {
+                        notification.style.transform = 'translateY(-100%)';
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 300);
+                    }, 3000);
+                });
             });
+            updateTotals();
         });
-    </script>
+        </script>
 </body>
 
 </html>
