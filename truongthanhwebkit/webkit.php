@@ -909,7 +909,7 @@ function getPaginatedToursFiltered($conn, $continent = 'all', $sort = 'default',
             $sql .= " ORDER BY duration_days DESC";
             break;
         default:
-            $sql .= " ORDER BY id DESC";
+            $sql .= " ORDER BY tour_id DESC";
             break;
     }
     

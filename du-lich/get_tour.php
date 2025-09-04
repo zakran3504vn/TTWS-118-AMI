@@ -10,22 +10,9 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 $duration = isset($_GET['duration']) ? $_GET['duration'] : 'all';
 $price = isset($_GET['price']) ? $_GET['price'] : 'all';
 
-// Debug information
-echo "<!-- Debug Info:
-    Continent: {$continent}
-    Sort: {$sort}
-    Page: {$page}
-    Search: {$search}
-    Duration: {$duration}
-    Price: {$price}
--->";
 // Fetch tours
 $result = getPaginatedToursFiltered($conn, $continent, $sort, $page, 6, $search, $duration, $price);
 
-// Debug tour count
-echo "<!-- Found " . count($result['tours']) . " tours
-    Total Pages: {$result['total_pages']}       
--->";
 // Display tours
 if (empty($result['tours'])) {
     echo '<div class="col-span-full py-8">
@@ -62,7 +49,7 @@ if (empty($result['tours'])) {
                     <span class="text-gray-500 line-through text-lg">'.number_format($tour['regular_price'], 0, ',', '.').' đ</span>
                     <span class="text-primary font-bold text-xl">'.number_format($tour['sale_price'], 0, ',', '.').' đ</span>
                     </div>
-                    <a href="./detail_tour.php?id='.htmlspecialchars($tour['id']).'"
+                    <a href="./detail_tour.php?id='.htmlspecialchars($tour['tour_id']).'"
                     class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                     XEM TOUR    
                     </a>
@@ -72,6 +59,6 @@ if (empty($result['tours'])) {
     }
 }
 
-// Always output pagination data
+// Output pagination metadata
 echo '<div id="pagination-data" data-total-pages="' . $result['total_pages'] . '" data-current-page="' . $page . '" style="display:none"></div>';
 ?>
