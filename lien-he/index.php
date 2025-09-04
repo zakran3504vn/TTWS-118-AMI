@@ -255,7 +255,7 @@
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             const formData = new FormData(form);
-            fetch('insert-contact.php', {
+            fetch('insert_contact.php', {
                 method: 'POST',
                 body: formData
             })
