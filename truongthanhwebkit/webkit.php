@@ -204,28 +204,54 @@ function getAllBrands($conn) {
 
 //Hàm lấy ra chi tiết sản phẩm
 function getTourDetails($conn, $tour_id) {
-    // Khởi tạo mảng kết quả
-    $product = array();
-    
-    // Đảm bảo product_id là số nguyên
-    $tour_id = (int)$tour_id;
-    
-    // Câu truy vấn SQL để lấy chi tiết sản phẩm
-    $query = "SELECT * FROM tours WHERE product_id = $tour_id ";
-    
-    // Thực thi truy vấn
-    $stmt = $conn->query($query);
-    
-    // Kiểm tra và lấy dữ liệu
-    if ($stmt && $stmt->num_rows > 0) {
-        $product = $stmt->fetch_assoc(); // Lấy dòng dữ liệu đầu tiên
-    } else {
-        // Trả về lỗi nếu không tìm thấy sản phẩm
-        $product = array('error' => 'Không tìm thấy tour với ID: ' . $tour_id);
+    // Get tour ID from query parameter (e.g., ?tour_id=1)
+    $tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
+
+    // Fetch tour details
+    $sql_tour = "SELECT title, destination, duration_days, duration_nights, transportation, description, itinerary, image_url 
+                FROM tours 
+                WHERE tour_id = ?";
+    $stmt = $conn->prepare($sql_tour);
+    $stmt->bind_param("i", $tour_id);
+    $stmt->execute();
+    $tour_result = $stmt->get_result();
+    $tour = $tour_result->fetch_assoc();
+
+    // Fetch associated hotels
+    $sql_hotels = "SELECT h.hotel_name, h.hotel_img, h.hotel_location 
+                FROM hotels h
+                JOIN hotel_tour_mapping htm ON h.hotel_id = htm.hotel_id
+                WHERE htm.tour_id = ?";
+    $stmt_hotels = $conn->prepare($sql_hotels);
+    $stmt_hotels->bind_param("i", $tour_id);
+    $stmt_hotels->execute();
+    $hotels_result = $stmt_hotels->get_result();
+    $hotels = [];
+    while ($row = $hotels_result->fetch_assoc()) {
+        $hotels[] = $row;
     }
-    
-    // Trả về kết quả
-    return $product;
+
+    // Split image_url into an array (assuming comma-separated URLs)
+    $images = !empty($tour['image_url']) ? explode(',', $tour['image_url']) : [];
+    $main_image = !empty($images) ? trim($images[0]) : 'https://readdy.ai/api/search-image?query=placeholder&width=1200&height=800';
+    $gallery_images = array_slice($images, 1, 9); // Limit to 9 gallery images
+
+    // Parse itinerary (assuming JSON or line-separated text)
+    $itinerary_items = !empty($tour['itinerary']) ? json_decode($tour['itinerary'], true) : [];
+    if (!is_array($itinerary_items)) {
+        $itinerary_items = !empty($tour['itinerary']) ? explode("\n", $tour['itinerary']) : ['No itinerary available'];
+    }
+
+    // Prepare duration string
+    $duration = "{$tour['duration_days']} ngày {$tour['duration_nights']} đêm";
+    return [
+        'tour' => $tour,
+        'hotels' => $hotels,
+        'main_image' => $main_image,
+        'gallery_images' => $gallery_images,
+        'itinerary_items' => $itinerary_items,
+        'duration' => $duration
+    ];
 }
 
 //Hàm lấy sản phẩm liên quan

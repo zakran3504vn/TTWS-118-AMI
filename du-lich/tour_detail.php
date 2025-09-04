@@ -55,6 +55,18 @@
 <body class="bg-white">
     <?php
         include ("../includes/header_child.php");
+        include('../config/db_connection.php');
+        include('../truongthanhwebkit/webkit.php');
+        // Get tour ID from query parameter (e.g., ?id=1)
+        $tour_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
+        // Fetch tour details
+        $tourDetails = getTourDetails($conn, $tour_id);
+        $tour = $tourDetails['tour'];
+        $hotels = $tourDetails['hotels'];
+        $main_image = $tourDetails['main_image'];
+        $gallery_images = $tourDetails['gallery_images'];
+        $itinerary_items = $tourDetails['itinerary_items'];
+        $duration = $tourDetails['duration'];
     ?>
     <!-- Breadcrumb -->
     <div class="bg-gray-50 px-4 py-3">
@@ -77,126 +89,61 @@
                     <div class="bg-white rounded-lg shadow-sm border mb-6">
                         <div>
                             <div class="relative h-[400px] overflow-hidden rounded-t-lg">
-                                <img src="https://readdy.ai/api/search-image?query=Serene%20mountain%20landscape%20at%20dawn%2C%20rolling%20green%20hills%20with%20morning%20mist%2C%20soft%20sunlight%20casting%20gentle%20shadows%2C%20minimal%20composition%2C%20peaceful%20atmosphere%2C%20natural%20scenery%2C%20clean%20simple%20vista%2C%20high%20resolution%20landscape%20photography&width=1200&height=800&seq=hero3&orientation=landscape"
-                                    alt="Đà Nẵng - Hội An" class="w-full h-full object-cover object-top main-image">
+                                <img src="<?php echo htmlspecialchars($main_image); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>" class="w-full h-full object-cover object-top main-image">
                             </div>
+                            <?php if (!empty($gallery_images)): ?>
                             <div class="grid grid-cols-5 gap-2 mt-2">
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item active">
-                                    <img src="https://readdy.ai/api/search-image?query=Serene%20mountain%20landscape%20at%20dawn%2C%20rolling%20green%20hills%20with%20morning%20mist%2C%20soft%20sunlight%20casting%20gentle%20shadows%2C%20minimal%20composition%2C%20peaceful%20atmosphere%2C%20natural%20scenery%2C%20clean%20simple%20vista%2C%20high%20resolution%20landscape%20photography&width=400&height=300&seq=hero3&orientation=landscape"
-                                        alt="Gallery 1" class="w-full h-full object-cover">
+                                <?php foreach ($gallery_images as $index => $img): ?>
+                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item<?php echo $index === 0 ? ' active' : ''; ?>">
+                                    <img src="<?php echo htmlspecialchars(trim($img)); ?>" alt="Gallery <?php echo $index + 1; ?>" class="w-full h-full object-cover">
                                 </div>
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Golden%20lantern-lit%20ancient%20streets%20of%20Hoi%20An%20at%20dusk%2C%20traditional%20Vietnamese%20architecture%2C%20warm%20ambient%20lighting%2C%20cultural%20heritage%20site%2C%20atmospheric%20evening%20scene&width=400&height=300&seq=gallery2&orientation=landscape"
-                                        alt="Gallery 2" class="w-full h-full object-cover">
-                                </div>
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Iconic%20Golden%20Bridge%20at%20Ba%20Na%20Hills%20surrounded%20by%20misty%20mountains%2C%20giant%20stone%20hands%2C%20architectural%20marvel%2C%20dramatic%20cloudy%20sky%2C%20tourist%20destination&width=400&height=300&seq=gallery3&orientation=landscape"
-                                        alt="Gallery 3" class="w-full h-full object-cover">
-                                </div>
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Traditional%20pottery%20making%20in%20Thanh%20Ha%20Village%2C%20artisan%20crafting%20ceramic%2C%20authentic%20Vietnamese%20culture%2C%20rustic%20workshop%20setting%2C%20natural%20lighting&width=400&height=300&seq=gallery4&orientation=landscape"
-                                        alt="Gallery 4" class="w-full h-full object-cover">
-                                </div>
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Pristine%20My%20Khe%20Beach%20at%20sunset%2C%20palm%20trees%2C%20crystal%20clear%20water%2C%20white%20sand%2C%20luxury%20resorts%20in%20background%2C%20tropical%20paradise&width=400&height=300&seq=gallery5&orientation=landscape"
-                                        alt="Gallery 5" class="w-full h-full object-cover">
-                                </div>
+                                <?php endforeach; ?>
                             </div>
-                            <div class="grid grid-cols-5 gap-2 mt-2">
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Marble%20Mountains%20Da%20Nang%20Vietnam%2C%20ancient%20Buddhist%20temples%2C%20stone%20stairs%2C%20lush%20greenery%2C%20mystical%20caves%2C%20spiritual%20atmosphere%2C%20cultural%20heritage&width=400&height=300&seq=gallery6&orientation=landscape"
-                                        alt="Gallery 6" class="w-full h-full object-cover">
-                                </div>
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Son%20Tra%20Peninsula%20panoramic%20view%2C%20luxury%20resort%20architecture%2C%20pristine%20beaches%2C%20dense%20rainforest%2C%20natural%20landscape%2C%20aerial%20photography&width=400&height=300&seq=gallery7&orientation=landscape"
-                                        alt="Gallery 7" class="w-full h-full object-cover">
-                                </div>
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Traditional%20Vietnamese%20lantern%20making%20workshop%2C%20artisan%20crafting%20colorful%20silk%20lanterns%2C%20authentic%20cultural%20experience%2C%20warm%20lighting%2C%20detailed%20handwork&width=400&height=300&seq=gallery8&orientation=landscape"
-                                        alt="Gallery 8" class="w-full h-full object-cover">
-                                </div>
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Dragon%20Bridge%20Da%20Nang%20at%20night%2C%20illuminated%20steel%20dragon%2C%20colorful%20LED%20lights%2C%20modern%20architecture%2C%20city%20skyline%2C%20reflection%20in%20river&width=400&height=300&seq=gallery9&orientation=landscape"
-                                        alt="Gallery 9" class="w-full h-full object-cover">
-                                </div>
-                                <div class="h-20 cursor-pointer overflow-hidden rounded-lg gallery-item">
-                                    <img src="https://readdy.ai/api/search-image?query=Local%20food%20market%20in%20Hoi%20An%2C%20fresh%20Vietnamese%20ingredients%2C%20colorful%20produce%20display%2C%20traditional%20food%20stalls%2C%20authentic%20street%20food%20scene&width=400&height=300&seq=gallery10&orientation=landscape"
-                                        alt="Gallery 10" class="w-full h-full object-cover">
-                                </div>
-                            </div>
+                            <?php endif; ?>
                         </div>
                         <div class="p-6">
-                            <h2 class="text-2xl font-semibold mb-4">Đà Nẵng - Hội An - Phố Cổ - Làng Gốm Thanh Hà - Cầu
-                                Vàng</h2>
+                            <h2 class="text-2xl font-semibold mb-4"><?php echo htmlspecialchars($tour['title']); ?></h2>
                             <div class="flex flex-wrap gap-6 text-gray-600 mb-6">
                                 <div class="flex items-center gap-2">
                                     <i class="ri-map-pin-line text-primary"></i>
-                                    <span>Điểm khởi hành: TP. Hồ Chí Minh</span>
+                                    <span>Điểm khởi hành: <?php echo htmlspecialchars($tour['destination']); ?></span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <i class="ri-time-line text-primary"></i>
-                                    <span>Thời gian: 3 ngày 2 đêm</span>
+                                    <span>Thời gian: <?php echo htmlspecialchars($duration); ?></span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <i class="ri-bus-line text-primary"></i>
-                                    <span>Phương tiện: Máy bay & Xe du lịch</span>
+                                    <span>Phương tiện: <?php echo htmlspecialchars($tour['transportation']); ?></span>
                                 </div>
                             </div>
                             <div class="border-t pt-6">
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-lg font-medium">Lịch trình tour</h3>
-                                    <button
-                                        class="text-primary hover:text-primary/80 transition-colors text-sm font-medium">
-                                        Xem chi tiết
-                                    </button>
+                                    <button class="text-primary hover:text-primary/80 transition-colors text-sm font-medium">Xem chi tiết</button>
                                 </div>
                                 <div class="bg-gray-50 p-4 rounded-lg mb-6">
                                     <h4 class="font-medium mb-3">Tổng quan hành trình</h4>
                                     <div class="text-sm text-gray-600 space-y-2">
-                                        <p>• Khám phá Bà Nà Hills với Cầu Vàng nổi tiếng thế giới</p>
-                                        <p>• Tham quan Phố Cổ Hội An - Di sản văn hóa thế giới UNESCO</p>
-                                        <p>• Trải nghiệm làng nghề truyền thống tại Làng Gốm Thanh Hà</p>
-                                        <p>• Thưởng thức ẩm thực đặc sắc của miền Trung</p>
-                                        <p>• Di chuyển thuận tiện bằng máy bay khứ hồi và xe du lịch đời mới</p>
+                                        <?php foreach ($itinerary_items as $item): ?>
+                                        <p>• <?php echo htmlspecialchars($item); ?></p>
+                                        <?php endforeach; ?>
                                     </div>
                                 </div>
                                 <div class="space-y-4">
+                                    <?php foreach ($itinerary_items as $index => $item): ?>
                                     <div class="flex gap-4">
                                         <div class="w-24 flex-shrink-0">
-                                            <div
-                                                class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-medium">
-                                                1</div>
+                                            <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-medium">
+                                                <?php echo $index + 1; ?>
+                                            </div>
                                         </div>
                                         <div>
-                                            <h4 class="font-medium mb-2">Ngày 1: TP.HCM - Đà Nẵng - Bà Nà Hills</h4>
-                                            <p class="text-gray-600 text-sm">Khởi hành từ sân bay Tân Sơn Nhất, tham
-                                                quan Bà Nà Hills và trải nghiệm Cầu Vàng.</p>
+                                            <h4 class="font-medium mb-2">Ngày <?php echo $index + 1; ?></h4>
+                                            <p class="text-gray-600 text-sm"><?php echo htmlspecialchars($item); ?></p>
                                         </div>
                                     </div>
-                                    <div class="flex gap-4">
-                                        <div class="w-24 flex-shrink-0">
-                                            <div
-                                                class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-medium">
-                                                2</div>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-medium mb-2">Ngày 2: Hội An - Phố Cổ - Làng Gốm</h4>
-                                            <p class="text-gray-600 text-sm">Khám phá Phố Cổ Hội An, tham quan Làng Gốm
-                                                Thanh Hà và thưởng thức ẩm thực địa phương.</p>
-                                        </div>
-                                    </div>
-                                    <div class="flex gap-4">
-                                        <div class="w-24 flex-shrink-0">
-                                            <div
-                                                class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-medium">
-                                                3</div>
-                                        </div>
-                                        <div>
-                                            <h4 class="font-medium mb-2">Ngày 3: Đà Nẵng - TP.HCM</h4>
-                                            <p class="text-gray-600 text-sm">Tham quan Ngũ Hành Sơn, mua sắm tại chợ Hàn
-                                                và trở về TP.HCM.</p>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                             <div class="border-t pt-6">
@@ -204,67 +151,35 @@
                                     <h3 class="text-lg font-medium">Khách sạn tương ứng</h3>
                                 </div>
                                 <div class="grid grid-cols-1 gap-4 hotel-list">
-                                    <div class="border rounded-lg overflow-hidden cursor-pointer hotel-option"
-                                        data-price="0">
+                                    <?php foreach ($hotels as $index => $hotel): ?>
+                                    <div class="border rounded-lg overflow-hidden cursor-pointer hotel-option" data-price="<?php echo $index * 500000; ?>">
                                         <div class="flex items-center p-4">
                                             <div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-                                                <img src="https://readdy.ai/api/search-image?query=Modern%20luxury%20hotel%20room%20with%20city%20view%2C%20elegant%20interior%20design%2C%20king%20size%20bed%2C%20warm%20lighting%2C%20contemporary%20furniture%2C%20floor%20to%20ceiling%20windows%2C%204k%20photography&width=400&height=400&seq=hotel1&orientation=squarish"
-                                                    alt="Khách sạn Mường Thanh Luxury"
-                                                    class="w-full h-full object-cover">
+                                                <img src="<?php echo htmlspecialchars($hotel['hotel_img'] ?? 'https://readdy.ai/api/search-image?query=hotel&width=400&height=400'); ?>" alt="<?php echo htmlspecialchars($hotel['hotel_name']); ?>" class="w-full h-full object-cover">
                                             </div>
                                             <div class="ml-4 flex-grow">
                                                 <div>
-                                                    <h4 class="font-medium mb-2">Mường Thanh Luxury Đà Nẵng</h4>
+                                                    <h4 class="font-medium mb-2"><?php echo htmlspecialchars($hotel['hotel_name']); ?></h4>
                                                     <div class="flex items-center gap-2 text-sm text-gray-600">
                                                         <i class="ri-map-pin-line"></i>
-                                                        <span>Bãi biển Mỹ Khê, Đà Nẵng</span>
+                                                        <span><?php echo htmlspecialchars($hotel['hotel_location']); ?></span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="border rounded-lg overflow-hidden cursor-pointer hotel-option"
-                                        data-price="500000">
-                                        <div class="flex items-center p-4">
-                                            <div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-                                                <img src="https://readdy.ai/api/search-image?query=Luxurious%20resort%20room%20with%20beach%20view%2C%20balcony%2C%20premium%20amenities%2C%20modern%20design%2C%20bright%20and%20airy%2C%20high%20end%20finishes%2C%20professional%20hotel%20photography&width=400&height=400&seq=hotel2&orientation=squarish"
-                                                    alt="Vinpearl Resort & Spa" class="w-full h-full object-cover">
-                                            </div>
-                                            <div class="ml-4 flex-grow">
-                                                <div>
-                                                    <h4 class="font-medium mb-2">Vinpearl Resort & Spa Đà Nẵng</h4>
-                                                    <div class="flex items-center gap-2 text-sm text-gray-600">
-                                                        <i class="ri-map-pin-line"></i>
-                                                        <span>Ngũ Hành Sơn, Đà Nẵng</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="border rounded-lg overflow-hidden cursor-pointer hotel-option"
-                                        data-price="1000000">
-                                        <div class="flex items-center p-4">
-                                            <div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-                                                <img src="https://readdy.ai/api/search-image?query=Ultra%20luxury%20hotel%20suite%20with%20panoramic%20ocean%20view%2C%20premium%20decor%2C%20marble%20bathroom%2C%20exclusive%20amenities%2C%20sophisticated%20design%2C%205%20star%20hotel%20room%2C%20professional%20photography&width=400&height=400&seq=hotel3&orientation=squarish"
-                                                    alt="InterContinental Danang" class="w-full h-full object-cover">
-                                            </div>
-                                            <div class="ml-4 flex-grow">
-                                                <div>
-                                                    <h4 class="font-medium mb-2">InterContinental Danang Sun Peninsula
-                                                    </h4>
-                                                    <div class="flex items-center gap-2 text-sm text-gray-600">
-                                                        <i class="ri-map-pin-line"></i>
-                                                        <span>Bán đảo Sơn Trà, Đà Nẵng</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <?php
+                $stmt->close();
+                $stmt_hotels->close();
+                $conn->close();
+                ?>
                 <div class="lg:w-1/3">
                     <div class="bg-white rounded-lg shadow-sm border p-6 sticky top-4">
                         <h3 class="text-lg font-medium mb-6">Thông tin đặt tour</h3>
@@ -353,15 +268,15 @@
                             </div>
                             <div class="space-y-4">
                                 <label class="flex items-center gap-3 cursor-pointer select-none">
-                                    <input type="checkbox" name="terms_accepted" required class="terms-checkbox sr-only">
+                                    <!-- <input type="checkbox" name="terms_accepted" required class="terms-checkbox sr-only"> -->
                                     <span class="relative flex items-center terms-checkbox-area">
-                                        <span class="w-5 h-5 border-2 border-gray-300 rounded transition-colors flex items-center justify-center terms-custom-checkbox">
+                                        <span class="w-5 h-5 border-2 border-gray-300 rounded transition-colors flex items-center justify-center terms-custom-checkbox hidden">
                                             <svg class="hidden w-3 h-3 text-primary" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 16 16">
                                                 <path d="M4 8l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
                                         </span>
                                     </span>
-                                    <span class="text-sm">Tôi đồng ý với <a href="#" class="text-primary hover:underline">điều khoản</a> và <a href="#" class="text-primary hover:underline">điều kiện</a> đặt tour</span>
+                                    <!-- <span class="text-sm">Tôi đồng ý với <a href="#" class="text-primary hover:underline">điều khoản</a> và <a href="#" class="text-primary hover:underline">điều kiện</a> đặt tour</span> -->
                                 </label>
                                 <button type="submit"
                                     class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
@@ -550,17 +465,6 @@
                 });
             });
 
-            // Checkbox toggle
-            termsCheckbox.addEventListener('change', function () {
-                if (this.checked) {
-                    customBox.classList.add('border-primary');
-                    checkmark.classList.remove('hidden');
-                } else {
-                    customBox.classList.remove('border-primary');
-                    checkmark.classList.add('hidden');
-                }
-            });
-
             area.addEventListener('click', function (e) {
                 e.preventDefault();
                 termsCheckbox.checked = !termsCheckbox.checked;
@@ -588,7 +492,7 @@
                     notification.style.transform = 'translateY(-100%)';
                     notification.style.transition = 'transform 0.3s';
                     notification.innerHTML = `
-                        <i class="ri-${data.status === 'success' ? 'checkbox-circle-line' : 'error-warning-line'}"></i>
+                        <i class="ri-${data.status === 'success' ? '' : 'error-warning-line'}"></i>
                         <span>${data.message}</span>
                     `;
                     formContainer.appendChild(notification);

@@ -186,7 +186,7 @@
                                 $related_news = getRelatedNews($conn, $news['category'], $news_id, 3);
                                 foreach($related_news as $related): 
                             ?>
-                            <a href="detail_visa.php?id=<?php echo $related['id']; ?>" class="block">
+                            <a href="visa_detail.php?id=<?php echo $related['id']; ?>" class="block">
                                 <img src="<?php echo htmlspecialchars($related['image']); ?>"
                                         alt="<?php echo htmlspecialchars($related['title']); ?>" 
                                         class="w-full h-40 object-cover rounded-lg mb-4">

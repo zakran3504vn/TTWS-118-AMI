@@ -49,7 +49,7 @@ if (empty($result['tours'])) {
                     <span class="text-gray-500 line-through text-lg">'.number_format($tour['regular_price'], 0, ',', '.').' đ</span>
                     <span class="text-primary font-bold text-xl">'.number_format($tour['sale_price'], 0, ',', '.').' đ</span>
                     </div>
-                    <a href="./detail_tour.php?id='.htmlspecialchars($tour['tour_id']).'"
+                    <a href="./tour_detail.php?id='.htmlspecialchars($tour['tour_id']).'"
                     class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                     XEM TOUR    
                     </a>

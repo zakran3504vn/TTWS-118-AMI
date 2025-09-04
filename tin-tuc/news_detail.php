@@ -109,6 +109,7 @@
         // Get news details
         $news = getNewsDetails($conn, $news_id);
         
+        // If news not found, redirect to news list
         if (!$news) {
             header("Location: index.php");
             exit();
