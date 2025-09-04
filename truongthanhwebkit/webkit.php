@@ -203,15 +203,15 @@ function getAllBrands($conn) {
 }
 
 //Hàm lấy ra chi tiết sản phẩm
-function getProductDetails($conn, $product_id) {
+function getTourDetails($conn, $tour_id) {
     // Khởi tạo mảng kết quả
     $product = array();
     
     // Đảm bảo product_id là số nguyên
-    $product_id = (int)$product_id;
+    $tour_id = (int)$tour_id;
     
     // Câu truy vấn SQL để lấy chi tiết sản phẩm
-    $query = "SELECT * FROM products WHERE product_id = $product_id LIMIT 1";
+    $query = "SELECT * FROM products WHERE product_id = $tour_id LIMIT 1";
     
     // Thực thi truy vấn
     $stmt = $conn->query($query);
@@ -221,7 +221,7 @@ function getProductDetails($conn, $product_id) {
         $product = $stmt->fetch_assoc(); // Lấy dòng dữ liệu đầu tiên
     } else {
         // Trả về lỗi nếu không tìm thấy sản phẩm
-        $product = array('error' => 'Không tìm thấy sản phẩm với ID: ' . $product_id);
+        $product = array('error' => 'Không tìm thấy tour với ID: ' . $tour_id);
     }
     
     // Trả về kết quả
