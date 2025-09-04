@@ -51,7 +51,7 @@ function getAllDataProducts($conn) {
 }
 
 //Hàm lấy phân trang sản phẩm
-function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '', $excludeCategory = '') {
+function getPaginatedNews($conn, $filter, $page = 1, $perPage = 3, $search = '', $excludeCategory = '') {
     $offset = ($page - 1) * $perPage;
     
     // Base query with category exclusion
@@ -831,14 +831,71 @@ function getRelatedNews($conn, $category, $current_id, $limit = 3) {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
-function getPaginatedToursByPrice($conn, $sort = 'default', $page = 1, $perPage = 9) {
+
+function getPaginatedToursFiltered($conn, $continent = 'all', $sort = 'default', $page = 1, $perPage = 6, $search = '', $duration = 'all', $price = 'all') {
     $offset = ($page - 1) * $perPage;
     
     // Base query
-    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tours WHERE status = 'active'";
+    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tours WHERE 1=1";
+    $params = [];
+    $types = "";
     
-    // Add sorting
-    switch($sort) {
+    // Continent filter
+    if ($continent !== 'all') {
+        $sql .= " AND continent = ?";
+        $params[] = $continent;
+        $types .= "s";
+    }
+    
+    // Search filter
+    if (!empty($search)) {
+        $sql .= " AND (title LIKE ? OR destination LIKE ?)";
+        $searchTerm = "%{$search}%";
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;
+        $types .= "ss";
+    }
+    
+    // Duration filter
+    if ($duration !== 'all' && $duration !== 'Thời gian tour') {
+        if ($duration === 'Trên 15 ngày') {
+            $sql .= " AND duration_days > ?";
+            $params[] = 15;
+            $types .= "i";
+        } else {
+            $range = explode('-', str_replace(' ngày', '', $duration));
+            $minDays = (int)$range[0];
+            $maxDays = isset($range[1]) ? (int)$range[1] : $minDays;
+            $sql .= " AND duration_days BETWEEN ? AND ?";
+            $params[] = $minDays;
+            $params[] = $maxDays;
+            $types .= "ii";
+        }
+    }
+    
+    // Price filter
+    if ($price !== 'all' && $price !== 'Khoảng giá') {
+        if ($price === 'Dưới 10 triệu') {
+            $sql .= " AND sale_price < ?";
+            $params[] = 10000000;
+            $types .= "i";
+        } elseif ($price === 'Trên 50 triệu') {
+            $sql .= " AND sale_price > ?";
+            $params[] = 50000000;
+            $types .= "i";
+        } else {
+            $range = explode('-', str_replace(' triệu', '', $price));
+            $minPrice = (int)$range[0] * 1000000;
+            $maxPrice = (int)$range[1] * 1000000;
+            $sql .= " AND sale_price BETWEEN ? AND ?";
+            $params[] = $minPrice;
+            $params[] = $maxPrice;
+            $types .= "ii";
+        }
+    }
+    
+    // Sorting
+    switch ($sort) {
         case 'price-asc':
             $sql .= " ORDER BY sale_price ASC";
             break;
@@ -852,27 +909,56 @@ function getPaginatedToursByPrice($conn, $sort = 'default', $page = 1, $perPage 
             $sql .= " ORDER BY duration_days DESC";
             break;
         default:
-            $sql .= " ORDER BY created_at DESC";
+            $sql .= " ORDER BY id DESC";
+            break;
     }
     
     // Add pagination
     $sql .= " LIMIT ? OFFSET ?";
+    $params[] = $perPage;
+    $params[] = $offset;
+    $types .= "ii";
     
+    // Debug query and parameters
+    error_log("SQL Query: $sql");
+    error_log("Parameters: " . json_encode($params));
+    
+    // Prepare and execute
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ii", $perPage, $offset);
-    $stmt->execute();
+    if (!$stmt) {
+        error_log("Prepare failed: " . $conn->error);
+        return ['tours' => [], 'total_pages' => 1];
+    }
+    
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+    
+    if (!$stmt->execute()) {
+        error_log("Execute failed: " . $stmt->error);
+        return ['tours' => [], 'total_pages' => 1];
+    }
+    
     $result = $stmt->get_result();
     $tours = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
     
-    // Get total records
-    $totalResult = $conn->query("SELECT FOUND_ROWS()");
-    $totalRows = $totalResult->fetch_array()[0];
-    $totalPages = ceil($totalRows / $perPage);
+    // Get total records for pagination
+    $totalResult = $conn->query("SELECT FOUND_ROWS() AS total");
+    if (!$totalResult) {
+        error_log("FOUND_ROWS failed: " . $conn->error);
+        return ['tours' => $tours, 'total_pages' => 1];
+    }
+    
+    $totalRows = $totalResult->fetch_assoc()['total'];
+    $totalPages = max(1, ceil($totalRows / $perPage));
+    
+    error_log("Total Rows: $totalRows, Total Pages: $totalPages, Page: $page, Offset: $offset");
     
     return [
         'tours' => $tours,
-        'total_pages' => $totalPages,
-        'current_page' => $page
+        'total_pages' => $totalPages
     ];
 }
+
 ?>
