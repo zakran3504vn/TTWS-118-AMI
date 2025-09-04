@@ -314,7 +314,7 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-sm">Trẻ em (<6)</span>
+                                        <span class="text-sm">Trẻ em (6)</span>
                                         <div class="flex items-center">
                                             <button type="button"
                                                 class="w-8 h-8 border border-gray-300 rounded-l-lg flex items-center justify-center hover:bg-gray-50 transition-colors decrease-child">

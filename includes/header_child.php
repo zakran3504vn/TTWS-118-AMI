@@ -107,22 +107,13 @@
                                                 Du lịch nước ngoài
                                                 <i class="ri-arrow-down-s-line"></i>
                                             </button>
-                                            <div class="hidden">
-                                                <a href="#"
-                                                    class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu
-                                                    Á</a>
-                                                <a href="#"
-                                                    class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu
-                                                    Âu</a>
-                                                <a href="#"
-                                                    class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu
-                                                    Phi</a>
-                                                <a href="#"
-                                                    class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu
-                                                    Úc</a>
-                                                <a href="#"
-                                                    class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu
-                                                    Mỹ</a>
+                                            <div class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
+                                                <a href="../du-lich/index.php?continent=all" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Tất cả</a>
+                                                <a href="../du-lich/index.php?continent=asia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Á</a>
+                                                <a href="../du-lich/index.php?continent=europe" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Âu</a>
+                                                <a href="../du-lich/index.php?continent=africa" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Phi</a>
+                                                <a href="../du-lich/index.php?continent=oceania" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Úc</a>
+                                                <a href="../du-lich/index.php?continent=america" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Mỹ</a>
                                             </div>
                                         </div>
                                     </div>

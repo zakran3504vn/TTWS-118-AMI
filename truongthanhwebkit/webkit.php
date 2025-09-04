@@ -831,4 +831,48 @@ function getRelatedNews($conn, $category, $current_id, $limit = 3) {
     return $result->fetch_all(MYSQLI_ASSOC);
 }
 
+function getPaginatedToursByPrice($conn, $sort = 'default', $page = 1, $perPage = 9) {
+    $offset = ($page - 1) * $perPage;
+    
+    // Base query
+    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tours WHERE status = 'active'";
+    
+    // Add sorting
+    switch($sort) {
+        case 'price-asc':
+            $sql .= " ORDER BY sale_price ASC";
+            break;
+        case 'price-desc':
+            $sql .= " ORDER BY sale_price DESC";
+            break;
+        case 'duration-asc':
+            $sql .= " ORDER BY duration_days ASC";
+            break;
+        case 'duration-desc':
+            $sql .= " ORDER BY duration_days DESC";
+            break;
+        default:
+            $sql .= " ORDER BY created_at DESC";
+    }
+    
+    // Add pagination
+    $sql .= " LIMIT ? OFFSET ?";
+    
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $perPage, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $tours = $result->fetch_all(MYSQLI_ASSOC);
+    
+    // Get total records
+    $totalResult = $conn->query("SELECT FOUND_ROWS()");
+    $totalRows = $totalResult->fetch_array()[0];
+    $totalPages = ceil($totalRows / $perPage);
+    
+    return [
+        'tours' => $tours,
+        'total_pages' => $totalPages,
+        'current_page' => $page
+    ];
+}
 ?>

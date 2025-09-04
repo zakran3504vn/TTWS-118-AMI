@@ -89,14 +89,14 @@
                 <div class="flex flex-col lg:flex-row gap-3">
                     <div class="flex-1">
                         <div class="relative">
-                            <input type="text" placeholder="Tìm kiếm tour, điểm đến..."
+                            <input type="text" id="searchInput" placeholder="Tìm kiếm tour, điểm đến..."
                                 class="w-full px-4 py-2.5 sm:py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm">
                             <i
                                 class="ri-search-line absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <select
+                        <select id="durationFilter"
                             class="px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm pr-8 min-w-[140px]">
                             <option>Thời gian tour</option>
                             <option>1-3 ngày</option>
@@ -104,7 +104,7 @@
                             <option>8-15 ngày</option>
                             <option>Trên 15 ngày</option>
                         </select>
-                        <select
+                        <select id="priceFilter"
                             class="px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm pr-8 min-w-[140px]">
                             <option>Khoảng giá</option>
                             <option>Dưới 10 triệu</option>
@@ -112,7 +112,7 @@
                             <option>30-50 triệu</option>
                             <option>Trên 50 triệu</option>
                         </select>
-                        <button
+                        <button id="searchButton"
                             class="bg-primary text-white px-6 py-3 !rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
                             Tìm kiếm
                         </button>
@@ -121,6 +121,7 @@
             </div>
         </div>
     </section>
+    
     <!-- Filter Tabs -->
     <section class="py-3 sm:py-4 bg-gray-50 sticky top-0 z-40">
         <div class="max-w-6xl mx-auto px-4">
@@ -177,7 +178,7 @@
         <div class="max-w-6xl mx-auto px-4">    
             <div id="toursGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 <!-- Tour Card 1 - Asia -->
-                <div class="tour-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+                <!-- <div class="tour-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                     data-continent="asia" data-price="29999000" data-duration="6">
                     <div class="relative">
                         <img src="https://readdy.ai/api/search-image?query=Beautiful%20Japanese%20temple%20with%20cherry%20blossoms%20and%20Mount%20Fuji%20in%20background%2C%20traditional%20architecture%2C%20spring%20season%2C%20professional%20travel%20photography%20with%20vibrant%20colors&width=400&height=250&seq=japan1&orientation=landscape"
@@ -207,73 +208,9 @@
                                     XEM TOUR    
                                 </a>
                             </div>
-                        </div>
+                        </div> -->
+                    <?php include "./get_tour.php"; ?>
                 </div>
-                <div class="tour-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                    data-continent="asia" data-price="29999000" data-duration="6">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=Beautiful%20Japanese%20temple%20with%20cherry%20blossoms%20and%20Mount%20Fuji%20in%20background%2C%20traditional%20architecture%2C%20spring%20season%2C%20professional%20travel%20photography%20with%20vibrant%20colors&width=400&height=250&seq=japan1&orientation=landscape"
-                            alt="Nhật Bản" class="w-full h-54 object-cover object-top">
-                    </div>
-                    <div class="p-5">
-                            <h3 class="text-xl font-semibold mb-2">Thượng Hải - Vô Tích - Ô Trấn - Hàng Châu</h3>
-                            <div class="flex items-center gap-2 text-sm text-black mb-2">
-                                <i class="ri-map-pin-line"></i>
-                                <span>Nơi khởi hành: [Địa điểm]</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm text-black mb-2">
-                                <i class="ri-map-pin-2-line"></i>
-                                <span>Nơi đến: [Địa điểm]</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm text-black mb-3">
-                                <i class="ri-time-line"></i>
-                                <span>Thời gian: 5 ngày 4 đêm</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
-                                </div>
-                                <a href="./detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                    XEM TOUR    
-                                </a>
-                            </div>
-                        </div>
-                </div>
-                <div class="tour-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
-                    data-continent="asia" data-price="29999000" data-duration="6">
-                    <div class="relative">
-                        <img src="https://readdy.ai/api/search-image?query=Beautiful%20Japanese%20temple%20with%20cherry%20blossoms%20and%20Mount%20Fuji%20in%20background%2C%20traditional%20architecture%2C%20spring%20season%2C%20professional%20travel%20photography%20with%20vibrant%20colors&width=400&height=250&seq=japan1&orientation=landscape"
-                            alt="Nhật Bản" class="w-full h-54 object-cover object-top">
-                    </div>
-                    <div class="p-5">
-                            <h3 class="text-xl font-semibold mb-2">Thượng Hải - Vô Tích - Ô Trấn - Hàng Châu</h3>
-                            <div class="flex items-center gap-2 text-sm text-black mb-2">
-                                <i class="ri-map-pin-line"></i>
-                                <span>Nơi khởi hành: [Địa điểm]</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm text-black mb-2">
-                                <i class="ri-map-pin-2-line"></i>
-                                <span>Nơi đến: [Địa điểm]</span>
-                            </div>
-                            <div class="flex items-center gap-2 text-sm text-black mb-3">
-                                <i class="ri-time-line"></i>
-                                <span>Thời gian: 5 ngày 4 đêm</span>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <div class="flex flex-col">
-                                    <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
-                                    <span class="text-primary font-bold text-xl">16.999.000 đ</span>
-                                </div>
-                                <a href="./detail_tour.php"
-                                    class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
-                                    XEM TOUR    
-                                </a>
-                            </div>
-                        </div>
-                </div>
-            </div>
             <!-- Pagination -->
             <div class="flex justify-center items-center gap-2 mt-8">
                 <button class="px-3 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50"
@@ -337,23 +274,58 @@
     include ("../includes/footer_child.php");
     include ("../includes/cta.php");
     ?>
+     <!--Continent Filter Logic -->
     <script id="continentFilter">
         document.addEventListener('DOMContentLoaded', function () {
             const continentTabs = document.querySelectorAll('.continent-tab');
             const tourCards = document.querySelectorAll('.tour-card');
             const sortSelect = document.getElementById('sortSelect');
+
+            // Check URL parameters first
+            const urlParams = new URLSearchParams(window.location.search);
+            const continentParam = urlParams.get('continent');
+
+            // Function to activate tab and filter tours
+            function activateTab(continent) {
+                // Remove active class from all tabs
+                continentTabs.forEach(t => {
+                    t.classList.remove('active', 'bg-primary', 'text-white');
+                    t.classList.add('bg-white', 'text-gray-600');
+                });
+
+                // Find and activate the correct tab
+                const targetTab = document.querySelector(`.continent-tab[data-continent="${continent}"]`);
+                if (targetTab) {
+                    targetTab.classList.add('active', 'bg-primary', 'text-white');
+                    targetTab.classList.remove('bg-white', 'text-gray-600');
+                    
+                    // Scroll tab into view if needed
+                    targetTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+
+                // Filter the tours
+                filterTours(continent);
+            }
+
+            // Initialize with URL parameter or default to 'all'
+            if (continentParam) {
+                activateTab(continentParam);
+            }
+
+            // Add click handlers to tabs
             continentTabs.forEach(tab => {
                 tab.addEventListener('click', function () {
-                    continentTabs.forEach(t => {
-                        t.classList.remove('active', 'bg-primary', 'text-white');
-                        t.classList.add('bg-white', 'text-gray-600');
-                    });
-                    this.classList.add('active', 'bg-primary', 'text-white');
-                    this.classList.remove('bg-white', 'text-gray-600');
                     const selectedContinent = this.dataset.continent;
-                    filterTours(selectedContinent);
+                    
+                    // Update URL without refreshing page
+                    const newUrl = new URL(window.location.href);
+                    newUrl.searchParams.set('continent', selectedContinent);
+                    window.history.pushState({}, '', newUrl);
+                    
+                    activateTab(selectedContinent);
                 });
             });
+
             function filterTours(continent) {
                 tourCards.forEach(card => {
                     if (continent === 'all' || card.dataset.continent === continent) {
@@ -363,6 +335,7 @@
                     }
                 });
             }
+
             sortSelect.addEventListener('change', function () {
                 const sortValue = this.value;
                 const visibleCards = Array.from(tourCards).filter(card => card.style.display !== 'none');
@@ -391,6 +364,115 @@
             });
         });
     </script>
+     <!--Search and Filter Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const durationFilter = document.getElementById('durationFilter');
+            const priceFilter = document.getElementById('priceFilter');
+            const searchButton = document.getElementById('searchButton');
+            const tourCards = document.querySelectorAll('.tour-card');
+            const continentTabs = document.querySelectorAll('.continent-tab');
+            let currentContinent = 'all';
+
+            function filterTours() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const duration = durationFilter.value;
+                const price = priceFilter.value;
+
+                tourCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const destination = card.querySelector('.ri-map-pin-2-line + span').textContent.toLowerCase();
+                    const cardDuration = parseInt(card.dataset.duration);
+                    const cardPrice = parseInt(card.dataset.price);
+                    const cardContinent = card.dataset.continent;
+
+                    let showCard = true;
+
+                    // Check continent
+                    if (currentContinent !== 'all' && cardContinent !== currentContinent) {
+                        showCard = false;
+                    }
+
+                    // Check search term
+                    if (searchTerm && !title.includes(searchTerm) && !destination.includes(searchTerm)) {
+                        showCard = false;
+                    }
+
+                    // Check duration
+                    if (duration !== 'all') {
+                        const [min, max] = duration.split('-').map(Number);
+                        if (max) {
+                            if (cardDuration < min || cardDuration > max) showCard = false;
+                        } else {
+                            // For "15+" option
+                            if (cardDuration < min) showCard = false;
+                        }
+                    }
+
+                    // Check price
+                    if (price !== 'all') {
+                        const [min, max] = price.split('-').map(n => n === '+' ? Infinity : Number(n) * 1000000);
+                        if (cardPrice < min || cardPrice > max) showCard = false;
+                    }
+
+                    card.style.display = showCard ? 'block' : 'none';
+                });
+            }
+
+            // Event Listeners
+            searchButton.addEventListener('click', filterTours);
+            
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') filterTours();
+            });
+
+            durationFilter.addEventListener('change', filterTours);
+            priceFilter.addEventListener('change', filterTours);
+
+            // Continent tab handling
+            continentTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    currentContinent = this.dataset.continent;
+                    
+                    // Update tab styles
+                    continentTabs.forEach(t => {
+                        t.classList.remove('active', 'bg-primary', 'text-white');
+                        t.classList.add('bg-white', 'text-gray-600');
+                    });
+                    
+                    this.classList.add('active', 'bg-primary', 'text-white');
+                    this.classList.remove('bg-white', 'text-gray-600');
+                    
+                    filterTours();
+                });
+            });
+
+            // Initialize filters if URL has parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('continent')) {
+                const continent = urlParams.get('continent');
+                const tab = document.querySelector(`.continent-tab[data-continent="${continent}"]`);
+                if (tab) tab.click();
+            }
+        });
+    </script>
+    <script>
+document.getElementById('sortSelect').addEventListener('change', function() {
+    const sort = this.value;
+    const container = document.getElementById('toursGrid');
+    
+    fetch(`get_tour.php?sort=${sort}`)
+        .then(response => response.text())
+        .then(html => {
+            container.innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            container.innerHTML = '<p class="text-center text-red-500">Đã xảy ra lỗi khi tải dữ liệu.</p>';
+        });
+});
+</script>
 </body>
 
 </html>
