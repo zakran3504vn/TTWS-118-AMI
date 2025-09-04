@@ -211,7 +211,7 @@ function getTourDetails($conn, $tour_id) {
     $tour_id = (int)$tour_id;
     
     // Câu truy vấn SQL để lấy chi tiết sản phẩm
-    $query = "SELECT * FROM products WHERE product_id = $tour_id LIMIT 1";
+    $query = "SELECT * FROM tours WHERE product_id = $tour_id ";
     
     // Thực thi truy vấn
     $stmt = $conn->query($query);

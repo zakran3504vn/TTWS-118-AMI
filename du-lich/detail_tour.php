@@ -346,10 +346,6 @@
                                     <span class="text-sm">Trẻ em (2.499.000đ x <span class="child-count-text">0</span>)</span>
                                     <span class="font-medium child-total">0đ</span>
                                 </div>
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="text-sm">Khách sạn (<span class="hotel-price-text">0</span>đ)</span>
-                                    <span class="font-medium hotel-total">0đ</span>
-                                </div>
                                 <div class="flex items-center justify-between border-t pt-4">
                                     <span class="font-medium">Tổng tiền</span>
                                     <span class="text-xl font-bold text-primary total-amount">4.999.000đ</span>
@@ -485,7 +481,6 @@
 
             const adultPrice = 4999000;
             const childPrice = 2499000;
-            let selectedHotelPrice = 0;
 
             // Set minimum date to today
             const today = new Date();
@@ -496,14 +491,12 @@
                 const children = parseInt(childCountInput.value) || 0;
                 const adultTotalPrice = adults * adultPrice;
                 const childTotalPrice = children * childPrice;
-                const total = adultTotalPrice + childTotalPrice + selectedHotelPrice;
+                const total = adultTotalPrice + childTotalPrice ;
 
                 adultCountText.textContent = adults;
                 childCountText.textContent = children;
                 adultTotal.textContent = adultTotalPrice.toLocaleString('vi-VN') + 'đ';
                 childTotal.textContent = childTotalPrice.toLocaleString('vi-VN') + 'đ';
-                hotelPriceText.textContent = selectedHotelPrice.toLocaleString('vi-VN');
-                hotelTotal.textContent = selectedHotelPrice.toLocaleString('vi-VN') + 'đ';
                 totalAmount.textContent = total.toLocaleString('vi-VN') + 'đ';
             }
 
