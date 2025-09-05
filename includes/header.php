@@ -28,11 +28,11 @@
                                 </a>
                                 <div
                                     class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
-                                    <a href="./du-lich/index.php?continent=Asia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Á</a>
-                                    <a href="./du-lich/index.php?continent=Europe" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Âu</a>
-                                    <a href="./du-lich/index.php?continent=Africa" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Phi</a>
-                                    <a href="./du-lich/index.php?continent=Australia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Úc</a>
-                                    <a href="./du-lich/index.php?continent=America" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Mỹ</a>
+                                    <a href="./du-lich/index.php?continent=asia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Á</a>
+                                    <a href="./du-lich/index.php?continent=europe" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Âu</a>
+                                    <a href="./du-lich/index.php?continent=africa" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Phi</a>
+                                    <a href="./du-lich/index.php?continent=oceania" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Úc</a>
+                                    <a href="./du-lich/index.php?continent=america" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Mỹ</a>
                                 </div>
                             </div>
                         </div>
@@ -101,15 +101,15 @@
                                             <i class="ri-arrow-down-s-line"></i>
                                         </button>
                                         <div class="hidden">
-                                            <a href="./du-lich/index.php?continent=Asia"
+                                            <a href="./du-lich/index.php?continent=asia"
                                                 class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu Á</a>
-                                            <a href="./du-lich/index.php?continent=Europe"
+                                            <a href="./du-lich/index.php?continent=europe"
                                                 class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu Âu</a>
-                                            <a href="./du-lich/index.php?continent=Africa"
+                                            <a href="./du-lich/index.php?continent=africa"
                                                 class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu Phi</a>
-                                            <a href="./du-lich/index.php?continent=Australia"
+                                            <a href="./du-lich/index.php?continent=oceania"
                                                 class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu Úc</a>
-                                            <a href="./du-lich/index.php?continent=America"
+                                            <a href="./du-lich/index.php?continent=america"
                                                 class="block py-3 pl-8 text-black font-medium text-l hover:text-primary transition-colors">Châu Mỹ</a>
                                         </div>
                                     </div>
@@ -128,90 +128,90 @@
                 </div>
             </div>
         </div>
-</header>
+    </header>
 
-<style>
-    .header-fixed {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 1000;
-        background: white;
-    }
-
-    .header-hidden {
-        transform: translateY(-100%);
-    }
-</style>
-<script id="mobileNav">
-    document.addEventListener('DOMContentLoaded', function () {
-        const mainHeader = document.getElementById('mainHeader');
-        const bottomHeader = document.getElementById('bottomHeader');
-        const menuToggle = document.getElementById('menuToggle');
-        let lastScroll = 0;
-        const scrollThreshold = 50;
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            if (currentScroll > scrollThreshold) {
-                mainHeader.classList.add('header-fixed');
-                document.body.style.paddingTop = mainHeader.offsetHeight + 'px';
-            } else {
-                mainHeader.classList.remove('header-fixed');
-                document.body.style.paddingTop = '0';
-            }
-            lastScroll = currentScroll;
-        });
-        const mobileMenu = document.getElementById('mobileMenu');
-        const menuClose = document.getElementById('menuClose');
-        const travelMenuBtn = document.getElementById('travelMenuBtn');
-        let currentDropdown = null;
-        function closeDropdown(dropdown) {
-            if (dropdown) {
-                dropdown.classList.add('hidden');
-            }
+    <style>
+        .header-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
         }
-        document.addEventListener('click', function (e) {
-            if (!e.target.closest('.group')) {
-                const dropdowns = document.querySelectorAll('.group > div');
-                dropdowns.forEach(dropdown => {
+
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+    </style>
+    <script id="mobileNav">
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainHeader = document.getElementById('mainHeader');
+            const bottomHeader = document.getElementById('bottomHeader');
+            const menuToggle = document.getElementById('menuToggle');
+            let lastScroll = 0;
+            const scrollThreshold = 50;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll > scrollThreshold) {
+                    mainHeader.classList.add('header-fixed');
+                    document.body.style.paddingTop = mainHeader.offsetHeight + 'px';
+                } else {
+                    mainHeader.classList.remove('header-fixed');
+                    document.body.style.paddingTop = '0';
+                }
+                lastScroll = currentScroll;
+            });
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuClose = document.getElementById('menuClose');
+            const travelMenuBtn = document.getElementById('travelMenuBtn');
+            let currentDropdown = null;
+            function closeDropdown(dropdown) {
+                if (dropdown) {
                     dropdown.classList.add('hidden');
+                }
+            }
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.group')) {
+                    const dropdowns = document.querySelectorAll('.group > div');
+                    dropdowns.forEach(dropdown => {
+                        dropdown.classList.add('hidden');
+                    });
+                }
+            });
+            if (travelMenuBtn) {
+                travelMenuBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const dropdown = this.closest('.group').querySelector('.absolute');
+                    if (currentDropdown && currentDropdown !== dropdown) {
+                        closeDropdown(currentDropdown);
+                    }
+                    dropdown.classList.toggle('hidden');
+                    currentDropdown = dropdown;
                 });
             }
-        });
-        if (travelMenuBtn) {
-            travelMenuBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                const dropdown = this.closest('.group').querySelector('.absolute');
-                if (currentDropdown && currentDropdown !== dropdown) {
-                    closeDropdown(currentDropdown);
+            function toggleMenu() {
+                if (mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.remove('hidden');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('opacity-100');
+                        mobileMenu.querySelector('.bg-white').classList.remove('translate-x-full');
+                    }, 10);
+                } else {
+                    mobileMenu.classList.remove('opacity-100');
+                    mobileMenu.querySelector('.bg-white').classList.add('translate-x-full');
+                    setTimeout(() => {
+                        mobileMenu.classList.add('hidden');
+                    }, 300);
                 }
-                dropdown.classList.toggle('hidden');
-                currentDropdown = dropdown;
+                document.body.classList.toggle('overflow-hidden');
+            }
+            menuToggle.addEventListener('click', toggleMenu);
+            menuClose.addEventListener('click', toggleMenu);
+            mobileMenu.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    toggleMenu();
+                }
             });
-        }
-        function toggleMenu() {
-            if (mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.remove('hidden');
-                setTimeout(() => {
-                    mobileMenu.classList.add('opacity-100');
-                    mobileMenu.querySelector('.bg-white').classList.remove('translate-x-full');
-                }, 10);
-            } else {
-                mobileMenu.classList.remove('opacity-100');
-                mobileMenu.querySelector('.bg-white').classList.add('translate-x-full');
-                setTimeout(() => {
-                    mobileMenu.classList.add('hidden');
-                }, 300);
-            }
-            document.body.classList.toggle('overflow-hidden');
-        }
-        menuToggle.addEventListener('click', toggleMenu);
-        menuClose.addEventListener('click', toggleMenu);
-        mobileMenu.addEventListener('click', function (e) {
-            if (e.target === this) {
-                toggleMenu();
-            }
         });
-    });
-</script>
+    </script>

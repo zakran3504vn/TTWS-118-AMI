@@ -109,11 +109,11 @@
                                             </button>
                                             <div class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
                                                 <a href="../du-lich/index.php?continent=all" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Tất cả</a>
-                                                <a href="../du-lich/index.php?continent=asia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Á</a>
-                                                <a href="../du-lich/index.php?continent=europe" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Âu</a>
-                                                <a href="../du-lich/index.php?continent=africa" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Phi</a>
-                                                <a href="../du-lich/index.php?continent=oceania" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Úc</a>
-                                                <a href="../du-lich/index.php?continent=america" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Mỹ</a>
+                                                <a href="./du-lich/index.php?continent=Asia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Á</a>
+                                                <a href="./du-lich/index.php?continent=Europe" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Âu</a>
+                                                <a href="./du-lich/index.php?continent=Africa" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Phi</a>
+                                                <a href="./du-lich/index.php?continent=Australia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Úc</a>
+                                                <a href="./du-lich/index.php?continent=America" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Mỹ</a>
                                             </div>
                                         </div>
                                     </div>
