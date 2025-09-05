@@ -203,11 +203,11 @@ function getAllBrands($conn) {
 }
 
 function getTourDetails($conn, $tour_id) {
-    // Get tour ID from query parameter (e.g., ?tour_id=1)
-    $tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
+    // Get tour ID from query parameter (e.g., ?id=1)
+    $tour_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
 
-    // Fetch tour details
-    $sql_tour = "SELECT title, departure_location, duration_days, duration_nights, transportation, description, itinerary, image_url 
+    // Fetch tour details, including continent
+    $sql_tour = "SELECT title, departure_location, duration_days, duration_nights, transportation, description, itinerary, image_url, continent 
                 FROM tours 
                 WHERE tour_id = ?";
     $stmt = $conn->prepare($sql_tour);
@@ -232,6 +232,23 @@ function getTourDetails($conn, $tour_id) {
     }
     $stmt_hotels->close();
 
+    // Fetch related tours from the same continent, excluding the current tour
+    $related_tours = [];
+    if (!empty($tour['continent'])) {
+        $sql_related = "SELECT tour_id, title, duration_days, duration_nights, departure_location, sale_price 
+                       FROM tours 
+                       WHERE continent = ? AND tour_id != ? 
+                       LIMIT 3";
+        $stmt_related = $conn->prepare($sql_related);
+        $stmt_related->bind_param("si", $tour['continent'], $tour_id);
+        $stmt_related->execute();
+        $related_result = $stmt_related->get_result();
+        while ($row = $related_result->fetch_assoc()) {
+            $related_tours[] = $row;
+        }
+        $stmt_related->close();
+    }
+
     // Split image_url into an array (assuming comma-separated URLs)
     $images = !empty($tour['image_url']) ? explode(',', $tour['image_url']) : [];
     $main_image = !empty($images) ? trim($images[0]) : 'https://readdy.ai/api/search-image?query=placeholder&width=1200&height=800';
@@ -251,7 +268,8 @@ function getTourDetails($conn, $tour_id) {
         'main_image' => $main_image,
         'gallery_images' => $gallery_images,
         'itinerary_items' => $itinerary_items,
-        'duration' => $duration
+        'duration' => $duration,
+        'related_tours' => $related_tours
     ];
 }
 

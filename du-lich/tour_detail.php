@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đặt Tour Du Lịch - Đà Nẵng - Hội An</title>
+    <title>Đặt Tour Du Lịch - <?php echo htmlspecialchars($tour['title']); ?></title>
     <link rel="icon" href="../assets/uploads/logo-ami-ico.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -76,6 +76,7 @@
         $gallery_images = $tourDetails['gallery_images'];
         $itinerary_items = $tourDetails['itinerary_items'];
         $duration = $tourDetails['duration'];
+        $related_tours = $tourDetails['related_tours'];
     ?>
     <!-- Breadcrumb -->
     <div class="bg-gray-50 px-4 py-3">
@@ -288,69 +289,32 @@
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-2xl font-semibold mb-8">Tour liên quan</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative h-48">
-                        <img src="https://readdy.ai/api/search-image?query=Stunning%20Ha%20Long%20Bay%20at%20sunset%2C%20limestone%20karsts%20rising%20from%20emerald%20waters%2C%20traditional%20wooden%20boats%2C%20dramatic%20sky%2C%20UNESCO%20world%20heritage%20site%2C%20professional%20travel%20photography&width=600&height=400&seq=related1&orientation=landscape"
-                            alt="Tour Hạ Long" class="w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">2N1Đ
+                <?php foreach ($related_tours as $index => $related_tour): ?>
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="relative h-48">
+                            <img src="https://readdy.ai/api/search-image?query=<?php echo urlencode($related_tour['title']); ?>&width=600&height=400&seq=related<?php echo $index + 1; ?>&orientation=landscape"
+                                alt="<?php echo htmlspecialchars($related_tour['title']); ?>" class="w-full h-full object-cover">
+                            <div class="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                                <?php echo htmlspecialchars($related_tour['duration_days'] . 'N' . $related_tour['duration_nights'] . 'Đ'); ?>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-medium mb-2"><?php echo htmlspecialchars($related_tour['title']); ?></h3>
+                            <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                                <i class="ri-map-pin-line"></i>
+                                <span>Khởi hành từ <?php echo htmlspecialchars($related_tour['departure_location']); ?></span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-primary font-bold"><?php echo number_format($related_tour['sale_price'], 0, ',', '.') . 'đ'; ?></span>
+                                <a href="tour_detail.php?id=<?php echo htmlspecialchars($related_tour['tour_id']); ?>"
+                                    class="px-4 py-2 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem chi tiết</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-2">Tour Vịnh Hạ Long - Hang Sửng Sốt</h3>
-                        <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                            <i class="ri-map-pin-line"></i>
-                            <span>Khởi hành từ Hà Nội</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-primary font-bold">2.499.000đ</span>
-                            <button
-                                class="px-4 py-2 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
-                                chi tiết</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative h-48">
-                        <img src="https://readdy.ai/api/search-image?query=Majestic%20Sapa%20rice%20terraces%20in%20golden%20light%2C%20ethnic%20minority%20villages%2C%20misty%20mountains%2C%20lush%20green%20landscape%2C%20northern%20Vietnam%20highlands%2C%20travel%20destination&width=600&height=400&seq=related2&orientation=landscape"
-                            alt="Tour Sapa" class="w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">3N2Đ
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-2">Tour Sapa - Fansipan - Bản Cát Cát</h3>
-                        <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                            <i class="ri-map-pin-line"></i>
-                            <span>Khởi hành từ Hà Nội</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-primary font-bold">3.999.000đ</span>
-                            <button
-                                class="px-4 py-2 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
-                                chi tiết</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                    <div class="relative h-48">
-                        <img src="https://readdy.ai/api/search-image?query=Mekong%20Delta%20scenic%20waterway%2C%20traditional%20floating%20market%2C%20fruit%20orchards%2C%20local%20life%2C%20vibrant%20culture%2C%20authentic%20Vietnamese%20scene%2C%20professional%20photography&width=600&height=400&seq=related3&orientation=landscape"
-                            alt="Tour Miền Tây" class="w-full h-full object-cover">
-                        <div class="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">2N1Đ
-                        </div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-medium mb-2">Tour Miền Tây - Cần Thơ - Chợ Nổi</h3>
-                        <div class="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                            <i class="ri-map-pin-line"></i>
-                            <span>Khởi hành từ TP. HCM</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-primary font-bold">1.999.000đ</span>
-                            <button
-                                class="px-4 py-2 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
-                                chi tiết</button>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
+                <?php if (empty($related_tours)): ?>
+                    <p class="text-gray-600">Không có tour liên quan nào trong cùng khu vực.</p>
+                <?php endif; ?>
             </div>
         </div>
     </section>
