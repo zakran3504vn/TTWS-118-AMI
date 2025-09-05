@@ -208,7 +208,7 @@ function getTourDetails($conn, $tour_id) {
     $tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
 
     // Fetch tour details
-    $sql_tour = "SELECT title, destination, duration_days, duration_nights, transportation, description, itinerary, image_url 
+    $sql_tour = "SELECT title, departure_location, duration_days, duration_nights, transportation, description, itinerary, image_url 
                 FROM tours 
                 WHERE tour_id = ?";
     $stmt = $conn->prepare($sql_tour);

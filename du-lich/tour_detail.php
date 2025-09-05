@@ -106,7 +106,7 @@
                             <div class="flex flex-wrap gap-6 text-gray-600 mb-6">
                                 <div class="flex items-center gap-2">
                                     <i class="ri-map-pin-line text-primary"></i>
-                                    <span>Điểm khởi hành: <?php echo htmlspecialchars($tour['destination']); ?></span>
+                                    <span>Điểm khởi hành: <?php echo htmlspecialchars($tour['departure_location']); ?></span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <i class="ri-time-line text-primary"></i>
@@ -120,66 +120,64 @@
                             <div class="border-t pt-6">
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-lg font-medium">Lịch trình tour</h3>
-                                    <button class="text-primary hover:text-primary/80 transition-colors text-sm font-medium">Xem chi tiết</button>
                                 </div>
                                 <div class="bg-gray-50 p-4 rounded-lg mb-6">
                                     <h4 class="font-medium mb-3">Tổng quan hành trình</h4>
                                     <div class="text-sm text-gray-600 space-y-2">
-                                        <?php foreach ($itinerary_items as $item): ?>
-                                        <p>• <?php echo htmlspecialchars($item); ?></p>
-                                        <?php endforeach; ?>
+                                        <?php echo nl2br(htmlspecialchars($tour['description'])); ?>
                                     </div>
                                 </div>
                                 <div class="space-y-4">
-                                    <?php foreach ($itinerary_items as $index => $item): ?>
-                                    <div class="flex gap-4">
-                                        <div class="w-24 flex-shrink-0">
-                                            <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-medium">
-                                                <?php echo $index + 1; ?>
+                                    <?php for ($i = 0; $i < count($itinerary_items); $i += 2): ?>
+                                        <div class="flex gap-4 mb-6 mx-auto">
+                                            <div class="w-24 flex-shrink-0">
+                                                <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-medium">
+                                                    <?php echo ($i / 2) + 1; ?>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="font-medium mb-2">
+                                                    <?php echo trim($itinerary_items[$i]); ?>
+                                                </div>
+                                                <div class="text-gray-600 text-sm">
+                                                    <?php echo trim($itinerary_items[$i + 1]); ?>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div>
-                                            <h4 class="font-medium mb-2">Ngày <?php echo $index + 1; ?></h4>
-                                            <p class="text-gray-600 text-sm"><?php echo htmlspecialchars($item); ?></p>
-                                        </div>
-                                    </div>
-                                    <?php endforeach; ?>
+                                    <?php endfor; ?>
                                 </div>
                             </div>
                             <div class="border-t pt-6">
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-lg font-medium">Khách sạn tương ứng</h3>
                                 </div>
+                                <?php
+                                var_dump($hotels);
+                                ?>
                                 <div class="grid grid-cols-1 gap-4 hotel-list">
-                                    <?php foreach ($hotels as $index => $hotel): ?>
-                                    <div class="border rounded-lg overflow-hidden cursor-pointer hotel-option" data-price="<?php echo $index * 500000; ?>">
-                                        <div class="flex items-center p-4">
-                                            <div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-                                                <img src="<?php echo htmlspecialchars($hotel['hotel_img'] ?? 'https://readdy.ai/api/search-image?query=hotel&width=400&height=400'); ?>" alt="<?php echo htmlspecialchars($hotel['hotel_name']); ?>" class="w-full h-full object-cover">
-                                            </div>
-                                            <div class="ml-4 flex-grow">
-                                                <div>
-                                                    <h4 class="font-medium mb-2"><?php echo htmlspecialchars($hotel['hotel_name']); ?></h4>
-                                                    <div class="flex items-center gap-2 text-sm text-gray-600">
-                                                        <i class="ri-map-pin-line"></i>
-                                                        <span><?php echo htmlspecialchars($hotel['hotel_location']); ?></span>
+                                    <?php foreach ($hotels as $hotel): ?>
+                                        <div class="border rounded-lg overflow-hidden cursor-pointer hotel-option" data-hotel-id="<?php echo htmlspecialchars($hotel['hotel_id']); ?>">
+                                            <div class="flex items-center p-4">
+                                                <div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+                                                    <img src="<?php echo htmlspecialchars($hotel['hotel_img'] ?? 'https://readdy.ai/api/search-image?query=hotel&width=400&height=400'); ?>" alt="<?php echo htmlspecialchars($hotel['hotel_name']); ?>" class="w-full h-full object-cover">
+                                                </div>
+                                                <div class="ml-4 flex-grow">
+                                                    <div>
+                                                        <h4 class="font-medium mb-2"><?php echo htmlspecialchars($hotel['hotel_name']); ?></h4>
+                                                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                                                            <i class="ri-map-pin-line"></i>
+                                                            <span><?php echo htmlspecialchars($hotel['hotel_location']); ?></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <?php
-                $stmt->close();
-                $stmt_hotels->close();
-                $conn->close();
-                ?>
                 <div class="lg:w-1/3">
                     <div class="bg-white rounded-lg shadow-sm border p-6 sticky top-4">
                         <h3 class="text-lg font-medium mb-6">Thông tin đặt tour</h3>
@@ -229,7 +227,7 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center justify-between">
-                                        <span class="text-sm">Trẻ em (6)</span>
+                                        <span class="text-sm">Trẻ em (<=6 tuổi)</span>
                                         <div class="flex items-center">
                                             <button type="button"
                                                 class="w-8 h-8 border border-gray-300 rounded-l-lg flex items-center justify-center hover:bg-gray-50 transition-colors decrease-child">
@@ -385,14 +383,9 @@
             const childCountText = form.querySelector('.child-count-text');
             const adultTotal = form.querySelector('.adult-total');
             const childTotal = form.querySelector('.child-total');
-            const hotelPriceText = form.querySelector('.hotel-price-text');
-            const hotelTotal = form.querySelector('.hotel-total');
             const totalAmount = form.querySelector('.total-amount');
-            const termsCheckbox = form.querySelector('.terms-checkbox');
-            const customBox = form.querySelector('.terms-custom-checkbox');
-            const checkmark = customBox.querySelector('svg');
-            const area = form.querySelector('.terms-checkbox-area');
             const departureDate = form.querySelector('.departure-date');
+            const hotelIdInput = form.querySelector('#hotel_id');
 
             const adultPrice = 4999000;
             const childPrice = 2499000;
@@ -406,7 +399,7 @@
                 const children = parseInt(childCountInput.value) || 0;
                 const adultTotalPrice = adults * adultPrice;
                 const childTotalPrice = children * childPrice;
-                const total = adultTotalPrice + childTotalPrice ;
+                const total = adultTotalPrice + childTotalPrice;
 
                 adultCountText.textContent = adults;
                 childCountText.textContent = children;
@@ -460,23 +453,21 @@
                 hotel.addEventListener('click', function () {
                     document.querySelectorAll('.hotel-option').forEach(h => h.classList.remove('border-primary'));
                     this.classList.add('border-primary');
-                    selectedHotelPrice = parseInt(this.dataset.price) || 0;
+                    hotelIdInput.value = this.dataset.hotelId || '';
                     updateTotals();
                 });
-            });
-
-            area.addEventListener('click', function (e) {
-                e.preventDefault();
-                termsCheckbox.checked = !termsCheckbox.checked;
-                termsCheckbox.dispatchEvent(new Event('change'));
             });
 
             // AJAX form submission
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
+                if (!hotelIdInput.value) {
+                    alert('Vui lòng chọn một khách sạn.');
+                    return;
+                }
                 const formData = new FormData(form);
                 formData.append('tour_id', 1); // Adjust as needed
-                formData.append('total_amount', parseInt(adultCountInput.value) * adultPrice + parseInt(childCountInput.value) * childPrice + selectedHotelPrice);
+                formData.append('total_amount', parseInt(adultCountInput.value) * adultPrice + parseInt(childCountInput.value) * childPrice);
 
                 fetch('insert_bookings.php', {
                     method: 'POST',
@@ -492,7 +483,7 @@
                     notification.style.transform = 'translateY(-100%)';
                     notification.style.transition = 'transform 0.3s';
                     notification.innerHTML = `
-                        <i class="ri-${data.status === 'success' ? '' : 'error-warning-line'}"></i>
+                        <i class="ri-${data.status === 'success' ? 'check-line' : 'error-warning-line'}"></i>
                         <span>${data.message}</span>
                     `;
                     formContainer.appendChild(notification);
@@ -509,11 +500,9 @@
                         form.reset();
                         adultCountInput.value = 1;
                         childCountInput.value = 0;
-                        selectedHotelPrice = 0;
+                        hotelIdInput.value = '';
                         document.querySelectorAll('.hotel-option').forEach(h => h.classList.remove('border-primary'));
                         updateTotals();
-                        termsCheckbox.checked = false;
-                        termsCheckbox.dispatchEvent(new Event('change'));
                     }
                 })
                 .catch(error => {
@@ -540,7 +529,24 @@
             });
             updateTotals();
         });
-        </script>
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainImage = document.querySelector('.main-image');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    // Update main image source
+                    mainImage.src = this.querySelector('img').src;
+
+                    // Update active class
+                    galleryItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
