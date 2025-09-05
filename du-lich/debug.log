@@ -1,0 +1,13 @@
+Array
+(
+    [hotel_id] => 7
+    [full_name] => asdas
+    [phone] => asdasd
+    [email] => anhndhe151333@fpt.edu.vn
+    [departure_date] => 2025-09-18
+    [adult_quantity] => 4
+    [child_quantity] => 2
+    [notes] => asdasdas
+    [tour_id] => 6
+    [total_amount] => 24994000
+)

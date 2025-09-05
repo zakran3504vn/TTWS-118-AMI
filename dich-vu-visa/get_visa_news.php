@@ -18,7 +18,7 @@
                         <span class="text-primary rounded text-l mb-3 inline-block w-fit">'.$date.'</span>
                         <h3 class="text-lg font-semibold mb-2">'.$row['title'].'</h3>
                         <p class="text-gray-600 mb-4 text-sm">'.$row['summary'].'</p>
-                        <a href="detail_visa.php?id='.$row['id'].'"
+                        <a href="visa_detail.php?id='.$row['id'].'"
                         class="mt-1 bg-primary text-white px-3 py-1 rounded text-sm hover:bg-secondary transition-colors self-start">Đọc thêm</a>
                     </div>
                 </article>';

@@ -51,7 +51,7 @@ function getAllDataProducts($conn) {
 }
 
 //Hàm lấy phân trang sản phẩm
-function getPaginatedNews($conn, $filter, $page = 1, $perPage = 4, $search = '', $excludeCategory = '') {
+function getPaginatedNews($conn, $filter, $page = 1, $perPage = 3, $search = '', $excludeCategory = '') {
     $offset = ($page - 1) * $perPage;
     
     // Base query with category exclusion
@@ -202,30 +202,75 @@ function getAllBrands($conn) {
     return $brands;
 }
 
-//Hàm lấy ra chi tiết sản phẩm
-function getProductDetails($conn, $product_id) {
-    // Khởi tạo mảng kết quả
-    $product = array();
-    
-    // Đảm bảo product_id là số nguyên
-    $product_id = (int)$product_id;
-    
-    // Câu truy vấn SQL để lấy chi tiết sản phẩm
-    $query = "SELECT * FROM products WHERE product_id = $product_id LIMIT 1";
-    
-    // Thực thi truy vấn
-    $stmt = $conn->query($query);
-    
-    // Kiểm tra và lấy dữ liệu
-    if ($stmt && $stmt->num_rows > 0) {
-        $product = $stmt->fetch_assoc(); // Lấy dòng dữ liệu đầu tiên
-    } else {
-        // Trả về lỗi nếu không tìm thấy sản phẩm
-        $product = array('error' => 'Không tìm thấy sản phẩm với ID: ' . $product_id);
+function getTourDetails($conn, $tour_id) {
+    // Get tour ID from query parameter (e.g., ?id=1)
+    $tour_id = isset($_GET['id']) ? intval($_GET['id']) : 1;
+
+    // Fetch tour details, including continent
+    $sql_tour = "SELECT title, departure_location, duration_days, duration_nights, transportation, description, itinerary, image_url, continent 
+                FROM tours 
+                WHERE tour_id = ?";
+    $stmt = $conn->prepare($sql_tour);
+    $stmt->bind_param("i", $tour_id);
+    $stmt->execute();
+    $tour_result = $stmt->get_result();
+    $tour = $tour_result->fetch_assoc();
+    $stmt->close();
+
+    // Fetch associated hotels
+    $sql_hotels = "SELECT h.hotel_id, h.hotel_name, h.hotel_img, h.hotel_location 
+                FROM hotels h
+                JOIN hotel_tour_mapping htm ON h.hotel_id = htm.hotel_id
+                WHERE htm.tour_id = ?";
+    $stmt_hotels = $conn->prepare($sql_hotels);
+    $stmt_hotels->bind_param("i", $tour_id);
+    $stmt_hotels->execute();
+    $hotels_result = $stmt_hotels->get_result();
+    $hotels = [];
+    while ($row = $hotels_result->fetch_assoc()) {
+        $hotels[] = $row;
     }
-    
-    // Trả về kết quả
-    return $product;
+    $stmt_hotels->close();
+
+    // Fetch related tours from the same continent, excluding the current tour
+    $related_tours = [];
+    if (!empty($tour['continent'])) {
+        $sql_related = "SELECT tour_id, title, duration_days, duration_nights, departure_location, sale_price 
+                       FROM tours 
+                       WHERE continent = ? AND tour_id != ? 
+                       LIMIT 3";
+        $stmt_related = $conn->prepare($sql_related);
+        $stmt_related->bind_param("si", $tour['continent'], $tour_id);
+        $stmt_related->execute();
+        $related_result = $stmt_related->get_result();
+        while ($row = $related_result->fetch_assoc()) {
+            $related_tours[] = $row;
+        }
+        $stmt_related->close();
+    }
+
+    // Split image_url into an array (assuming comma-separated URLs)
+    $images = !empty($tour['image_url']) ? explode(',', $tour['image_url']) : [];
+    $main_image = !empty($images) ? trim($images[0]) : 'https://readdy.ai/api/search-image?query=placeholder&width=1200&height=800';
+    $gallery_images = array_slice($images, 1, 9); // Limit to 9 gallery images
+
+    // Parse itinerary (assuming JSON or line-separated text)
+    $itinerary_items = !empty($tour['itinerary']) ? json_decode($tour['itinerary'], true) : [];
+    if (!is_array($itinerary_items)) {
+        $itinerary_items = !empty($tour['itinerary']) ? explode("\n", $tour['itinerary']) : ['No itinerary available'];
+    }
+
+    // Prepare duration string
+    $duration = "{$tour['duration_days']} ngày {$tour['duration_nights']} đêm";
+    return [
+        'tour' => $tour,
+        'hotels' => $hotels,
+        'main_image' => $main_image,
+        'gallery_images' => $gallery_images,
+        'itinerary_items' => $itinerary_items,
+        'duration' => $duration,
+        'related_tours' => $related_tours
+    ];
 }
 
 //Hàm lấy sản phẩm liên quan
@@ -829,6 +874,136 @@ function getRelatedNews($conn, $category, $current_id, $limit = 3) {
     $stmt->execute();
     $result = $stmt->get_result();
     return $result->fetch_all(MYSQLI_ASSOC);
+}
+
+
+function getPaginatedToursFiltered($conn, $continent = 'all', $sort = 'default', $page = 1, $perPage = 6, $search = '', $duration = 'all', $price = 'all') {
+    $offset = ($page - 1) * $perPage;
+    
+    // Base query
+    $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tours WHERE 1=1";
+    $params = [];
+    $types = "";
+    
+    // Continent filter
+    if ($continent !== 'all') {
+        $sql .= " AND continent = ?";
+        $params[] = $continent;
+        $types .= "s";
+    }
+    
+    // Search filter
+    if (!empty($search)) {
+        $sql .= " AND (title LIKE ? OR destination LIKE ?)";
+        $searchTerm = "%{$search}%";
+        $params[] = $searchTerm;
+        $params[] = $searchTerm;
+        $types .= "ss";
+    }
+    
+    // Duration filter
+    if ($duration !== 'all' && $duration !== 'Thời gian tour') {
+        if ($duration === 'Trên 15 ngày') {
+            $sql .= " AND duration_days > ?";
+            $params[] = 15;
+            $types .= "i";
+        } else {
+            $range = explode('-', str_replace(' ngày', '', $duration));
+            $minDays = (int)$range[0];
+            $maxDays = isset($range[1]) ? (int)$range[1] : $minDays;
+            $sql .= " AND duration_days BETWEEN ? AND ?";
+            $params[] = $minDays;
+            $params[] = $maxDays;
+            $types .= "ii";
+        }
+    }
+    
+    // Price filter
+    if ($price !== 'all' && $price !== 'Khoảng giá') {
+        if ($price === 'Dưới 10 triệu') {
+            $sql .= " AND sale_price < ?";
+            $params[] = 10000000;
+            $types .= "i";
+        } elseif ($price === 'Trên 50 triệu') {
+            $sql .= " AND sale_price > ?";
+            $params[] = 50000000;
+            $types .= "i";
+        } else {
+            $range = explode('-', str_replace(' triệu', '', $price));
+            $minPrice = (int)$range[0] * 1000000;
+            $maxPrice = (int)$range[1] * 1000000;
+            $sql .= " AND sale_price BETWEEN ? AND ?";
+            $params[] = $minPrice;
+            $params[] = $maxPrice;
+            $types .= "ii";
+        }
+    }
+    
+    // Sorting
+    switch ($sort) {
+        case 'price-asc':
+            $sql .= " ORDER BY sale_price ASC";
+            break;
+        case 'price-desc':
+            $sql .= " ORDER BY sale_price DESC";
+            break;
+        case 'duration-asc':
+            $sql .= " ORDER BY duration_days ASC";
+            break;
+        case 'duration-desc':
+            $sql .= " ORDER BY duration_days DESC";
+            break;
+        default:
+            $sql .= " ORDER BY tour_id DESC";
+            break;
+    }
+    
+    // Add pagination
+    $sql .= " LIMIT ? OFFSET ?";
+    $params[] = $perPage;
+    $params[] = $offset;
+    $types .= "ii";
+    
+    // Debug query and parameters
+    error_log("SQL Query: $sql");
+    error_log("Parameters: " . json_encode($params));
+    
+    // Prepare and execute
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        error_log("Prepare failed: " . $conn->error);
+        return ['tours' => [], 'total_pages' => 1];
+    }
+    
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+    
+    if (!$stmt->execute()) {
+        error_log("Execute failed: " . $stmt->error);
+        return ['tours' => [], 'total_pages' => 1];
+    }
+    
+    $result = $stmt->get_result();
+    $tours = $result->fetch_all(MYSQLI_ASSOC);
+    $stmt->close();
+    
+    // Get total records for pagination
+    $totalResult = $conn->query("SELECT FOUND_ROWS() AS total");
+    if (!$totalResult) {
+        error_log("FOUND_ROWS failed: " . $conn->error);
+        return ['tours' => $tours, 'total_pages' => 1];
+    }
+    
+    $totalRows = $totalResult->fetch_assoc()['total'];
+    $totalPages = max(1, ceil($totalRows / $perPage));
+    
+    error_log("Total Rows: $totalRows, Total Pages: $totalPages, Page: $page, Offset: $offset");
+    
+    return [
+        'tours' => $tours,
+        'total_pages' => $totalPages
+    ];
 }
 
 ?>

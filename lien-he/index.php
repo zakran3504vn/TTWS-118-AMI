@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#e91e63',
+                        primary: '#e92063',
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
@@ -249,13 +249,13 @@
     include ("../includes/footer_child.php");
     include ("../includes/cta.php");
     ?>
-    <script id="contactForm">
+<script id="contactForm">
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('contactForm');
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             const formData = new FormData(form);
-            fetch('insert-contact.php', {
+            fetch('insert_contact.php', {
                 method: 'POST',
                 body: formData
             })
@@ -285,7 +285,7 @@
             });
         });
     });
-    </script>
+</script>
 </body>
 
 </html>
