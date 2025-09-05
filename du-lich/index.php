@@ -197,13 +197,34 @@
             const priceFilter = document.getElementById('priceFilter');
             const searchButton = document.getElementById('searchButton');
 
-            // Initialize from URL
+            // Initialize from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            let currentContinent = urlParams.get('continent') || 'all';
+            let currentContinent = urlParams.get('continent')?.toLowerCase() || 'all';
             let currentPage = parseInt(urlParams.get('page')) || 1;
-            let searchTimeout;
+            
+            // Populate search input from URL parameter
+            const searchParam = urlParams.get('search');
+            if (searchParam) {
+                searchInput.value = decodeURIComponent(searchParam);
+            }
+            
+            // Populate filter dropdowns from URL parameters
+            const durationParam = urlParams.get('duration');
+            if (durationParam && durationParam !== 'all') {
+                durationFilter.value = durationParam;
+            }
+            
+            const priceParam = urlParams.get('price');
+            if (priceParam && priceParam !== 'all') {
+                priceFilter.value = priceParam;
+            }
+            
+            const sortParam = urlParams.get('sort');
+            if (sortParam && sortParam !== 'default') {
+                sortSelect.value = sortParam;
+            }
 
-            // Set active tab
+            // Set active continent tab
             const activeTab = document.querySelector(`.continent-tab[data-continent="${currentContinent}"]`);
             if (activeTab) {
                 continentTabs.forEach(t => {
@@ -212,10 +233,38 @@
                 });
                 activeTab.classList.add("active", "bg-primary", "text-white");
                 activeTab.classList.remove("bg-white", "text-gray-600");
+            } else {
+                // Fallback to 'all' if continent is invalid
+                currentContinent = 'all';
+                const allTab = document.querySelector('.continent-tab[data-continent="all"]');
+                allTab.classList.add("active", "bg-primary", "text-white");
+                allTab.classList.remove("bg-white", "text-gray-600");
             }
 
             // Initial fetch
             fetchTours();
+
+            // Function to handle search (both button click and Enter key)
+            function handleSearch() {
+                // Reset continent to "All" when searching
+                currentContinent = 'all';
+                
+                // Update continent tab UI
+                continentTabs.forEach(t => {
+                    t.classList.remove("active", "bg-primary", "text-white");
+                    t.classList.add("bg-white", "text-gray-600");
+                });
+                const allTab = document.querySelector('.continent-tab[data-continent="all"]');
+                allTab.classList.add("active", "bg-primary", "text-white");
+                allTab.classList.remove("bg-white", "text-gray-600");
+                
+                // Reset to first page
+                currentPage = 1;
+                
+                // Update URL and fetch tours
+                updateUrl();
+                fetchTours();
+            }
 
             // Event listeners
             continentTabs.forEach(tab => {
@@ -233,34 +282,33 @@
                 });
             });
 
-            searchInput.addEventListener('input', () => {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    currentPage = 1;
-                    updateUrl();
-                    fetchTours();
-                }, 300);
+            // Search button click event
+            searchButton.addEventListener('click', handleSearch);
+
+            // Enter key event for search input
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSearch();
+                }
+            });
+
+            // Enter key events for filter dropdowns
+            durationFilter.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSearch();
+                }
+            });
+
+            priceFilter.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    handleSearch();
+                }
             });
 
             sortSelect.addEventListener('change', () => {
-                currentPage = 1;
-                updateUrl();
-                fetchTours();
-            });
-
-            durationFilter.addEventListener('change', () => {
-                currentPage = 1;
-                updateUrl();
-                fetchTours();
-            });
-
-            priceFilter.addEventListener('change', () => {
-                currentPage = 1;
-                updateUrl();
-                fetchTours();
-            });
-
-            searchButton.addEventListener('click', () => {
                 currentPage = 1;
                 updateUrl();
                 fetchTours();
@@ -274,7 +322,6 @@
 
                 const url = `./get_tour.php?continent=${encodeURIComponent(currentContinent)}&page=${currentPage}&search=${encodeURIComponent(searchTerm)}&sort=${encodeURIComponent(sort)}&duration=${encodeURIComponent(duration)}&price=${encodeURIComponent(price)}`;
                 
-                // Debug URL
                 console.log("Fetching URL:", url);
 
                 fetch(url)
@@ -283,10 +330,7 @@
                         return res.text();
                     })
                     .then(html => {
-                        // Debug response
                         console.log("Raw HTML response:", html);
-                        
-                        // Parse debug comments
                         const debugMatch = html.match(/<!-- Debug Info:[^>]+-->/);
                         if (debugMatch) {
                             console.log("Server Debug Info:", debugMatch[0]);
@@ -294,37 +338,22 @@
                         
                         container.innerHTML = html;
                         
-                        // Debug pagination data
                         const paginationData = document.getElementById('pagination-data');
                         if (paginationData) {
                             console.log("Pagination Data:", {
                                 totalPages: paginationData.dataset.totalPages,
                                 currentPage: currentPage
                             });
+                            updatePagination(parseInt(paginationData.dataset.totalPages) || 1);
                         } else {
                             console.warn("No pagination data found!");
+                            container.innerHTML = "<p class='text-center text-red-500'>Không tìm thấy tour nào.</p>";
                         }
-                        
-                        updatePaginationFromData();
                     })
                     .catch(err => {
                         console.error('Fetch error:', err);
                         container.innerHTML = "<p class='text-center text-red-500'>Lỗi tải dữ liệu.</p>";
                     });
-            }
-
-            function updatePaginationFromData() {
-                const paginationData = document.getElementById('pagination-data');
-                if (paginationData) {
-                    const totalPages = parseInt(paginationData.dataset.totalPages) || 1;
-                    console.log("Updating pagination:", {
-                        totalPages: totalPages,
-                        currentPage: currentPage
-                    });
-                    updatePagination(totalPages);
-                } else {
-                    console.warn("No pagination data element found!");
-                }
             }
 
             function updatePagination(totalPages) {
