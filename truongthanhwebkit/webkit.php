@@ -202,7 +202,6 @@ function getAllBrands($conn) {
     return $brands;
 }
 
-//Hàm lấy ra chi tiết sản phẩm
 function getTourDetails($conn, $tour_id) {
     // Get tour ID from query parameter (e.g., ?tour_id=1)
     $tour_id = isset($_GET['tour_id']) ? intval($_GET['tour_id']) : 1;
@@ -216,9 +215,10 @@ function getTourDetails($conn, $tour_id) {
     $stmt->execute();
     $tour_result = $stmt->get_result();
     $tour = $tour_result->fetch_assoc();
+    $stmt->close();
 
     // Fetch associated hotels
-    $sql_hotels = "SELECT h.hotel_name, h.hotel_img, h.hotel_location 
+    $sql_hotels = "SELECT h.hotel_id, h.hotel_name, h.hotel_img, h.hotel_location 
                 FROM hotels h
                 JOIN hotel_tour_mapping htm ON h.hotel_id = htm.hotel_id
                 WHERE htm.tour_id = ?";
@@ -230,6 +230,7 @@ function getTourDetails($conn, $tour_id) {
     while ($row = $hotels_result->fetch_assoc()) {
         $hotels[] = $row;
     }
+    $stmt_hotels->close();
 
     // Split image_url into an array (assuming comma-separated URLs)
     $images = !empty($tour['image_url']) ? explode(',', $tour['image_url']) : [];
