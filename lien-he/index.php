@@ -16,7 +16,7 @@
             theme: {
                 extend: {
                     colors: {
-
+                        primary: '#e92063',
                         secondary: '#57b5e7'
                     },
                     borderRadius: {
