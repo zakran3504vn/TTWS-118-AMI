@@ -26,18 +26,12 @@
                                         Du lịch nước ngoài
                                         <i class="ri-arrow-right-s-line"></i>
                                     </a>
-                                    <div
-                                        class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
-                                        <a href="../du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
-                                            Á</a>
-                                        <a href="../du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
-                                            Âu</a>
-                                        <a href="../du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
-                                            Phi</a>
-                                        <a href="../du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
-                                            Úc</a>
-                                        <a href="../du-lich/index.php" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu
-                                            Mỹ</a>
+                                    <div class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
+                                        <a href="../du-lich/index.php?continent=asia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Á</a>
+                                        <a href="../du-lich/index.php?continent=europe" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Âu</a>
+                                        <a href="../du-lich/index.php?continent=africa" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Phi</a>
+                                        <a href="../du-lich/index.php?continent=oceania" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Úc</a>
+                                        <a href="../du-lich/index.php?continent=america" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Mỹ</a>
                                     </div>
                                 </div>
                             </div>
@@ -50,13 +44,13 @@
                         <a href="../lien-he/index.php"
                             data-readdy="true"
                             class="text-black font-medium text-l hover:text-primary transition-colors">LIÊN HỆ</a>
-                        <div class="flex items-center bg-gray-100 rounded ml-4">
-                            <input type="text" placeholder="Tìm kiếm..."
+                        <form action="../du-lich/index.php" method="GET" class="flex items-center bg-gray-100 rounded ml-4">
+                            <input type="text" name="search" placeholder="Tìm kiếm tour..."
                                 class="px-3 py-1 text-gray-800 text-sm border-none outline-none rounded-l bg-transparent">
-                            <button class="bg-primary px-3 py-1 rounded-r">
+                            <button type="submit" class="bg-primary px-3 py-1 rounded-r">
                                 <i class="ri-search-line text-white"></i>
                             </button>
-                        </div>
+                        </form>
                     </nav>
                     <button id="menuToggle" class="lg:hidden w-10 h-10 flex items-center justify-center">
                         <i class="ri-menu-line text-xl"></i>
@@ -109,11 +103,11 @@
                                             </button>
                                             <div class="absolute left-full top-0 bg-white shadow-lg rounded-lg py-2 w-48 hidden group-hover/sub:block">
                                                 <a href="../du-lich/index.php?continent=all" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Tất cả</a>
-                                                <a href="./du-lich/index.php?continent=Asia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Á</a>
-                                                <a href="./du-lich/index.php?continent=Europe" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Âu</a>
-                                                <a href="./du-lich/index.php?continent=Africa" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Phi</a>
-                                                <a href="./du-lich/index.php?continent=Australia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Úc</a>
-                                                <a href="./du-lich/index.php?continent=America" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Mỹ</a>
+                                                <a href="../du-lich/index.php?continent=asia" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Á</a>
+                                                <a href="../du-lich/index.php?continent=europe" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Âu</a>
+                                                <a href="../du-lich/index.php?continent=africa" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Phi</a>
+                                                <a href="../du-lich/index.php?continent=oceania" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Úc</a>
+                                                <a href="../du-lich/index.php?continent=america" class="block px-4 py-2 hover:bg-gray-50 hover:text-primary">Châu Mỹ</a>
                                             </div>
                                         </div>
                                     </div>

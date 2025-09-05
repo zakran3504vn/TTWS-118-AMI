@@ -44,13 +44,13 @@
                     <a href="./lien-he/index.php"
                         data-readdy="true"
                         class="text-black font-medium text-l hover:text-primary transition-colors">LIÊN HỆ</a>
-                    <div class="flex items-center bg-gray-100 rounded ml-4">
-                        <input type="text" placeholder="Tìm kiếm..."
+                    <form action="./du-lich/index.php" method="GET" class="flex items-center bg-gray-100 rounded ml-4">
+                        <input type="text" name="search" placeholder="Tìm kiếm tour..."
                             class="px-3 py-1 text-gray-800 text-sm border-none outline-none rounded-l bg-transparent">
-                        <button class="bg-primary px-3 py-1 rounded-r">
+                        <button type="submit" class="bg-primary px-3 py-1 rounded-r">
                             <i class="ri-search-line text-white"></i>
                         </button>
-                    </div>
+                    </form>
                 </nav>
                 <button id="menuToggle" class="lg:hidden w-10 h-10 flex items-center justify-center">
                     <i class="ri-menu-line text-xl"></i>
@@ -70,13 +70,13 @@
                                 <i class="ri-customer-service-line"></i>
                                 <span>Hotline: <strong></strong></span>
                             </div>
-                            <div class="flex items-center bg-gray-100 rounded">
-                                <input type="text" placeholder="Bạn muốn đi đâu ? 3 ngày"
+                            <form action="./du-lich/index.php" method="GET" class="flex items-center bg-gray-100 rounded">
+                                <input type="text" name="search" placeholder="Bạn muốn đi đâu ? 3 ngày"
                                     class="px-3 py-2 text-gray-800 text-sm border-none outline-none rounded-l bg-transparent w-full">
-                                <button class="bg-primary px-3 py-2 rounded-r">
+                                <button type="submit" class="bg-primary px-3 py-2 rounded-r">
                                     <i class="ri-search-line text-white"></i>
                                 </button>
-                            </div>
+                            </form>
                         </div>
                         <nav class="p-4">
                             <a href="./index.php"
