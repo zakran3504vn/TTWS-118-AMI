@@ -49,6 +49,15 @@
         input[type="number"] {
             -moz-appearance: textfield;
         }
+
+        .gallery-item {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item.active {
+            border-color: #e91e63;
+        }
     </style>
 </head>
 
@@ -78,7 +87,7 @@
                 <a href="./index.php"
                     data-readdy="true" class="text-gray-600 hover:text-primary">Du lịch nước ngoài</a>
                 <i class="ri-arrow-right-s-line text-gray-400"></i>
-                <span class="text-primary font-medium">Tên tour du lịch</span>
+                <span class="text-primary font-medium"><?php echo htmlspecialchars($tour['title']); ?></span>
             </nav>
         </div>
     </div>
@@ -151,9 +160,6 @@
                                 <div class="flex items-center justify-between mb-4">
                                     <h3 class="text-lg font-medium">Khách sạn tương ứng</h3>
                                 </div>
-                                <?php
-                                var_dump($hotels);
-                                ?>
                                 <div class="grid grid-cols-1 gap-4 hotel-list">
                                     <?php foreach ($hotels as $hotel): ?>
                                         <div class="border rounded-lg overflow-hidden cursor-pointer hotel-option" data-hotel-id="<?php echo htmlspecialchars($hotel['hotel_id']); ?>">
@@ -182,6 +188,7 @@
                     <div class="bg-white rounded-lg shadow-sm border p-6 sticky top-4">
                         <h3 class="text-lg font-medium mb-6">Thông tin đặt tour</h3>
                         <form id="bookingForm" class="space-y-6">
+                            <input type="hidden" name="hotel_id" id="hotel_id" value="">
                             <div>
                                 <label class="block text-sm font-medium mb-2">Họ và tên</label>
                                 <input type="text" name="full_name" required
@@ -203,7 +210,7 @@
                             <div>
                                 <label class="block text-sm font-medium mb-2">Ngày khởi hành</label>
                                 <div class="relative">
-                                    <input type="date" name="departure_date" required min=""
+                                    <input type="date" name="departure_date" required
                                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm appearance-none departure-date">
                                 </div>
                             </div>
@@ -265,19 +272,8 @@
                                 </div>
                             </div>
                             <div class="space-y-4">
-                                <label class="flex items-center gap-3 cursor-pointer select-none">
-                                    <!-- <input type="checkbox" name="terms_accepted" required class="terms-checkbox sr-only"> -->
-                                    <span class="relative flex items-center terms-checkbox-area">
-                                        <span class="w-5 h-5 border-2 border-gray-300 rounded transition-colors flex items-center justify-center terms-custom-checkbox hidden">
-                                            <svg class="hidden w-3 h-3 text-primary" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 16 16">
-                                                <path d="M4 8l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </span>
-                                    </span>
-                                    <!-- <span class="text-sm">Tôi đồng ý với <a href="#" class="text-primary hover:underline">điều khoản</a> và <a href="#" class="text-primary hover:underline">điều kiện</a> đặt tour</span> -->
-                                </label>
                                 <button type="submit"
-                                    class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+                                    class="w-full bg-primary text-white py-3 rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     Xác nhận đặt tour
                                 </button>
                             </div>
@@ -308,12 +304,11 @@
                         <div class="flex items-center justify-between">
                             <span class="text-primary font-bold">2.499.000đ</span>
                             <button
-                                class="px-4 py-2 bg-primary/10 text-primary !rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
+                                class="px-4 py-2 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
                                 chi tiết</button>
                         </div>
                     </div>
                 </div>
-
                 <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div class="relative h-48">
                         <img src="https://readdy.ai/api/search-image?query=Majestic%20Sapa%20rice%20terraces%20in%20golden%20light%2C%20ethnic%20minority%20villages%2C%20misty%20mountains%2C%20lush%20green%20landscape%2C%20northern%20Vietnam%20highlands%2C%20travel%20destination&width=600&height=400&seq=related2&orientation=landscape"
@@ -330,12 +325,11 @@
                         <div class="flex items-center justify-between">
                             <span class="text-primary font-bold">3.999.000đ</span>
                             <button
-                                class="px-4 py-2 bg-primary/10 text-primary !rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
+                                class="px-4 py-2 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
                                 chi tiết</button>
                         </div>
                     </div>
                 </div>
-
                 <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div class="relative h-48">
                         <img src="https://readdy.ai/api/search-image?query=Mekong%20Delta%20scenic%20waterway%2C%20traditional%20floating%20market%2C%20fruit%20orchards%2C%20local%20life%2C%20vibrant%20culture%2C%20authentic%20Vietnamese%20scene%2C%20professional%20photography&width=600&height=400&seq=related3&orientation=landscape"
@@ -352,7 +346,7 @@
                         <div class="flex items-center justify-between">
                             <span class="text-primary font-bold">1.999.000đ</span>
                             <button
-                                class="px-4 py-2 bg-primary/10 text-primary !rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
+                                class="px-4 py-2 bg-primary/10 text-primary rounded-button hover:bg-primary/20 transition-colors whitespace-nowrap">Xem
                                 chi tiết</button>
                         </div>
                     </div>
@@ -364,19 +358,14 @@
     include ("../includes/footer_child.php");
     include ("../includes/cta.php");
     ?>
-    <style>
-        .gallery-item {
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .gallery-item.active {
-            border-color: #e91e63;
-        }
-    </style>
-    <script id="bookingForm">
-        document.addEventListener('DOMContentLoaded', function () {
+    <script id="formControls">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form handling
             const form = document.getElementById('bookingForm');
+            if (!form) {
+                console.error('Form with id "bookingForm" not found');
+                return;
+            }
             const adultCountInput = form.querySelector('.adult-count');
             const childCountInput = form.querySelector('.child-count');
             const adultCountText = form.querySelector('.adult-count-text');
@@ -386,6 +375,11 @@
             const totalAmount = form.querySelector('.total-amount');
             const departureDate = form.querySelector('.departure-date');
             const hotelIdInput = form.querySelector('#hotel_id');
+
+            if (!adultCountInput || !childCountInput || !adultCountText || !childCountText || !adultTotal || !childTotal || !totalAmount || !departureDate || !hotelIdInput) {
+                console.error('One or more form elements not found');
+                return;
+            }
 
             const adultPrice = 4999000;
             const childPrice = 2499000;
@@ -450,31 +444,43 @@
 
             // Hotel selection
             document.querySelectorAll('.hotel-option').forEach(hotel => {
-                hotel.addEventListener('click', function () {
+                hotel.addEventListener('click', function() {
                     document.querySelectorAll('.hotel-option').forEach(h => h.classList.remove('border-primary'));
                     this.classList.add('border-primary');
                     hotelIdInput.value = this.dataset.hotelId || '';
+                    console.log('Hotel selected, ID:', hotelIdInput.value);
                     updateTotals();
                 });
             });
 
-            // AJAX form submission
-            form.addEventListener('submit', function (e) {
+            // Form submission
+            form.addEventListener('submit', function(e) {
                 e.preventDefault();
+                console.log('Form submission triggered');
+                console.log('FormData:', Object.fromEntries(new FormData(form)));
                 if (!hotelIdInput.value) {
                     alert('Vui lòng chọn một khách sạn.');
+                    console.log('No hotel selected');
                     return;
                 }
                 const formData = new FormData(form);
-                formData.append('tour_id', 1); // Adjust as needed
+                formData.append('tour_id', <?php echo json_encode($tour_id); ?>);
                 formData.append('total_amount', parseInt(adultCountInput.value) * adultPrice + parseInt(childCountInput.value) * childPrice);
+                console.log('Sending FormData:', Object.fromEntries(formData));
 
                 fetch('insert_bookings.php', {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
+                .then(response => {
+                    console.log('Fetch response status:', response.status);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
+                    console.log('Server response:', data);
                     const formContainer = form.closest('.space-y-6');
                     const notification = document.createElement('div');
                     notification.className = `absolute bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2 ${
@@ -506,6 +512,7 @@
                     }
                 })
                 .catch(error => {
+                    console.error('Fetch error:', error);
                     const formContainer = form.closest('.space-y-6');
                     const notification = document.createElement('div');
                     notification.className = 'absolute bottom-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2';
@@ -527,24 +534,23 @@
                     }, 3000);
                 });
             });
-            updateTotals();
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+
+            // Image gallery handling
             const mainImage = document.querySelector('.main-image');
             const galleryItems = document.querySelectorAll('.gallery-item');
-
-            galleryItems.forEach(item => {
-                item.addEventListener('click', function () {
-                    // Update main image source
-                    mainImage.src = this.querySelector('img').src;
-
-                    // Update active class
-                    galleryItems.forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
+            if (mainImage && galleryItems.length) {
+                galleryItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        mainImage.src = this.querySelector('img').src;
+                        galleryItems.forEach(i => i.classList.remove('active'));
+                        this.classList.add('active');
+                    });
                 });
-            });
+            } else {
+                console.warn('Image gallery elements not found');
+            }
+
+            updateTotals();
         });
     </script>
 </body>
