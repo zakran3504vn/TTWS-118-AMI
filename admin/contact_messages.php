@@ -1,20 +1,22 @@
 <!-- PHP -->
 <?php
 include '../config/db_connection.php';
-if (isset($_GET['current_page'])) {
-    switch ($_GET['current_page']) {
-        case 'delete_contact':
-            include 'delete_contact.php';
-            exit;
-        case 'add_contact':
-            include 'add_contact.php';
-            exit;
-        case 'edit_contact':
-            include 'edit_contact.php';
-            exit;
+
+// Handle deletion
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    $id = $_POST['delete_id'];
+    $stmt = $conn->prepare("DELETE FROM contact_message WHERE id = ?");
+    $stmt->bind_param('i', $id);
+    if ($stmt->execute()) {
+        header('Location: contact_messages.php?status=success&message=' . urlencode('Xóa tin nhắn thành công!'));
+    } else {
+        header('Location: contact_messages.php?status=error&message=' . urlencode('Không thể xóa tin nhắn.'));
     }
+    $stmt->close();
+    $conn->close();
+    exit;
 }
-// $img_path = 'https://id.truongthanhweb.com/admin/assets/img/' . 'assets/img/' . $_SESSION['username'];
+
 // Số bản ghi hiển thị mỗi trang
 $records_per_page = 10;
 
@@ -32,8 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['search_keyword'])) {
 
 // Lấy tổng số bản ghi
 if (!empty($search_keyword)) {
-    // Nếu có tìm kiếm
-    $total_records_sql = "SELECT COUNT(*) AS total FROM contact_messages WHERE full_name LIKE ? OR email LIKE ? OR subject LIKE ?";
+    $total_records_sql = "SELECT COUNT(*) AS total FROM contact_message WHERE full_name LIKE ? OR email LIKE ? OR subject LIKE ?";
     $stmt = $conn->prepare($total_records_sql);
     $search_param = '%' . $search_keyword . '%';
     $stmt->bind_param('sss', $search_param, $search_param, $search_param);
@@ -42,27 +43,31 @@ if (!empty($search_keyword)) {
     $total_records = $result->fetch_assoc()['total'];
     $stmt->close();
 
-    // Truy vấn lấy dữ liệu phân trang với tìm kiếm
-    $sql = "SELECT * FROM contact_messages WHERE title LIKE ? ORDER BY create_at DESC LIMIT ? OFFSET ?";
+    $sql = "SELECT * FROM contact_message WHERE full_name LIKE ? OR email LIKE ? OR subject LIKE ? ORDER BY created_at DESC LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param('sii', $search_param, $records_per_page, $offset);
+    $stmt->bind_param('sssii', $search_param, $search_param, $search_param, $records_per_page, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $stmt->close();
 } else {
-    // Nếu không có tìm kiếm
-    $total_records_sql = "SELECT COUNT(*) AS total FROM contact_messages";
+    $total_records_sql = "SELECT COUNT(*) AS total FROM contact_message";
     $result = $conn->query($total_records_sql);
     $total_records = $result->fetch_assoc()['total'];
 
-    // Truy vấn lấy dữ liệu phân trang
-    $sql = "SELECT * FROM contact_messages ORDER BY id DESC LIMIT $records_per_page OFFSET $offset";
+    $sql = "SELECT * FROM contact_message ORDER BY created_at DESC LIMIT $records_per_page OFFSET $offset";
     $result = $conn->query($sql);
 }
 
-
 // Tính tổng số trang
 $total_pages = ceil($total_records / $records_per_page);
+
+// Handle success/error message
+$message = '';
+$status = '';
+if (isset($_GET['status']) && isset($_GET['message'])) {
+    $message = htmlspecialchars($_GET['message']);
+    $status = $_GET['status'] === 'success' ? 'success' : 'danger';
+}
 
 $conn->close();
 ?>
@@ -158,7 +163,7 @@ $conn->close();
 
 <body class="crm_body_bg">
     <?php
-    $currentPage = 'contact_messages';
+    $currentPage = 'contact_messagess';
     include('./includes/sidebar.php');
     ?>
     <section class="main_content dashboard_part">
@@ -260,15 +265,18 @@ $conn->close();
                                                     echo "<td class='news-content-preview'>" . htmlspecialchars($message_preview) . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                                                     echo "<td>
-                                                        <a href='delete_contact.php?id=" . urlencode($row['id']) . "' class='btn btn-danger text-white btn-sm delete-btn' data-id='" . urlencode($row['id']) . "'>
-                                                            <i class='fa-solid fa-trash'></i>
-                                                        </a>
+                                                        <form action='delete_contact.php' method='POST' class='delete-form'>
+                                                            <input type='hidden' name='id' value='" . htmlspecialchars($row['id']) . "'>
+                                                            <button type='button' class='btn btn-danger text-white btn-sm delete-btn'>
+                                                                <i class='fa-solid fa-trash'></i>
+                                                            </button>
+                                                        </form>
                                                     </td>";
                                                     echo "</tr>";
                                                     $stt++;
                                                 }
                                             } else {
-                                                echo "<tr><td colspan='9' class='text-center'>Không có bài viết nào.</td></tr>";
+                                                echo "<tr><td colspan='8' class='text-center'>Không có tin nhắn nào.</td></tr>";
                                             }
                                             ?>
                                         </tbody>
@@ -306,7 +314,6 @@ $conn->close();
         </div>
     </section>
 
-    <script src="./js/jquery1-3.4.1.min.js"></script>
     <script src="./js/popper1.min.js"></script>
     <script src="./js/bootstrap1.min.js"></script>
     <script src="./js/metisMenu.js"></script>
@@ -335,19 +342,11 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Xử lý sự kiện nhấp vào nút xóa
             document.querySelectorAll('.delete-btn').forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-
-                    const productId = this.getAttribute('data-id');
-
+                button.addEventListener('click', function() {
                     Swal.fire({
                         title: 'Bạn có chắc?',
-                        text: "Hành động này sẽ xóa tin nhắn này vĩnh viễn!",
-                        text: response.message || 'Không thể xóa tin nhắn.'
-                        text: 'Có lỗi kết nối đến server.'
-                        text: response.message,
+                        text: 'Hành động này sẽ xóa tin nhắn này vĩnh viễn!',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#d33',
@@ -356,40 +355,7 @@ $conn->close();
                         cancelButtonText: 'Hủy'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Gửi yêu cầu xóa đến server bằng AJAX
-                            $.ajax({
-                                url: 'delete_contact.php?id=' + productId,
-                                method: 'POST',
-                                dataType: 'json', // bắt buộc
-                                data: {
-                                    id: productId
-                                },
-                                success: function(response) {
-                                    if (response.success) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Thành công!',
-                                            text: response.message,
-                                            timer: 2000,
-                                            showConfirmButton: false
-                                        }).then(() => location.reload());
-                                    } else {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Lỗi!',
-                                            text: response.message || 'Không thể xóa sản phẩm.'
-                                        });
-                                    }
-                                },
-                                error: function() {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Lỗi!',
-                                        text: 'Có lỗi kết nối đến server.'
-                                    });
-                                }
-                            });
-
+                            button.closest('.delete-form').submit();
                         }
                     });
                 });
