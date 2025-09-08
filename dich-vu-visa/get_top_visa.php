@@ -8,7 +8,7 @@ if ($topNews && count($topNews) > 0) {
     foreach ($topNews as $row) {
         $date = date('d/m/Y', strtotime($row['created_at']));
         echo '
-        <a href="detail_visa.php?id='.$row['id'].'" class="flex gap-4">
+        <a href="visa_detail.php?id='.$row['id'].'" class="flex gap-4">
             <img src="'.$row['image'].'" 
                  alt="'.$row['title'].'" 
                  class="w-20 h-20 rounded object-cover">

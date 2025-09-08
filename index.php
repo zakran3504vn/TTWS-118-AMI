@@ -312,7 +312,7 @@
                                     <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
                                     <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
-                                <a href="./du-lich/detail_tour.php"
+                                <a href="./du-lich/tour_detail.php"
                                     class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </a>
@@ -344,7 +344,7 @@
                                     <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
                                     <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
-                                <a href="./du-lich/detail_tour.php"
+                                <a href="./du-lich/tour_detail.php"
                                     class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </a>
@@ -376,7 +376,7 @@
                                     <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
                                     <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
-                                <a href="./du-lich/detail_tour.php"
+                                <a href="./du-lich/tour_detail.php"
                                     class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </a>
@@ -408,7 +408,7 @@
                                     <span class="text-gray-500 line-through text-lg">19.999.000 đ</span>
                                     <span class="text-primary font-bold text-xl">16.999.000 đ</span>
                                 </div>
-                                <a href="./du-lich/detail_tour.php"
+                                <a href="./du-lich/tour_detail.php"
                                     class="bg-primary text-white px-6 py-4 !rounded-button text-md hover:bg-primary/90 transition-colors whitespace-nowrap">
                                     XEM TOUR
                                 </a>
