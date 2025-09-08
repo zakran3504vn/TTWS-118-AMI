@@ -1,28 +1,73 @@
 <?php
 session_start();
-include('../config/db_connection.php');
-
+include '../config/db_connection.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
-    $summary = trim($_POST['summary']);
-    $content = trim($_POST['content']);
-    $image = trim($_POST['image']);
-    $isTop = isset($_POST['isTop']) ? 'true' : 'false';
+    $description = trim($_POST['description']);
 
-    // Generate slug from title
-    $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
-    $slug = trim($slug, '-');
+    // Handle file upload
+    $image_url = '';
+    if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === UPLOAD_ERR_OK) {
+        $file = $_FILES['image_url'];
+        $allowed_extensions = ['jpg', 'jpeg', 'png'];
+        $max_file_size = 5 * 1024 * 1024; // 5MB
+        $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $upload_dir = 'assets/img/';
+        
+        // Validate file
+        if (!in_array($file_extension, $allowed_extensions)) {
+            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Chỉ hỗ trợ định dạng JPG, JPEG, PNG.'];
+            header('Location: add_visa.php');
+            $conn->close();
+            exit;
+        }
+        if ($file['size'] > $max_file_size) {
+            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Kích thước file tối đa là 5MB.'];
+            header('Location: add_visa.php');
+            $conn->close();
+            exit;
+        }
 
-    $stmt = $conn->prepare("INSERT INTO news (title, summary, content, category, image, isTop, slug) VALUES (?, ?, ?, 'Visa', ?, ?, ?)");
-    $stmt->bind_param('ssssss', $title, $summary, $content, $image, $isTop, $slug);
-    if ($stmt->execute()) {
-        $_SESSION['flash_message'] = ['status' => 'success', 'message' => 'Thêm bài viết thành công!'];
-        header('Location: visa_services.php');
+        // Create upload directory if it doesn't exist
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
+
+        // Generate unique filename
+        $filename = uniqid('visa_') . '.' . $file_extension;
+        $destination = $upload_dir . $filename;
+        if (!move_uploaded_file($file['tmp_name'], $destination)) {
+            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Không thể tải lên hình ảnh.'];
+            header('Location: add_visa.php');
+            $conn->close();
+            exit;
+        }
+        $image_url = "id.truongthanhweb.com/$destination";
     } else {
-        $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Không thể thêm bài viết.'];
+        $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Vui lòng chọn một hình ảnh.'];
+        header('Location: add_visa.php');
+        $conn->close();
+        exit;
     }
-    $stmt->close();
+
+    try {
+        $stmt = $conn->prepare("INSERT INTO visa_services (title, image_url, description, created_at) VALUES (?, ?, ?, NOW())");
+        $stmt->bind_param('sss', $title, $image_url, $description);
+        if ($stmt->execute()) {
+            $_SESSION['flash_message'] = ['status' => 'success', 'message' => 'Thêm dịch vụ visa thành công!'];
+            header('Location: visa_services.php');
+        } else {
+            throw new Exception('Không thể thêm dịch vụ visa.');
+        }
+        $stmt->close();
+    } catch (Exception $e) {
+        // Delete uploaded file if transaction fails
+        if ($image_url && file_exists($destination)) {
+            unlink($destination);
+        }
+        $_SESSION['flash_message'] = ['status' => 'danger', 'message' => $e->getMessage()];
+    }
     $conn->close();
     exit;
 }
@@ -32,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>Thêm Bài Viết Visa</title>
+    <title>Thêm Dịch Vụ Visa</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="icon" type="image/ico" href="https://truongthanhweb.com/wp-content/uploads/sites/208/2020/06/favicon.ico">
@@ -78,12 +123,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="dashboard_header_title">
-                                            <h3>Thêm Bài Viết Visa</h3>
+                                            <h3>Thêm Dịch Vụ Visa</h3>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="dashboard_breadcam text-end">
-                                            <p><a href="../index.php">Dashboard</a> <i class="fas fa-caret-right"></i> <a href="visa_services.php">Dịch Vụ Visa</a> <i class="fas fa-caret-right"></i> Thêm Bài Viết</p>
+                                            <p><a href="../index.php">Dashboard</a> <i class="fas fa-caret-right"></i> <a href="visa_services.php">Dịch Vụ Visa</a> <i class="fas fa-caret-right"></i> Thêm Dịch Vụ Visa</p>
                                         </div>
                                     </div>
                                 </div>
@@ -92,28 +137,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="col-lg-8">
                             <div class="card">
                                 <div class="card-body">
-                                    <form action="add_visa.php" method="POST">
+                                    <?php if (isset($_SESSION['flash_message'])): ?>
+                                        <div class="alert alert-<?php echo $_SESSION['flash_message']['status']; ?> alert-dismissible fade show" role="alert">
+                                            <?php echo htmlspecialchars($_SESSION['flash_message']['message']); ?>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                        <?php unset($_SESSION['flash_message']); ?>
+                                    <?php endif; ?>
+                                    <form action="add_visa.php" method="POST" enctype="multipart/form-data">
                                         <div class="mb-3">
                                             <label for="title" class="form-label">Tiêu Đề</label>
                                             <input type="text" class="form-control" id="title" name="title" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="summary" class="form-label">Tóm Tắt</label>
-                                            <textarea class="form-control" id="summary" name="summary" rows="4"></textarea>
+                                            <label for="image_url" class="form-label">Hình Ảnh (JPG, JPEG, PNG, tối đa 5MB)</label>
+                                            <input type="file" class="form-control" id="image_url" name="image_url" accept=".jpg,.jpeg,.png" required>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="content" class="form-label">Nội Dung</label>
-                                            <textarea class="form-control" id="content" name="content" rows="6" required></textarea>
+                                            <label for="description" class="form-label">Mô Tả</label>
+                                            <textarea class="form-control" id="description" name="description" rows="6" required></textarea>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="image" class="form-label">URL Hình Ảnh</label>
-                                            <input type="text" class="form-control" id="image" name="image">
-                                        </div>
-                                        <div class="mb-3 form-check">
-                                            <input type="checkbox" class="form-check-input" id="isTop" name="isTop">
-                                            <label class="form-check-label" for="isTop">Nổi Bật</label>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Thêm Bài Viết</button>
+                                        <button type="submit" class="btn btn-primary">Thêm Dịch Vụ Visa</button>
                                         <a href="visa_services.php" class="btn btn-secondary">Hủy</a>
                                     </form>
                                 </div>
@@ -122,7 +166,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
-    </section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html> 
+        </section>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
+<?php $conn->close(); ?>
