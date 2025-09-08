@@ -7,22 +7,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $tour_id = $_POST['delete_id'];
     $conn->begin_transaction();
     try {
+        // Fetch image_url to delete associated files
+        $stmt = $conn->prepare("SELECT image_url FROM tours WHERE tour_id = ?");
+        $stmt->bind_param('i', $tour_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows === 0) {
+            throw new Exception('Tour không tồn tại.');
+        }
+        $tour = $result->fetch_assoc();
+        $image_urls = json_decode($tour['image_url'], true);
+        $image_urls = is_array($image_urls) ? $image_urls : [];
+        $stmt->close();
+
         // Delete hotel mappings
         $stmt = $conn->prepare("DELETE FROM hotel_tour_mapping WHERE tour_id = ?");
         $stmt->bind_param('i', $tour_id);
         $stmt->execute();
         $stmt->close();
 
-        // Delete tour
+        // Delete tour (tour_bookings will be deleted automatically via ON DELETE CASCADE)
         $stmt = $conn->prepare("DELETE FROM tours WHERE tour_id = ?");
         $stmt->bind_param('i', $tour_id);
-        if ($stmt->execute()) {
-            $conn->commit();
-            $_SESSION['flash_message'] = ['status' => 'success', 'message' => 'Xóa tour thành công!'];
-        } else {
+        if (!$stmt->execute()) {
             throw new Exception('Không thể xóa tour.');
         }
         $stmt->close();
+
+        // Delete image files
+        foreach ($image_urls as $image_url) {
+            $file_path = str_replace('id.truongthanhweb.com/', '', $image_url);
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+        }
+
+        $conn->commit();
+        $_SESSION['flash_message'] = ['status' => 'success', 'message' => 'Xóa tour thành công!'];
     } catch (Exception $e) {
         $conn->rollback();
         $_SESSION['flash_message'] = ['status' => 'danger', 'message' => $e->getMessage()];
@@ -36,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
     $tour_id = $_POST['toggle_id'];
     $status = $_POST['status'] === 'active' ? 'inactive' : 'active';
-    $stmt = $conn->prepare("UPDATE tours SET status = ? WHERE tour_id = ?");
+    $stmt = $conn->prepare("UPDATE tours SET status = ?, updated_at = NOW() WHERE tour_id = ?");
     $stmt->bind_param('si', $status, $tour_id);
     if ($stmt->execute()) {
         $_SESSION['flash_message'] = ['status' => 'success', 'message' => 'Cập nhật trạng thái thành công!'];
@@ -75,7 +96,8 @@ if (!empty($search_keyword)) {
     $total_records = $result->fetch_assoc()['total'];
     $stmt->close();
 
-    $sql = "SELECT t.*, GROUP_CONCAT(h.hotel_name) AS hotels 
+    $sql = "SELECT t.*, GROUP_CONCAT(h.hotel_name) AS hotels, 
+                   (SELECT COUNT(*) FROM tour_bookings tb WHERE tb.tour_id = t.tour_id) AS booking_count 
             FROM tours t 
             LEFT JOIN hotel_tour_mapping htm ON t.tour_id = htm.tour_id 
             LEFT JOIN hotels h ON htm.hotel_id = h.hotel_id 
@@ -93,7 +115,8 @@ if (!empty($search_keyword)) {
     $result = $conn->query($total_records_sql);
     $total_records = $result->fetch_assoc()['total'];
 
-    $sql = "SELECT t.*, GROUP_CONCAT(h.hotel_name) AS hotels 
+    $sql = "SELECT t.*, GROUP_CONCAT(h.hotel_name) AS hotels, 
+                   (SELECT COUNT(*) FROM tour_bookings tb WHERE tb.tour_id = t.tour_id) AS booking_count 
             FROM tours t 
             LEFT JOIN hotel_tour_mapping htm ON t.tour_id = htm.tour_id 
             LEFT JOIN hotels h ON htm.hotel_id = h.hotel_id 
@@ -114,8 +137,6 @@ if (isset($_SESSION['flash_message'])) {
     $status = $_SESSION['flash_message']['status'];
     unset($_SESSION['flash_message']);
 }
-
-$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -282,6 +303,7 @@ $conn->close();
                                         <thead class="thead-light">
                                             <tr class="text-center">
                                                 <th>STT</th>
+                                                <th>Hình Ảnh</th>
                                                 <th>Tiêu Đề</th>
                                                 <th>Châu Lục</th>
                                                 <th>Điểm Đến</th>
@@ -300,8 +322,12 @@ $conn->close();
                                                 while ($row = $result->fetch_assoc()) {
                                                     $duration = $row['duration_days'] . ' ngày ' . $row['duration_nights'] . ' đêm';
                                                     $hotels = $row['hotels'] ? htmlspecialchars($row['hotels']) : 'Chưa có';
+                                                    $image_urls = json_decode($row['image_url'], true);
+                                                    $primary_image = !empty($image_urls) && is_array($image_urls) ? htmlspecialchars($image_urls[0]) : './img/no-image.png';
+                                                    $booking_count = $row['booking_count'];
                                                     echo "<tr class='text-center'>";
                                                     echo "<th scope='row'>" . $stt . "</th>";
+                                                    echo "<td><img src='$primary_image' alt='Tour Image' class='thumbnail'></td>";
                                                     echo "<td>" . htmlspecialchars($row['title']) . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['continent']) . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['destination']) . "</td>";
@@ -325,7 +351,7 @@ $conn->close();
                                                         </a>
                                                         <form action='tours.php' method='POST' class='delete-form d-inline'>
                                                             <input type='hidden' name='delete_id' value='" . htmlspecialchars($row['tour_id']) . "'>
-                                                            <button type='button' class='btn btn-danger text-white btn-sm delete-btn'>
+                                                            <button type='button' class='btn btn-danger text-white btn-sm delete-btn' data-booking-count='$booking_count'>
                                                                 <i class='fa-solid fa-trash'></i>
                                                             </button>
                                                         </form>
@@ -334,7 +360,7 @@ $conn->close();
                                                     $stt++;
                                                 }
                                             } else {
-                                                echo "<tr><td colspan='10' class='text-center'>Không có tour nào.</td></tr>";
+                                                echo "<tr><td colspan='11' class='text-center'>Không có tour nào.</td></tr>";
                                             }
                                             ?>
                                         </tbody>
@@ -374,9 +400,13 @@ $conn->close();
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', function() {
+                const bookingCount = this.getAttribute('data-booking-count');
+                const message = bookingCount > 0 
+                    ? `Hành động này sẽ xóa tour và ${bookingCount} đặt chỗ liên quan vĩnh viễn!`
+                    : 'Hành động này sẽ xóa tour vĩnh viễn!';
                 Swal.fire({
                     title: 'Bạn có chắc?',
-                    text: 'Hành động này sẽ xóa tour này vĩnh viễn!',
+                    text: message,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
@@ -394,3 +424,6 @@ $conn->close();
     </script>
 </body>
 </html>
+<?php
+$conn->close();
+?>
