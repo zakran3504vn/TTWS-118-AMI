@@ -5,7 +5,7 @@ include '../config/db_connection.php';
 // Handle deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $id = $_POST['delete_id'];
-    $stmt = $conn->prepare("DELETE FROM contact_message WHERE id = ?");
+    $stmt = $conn->prepare("DELETE FROM contact_messages WHERE id = ?");
     $stmt->bind_param('i', $id);
     if ($stmt->execute()) {
         header('Location: contact_messages.php?status=success&message=' . urlencode('Xóa tin nhắn thành công!'));
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['search_keyword'])) {
 
 // Lấy tổng số bản ghi
 if (!empty($search_keyword)) {
-    $total_records_sql = "SELECT COUNT(*) AS total FROM contact_message WHERE full_name LIKE ? OR email LIKE ? OR subject LIKE ?";
+    $total_records_sql = "SELECT COUNT(*) AS total FROM contact_messages WHERE full_name LIKE ? OR email LIKE ? OR subject LIKE ?";
     $stmt = $conn->prepare($total_records_sql);
     $search_param = '%' . $search_keyword . '%';
     $stmt->bind_param('sss', $search_param, $search_param, $search_param);
@@ -43,18 +43,18 @@ if (!empty($search_keyword)) {
     $total_records = $result->fetch_assoc()['total'];
     $stmt->close();
 
-    $sql = "SELECT * FROM contact_message WHERE full_name LIKE ? OR email LIKE ? OR subject LIKE ? ORDER BY created_at DESC LIMIT ? OFFSET ?";
+    $sql = "SELECT * FROM contact_messages WHERE full_name LIKE ? OR email LIKE ? OR subject LIKE ? ORDER BY created_at DESC LIMIT ? OFFSET ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param('sssii', $search_param, $search_param, $search_param, $records_per_page, $offset);
     $stmt->execute();
     $result = $stmt->get_result();
     $stmt->close();
 } else {
-    $total_records_sql = "SELECT COUNT(*) AS total FROM contact_message";
+    $total_records_sql = "SELECT COUNT(*) AS total FROM contact_messages";
     $result = $conn->query($total_records_sql);
     $total_records = $result->fetch_assoc()['total'];
 
-    $sql = "SELECT * FROM contact_message ORDER BY created_at DESC LIMIT $records_per_page OFFSET $offset";
+    $sql = "SELECT * FROM contact_messages ORDER BY created_at DESC LIMIT $records_per_page OFFSET $offset";
     $result = $conn->query($sql);
 }
 
@@ -265,8 +265,8 @@ $conn->close();
                                                     echo "<td class='news-content-preview'>" . htmlspecialchars($message_preview) . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                                                     echo "<td>
-                                                        <form action='delete_contact.php' method='POST' class='delete-form'>
-                                                            <input type='hidden' name='id' value='" . htmlspecialchars($row['id']) . "'>
+                                                        <form action='contact_messages.php' method='POST' class='delete-form'>
+                                                            <input type='hidden' name='delete_id' value='" . htmlspecialchars($row['id']) . "'>
                                                             <button type='button' class='btn btn-danger text-white btn-sm delete-btn'>
                                                                 <i class='fa-solid fa-trash'></i>
                                                             </button>
