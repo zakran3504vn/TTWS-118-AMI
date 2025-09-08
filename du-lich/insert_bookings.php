@@ -1,5 +1,4 @@
 <?php
-file_put_contents('debug.log', print_r($_POST, true)); // Add at the start of insert_bookings.php
 include('../config/db_connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

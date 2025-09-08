@@ -10,8 +10,25 @@ $search = isset($_GET['search']) ? $_GET['search'] : '';
 $duration = isset($_GET['duration']) ? $_GET['duration'] : 'all';
 $price = isset($_GET['price']) ? $_GET['price'] : 'all';
 
-// Fetch tours
-$result = getPaginatedToursFiltered($conn, $continent, $sort, $page, 6, $search, $duration, $price);
+// Map English continent codes to Vietnamese database values
+function mapContinentToVietnamese($continent) {
+    $continentMap = [
+        'asia' => 'Châu Á',
+        'europe' => 'Châu Âu', 
+        'africa' => 'Châu Phi',
+        'oceania' => 'Châu Úc',
+        'america' => 'Châu Mỹ',
+        'all' => 'all' // Keep 'all' as is
+    ];
+    
+    return isset($continentMap[$continent]) ? $continentMap[$continent] : 'all';
+}
+
+// Convert the continent parameter to Vietnamese for database query
+$dbContinent = mapContinentToVietnamese($continent);
+
+// Fetch tours with the mapped continent
+$result = getPaginatedToursFiltered($conn, $dbContinent, $sort, $page, 6, $search, $duration, $price);
 
 // Display tours
 if (empty($result['tours'])) {
@@ -20,9 +37,20 @@ if (empty($result['tours'])) {
           </div>';
 } else {
     foreach ($result['tours'] as $tour) {
+        // Map Vietnamese continent back to English for data attributes
+        $continentForData = '';
+        switch($tour['continent']) {
+            case 'Châu Á': $continentForData = 'asia'; break;
+            case 'Châu Âu': $continentForData = 'europe'; break;
+            case 'Châu Phi': $continentForData = 'africa'; break;
+            case 'Châu Úc': $continentForData = 'oceania'; break;
+            case 'Châu Mỹ': $continentForData = 'america'; break;
+            default: $continentForData = 'all'; break;
+        }
+        
         echo '
         <div class="tour-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
-            data-continent="'.htmlspecialchars($tour['continent']).'" 
+            data-continent="'.htmlspecialchars($continentForData).'" 
             data-price="'.htmlspecialchars($tour['sale_price']).'" 
             data-duration="'.htmlspecialchars($tour['duration_days']).'">
             <div class="relative">
