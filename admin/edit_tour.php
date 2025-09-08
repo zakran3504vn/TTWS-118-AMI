@@ -2,7 +2,7 @@
 session_start();
 include '../config/db_connection.php';
 
-// Get all hotels for multi-select
+// Get all hotels for checkboxes
 $hotels = [];
 $result = $conn->query("SELECT hotel_id, hotel_name FROM hotels ORDER BY hotel_name");
 while ($row = $result->fetch_assoc()) {
@@ -61,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $itinerary = trim($_POST['itinerary']);
     $description = trim($_POST['description']);
     $status = in_array($_POST['status'], ['active', 'inactive']) ? $_POST['status'] : 'active';
-    $status = isset($_POST['status']) ? 'true' : 'false';
     $transportation = in_array($_POST['transportation'], $transportations) ? $_POST['transportation'] : $transportations[0];
     $new_hotels = isset($_POST['hotels']) && is_array($_POST['hotels']) ? $_POST['hotels'] : [];
 
@@ -72,8 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->begin_transaction();
     try {
         // Update tour
-        $stmt = $conn->prepare("UPDATE tours SET title = ?, continent = ?, image_url = ?, departure_location = ?, destination = ?, duration_days = ?, duration_nights = ?, regular_price = ?, sale_price = ?, adult_price = ?, child_price = ?, itinerary = ?, slug = ?, status = ?, status = ?, transportation = ?, description = ? WHERE tour_id = ?");
-        $stmt->bind_param('sssssiiddiddssssi', $title, $continent, $image_url, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $status, $transportation, $description, $tour_id);
+        $stmt = $conn->prepare("UPDATE tours SET title = ?, continent = ?, image_url = ?, departure_location = ?, destination = ?, duration_days = ?, duration_nights = ?, regular_price = ?, sale_price = ?, adult_price = ?, child_price = ?, itinerary = ?, slug = ?, status = ?, transportation = ?, description = ? WHERE tour_id = ?");
+        $stmt->bind_param('sssssiiddiddssssi', $title, $continent, $image_url, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description, $tour_id);
         if (!$stmt->execute()) {
             throw new Exception('Không thể cập nhật tour.');
         }
@@ -116,6 +115,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="icon" type="image/ico" href="https://truongthanhweb.com/wp-content/uploads/sites/208/2020/06/favicon.ico">
     <link rel="stylesheet" href="./css/style1.css">
+    <style>
+        .hotel-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body class="crm_body_bg">
     <?php
@@ -229,12 +237,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <textarea class="form-control" id="description" name="description" rows="4"><?php echo htmlspecialchars($tour['description'] ?? ''); ?></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="hotels" class="form-label">Khách Sạn</label>
-                                            <select class="form-control" id="hotels" name="hotels[]" multiple>
+                                            <label class="form-label">Khách Sạn</label>
+                                            <input type="text" class="form-control mb-2" id="hotel_search" placeholder="Tìm kiếm khách sạn...">
+                                            <div class="hotel-list">
                                                 <?php foreach ($hotels as $hotel): ?>
-                                                    <option value="<?php echo htmlspecialchars($hotel['hotel_id']); ?>" <?php echo in_array($hotel['hotel_id'], $selected_hotels) ? 'selected' : ''; ?>><?php echo htmlspecialchars($hotel['hotel_name']); ?></option>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input hotel-checkbox" type="checkbox" name="hotels[]" value="<?php echo htmlspecialchars($hotel['hotel_id']); ?>" id="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>" <?php echo in_array($hotel['hotel_id'], $selected_hotels) ? 'checked' : ''; ?> data-name="<?php echo htmlspecialchars($hotel['hotel_name']); ?>">
+                                                        <label class="form-check-label" for="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>">
+                                                            <?php echo htmlspecialchars($hotel['hotel_name']); ?>
+                                                        </label>
+                                                    </div>
                                                 <?php endforeach; ?>
-                                            </select>
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="status" class="form-label">Trạng Thái</label>
@@ -251,10 +265,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="mb-3 form-check">
-                                            <input type="checkbox" class="form-check-input" id="status" name="status" <?php echo $tour['status'] === 'true' ? 'checked' : ''; ?>>
-                                            <label class="form-check-label" for="status">Nổi Bật</label>
-                                        </div>
                                         <button type="submit" class="btn btn-primary">Cập Nhật</button>
                                         <a href="tours.php" class="btn btn-secondary">Hủy</a>
                                     </form>
@@ -266,6 +276,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('hotel_search');
+        const hotelCheckboxes = document.querySelectorAll('.hotel-checkbox');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            hotelCheckboxes.forEach(checkbox => {
+                const hotelName = checkbox.getAttribute('data-name').toLowerCase();
+                const parentDiv = checkbox.closest('.form-check');
+                parentDiv.style.display = hotelName.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+    });
+    </script>
 </body>
 </html>
 <?php $conn->close(); ?>

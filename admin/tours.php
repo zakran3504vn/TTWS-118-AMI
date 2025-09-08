@@ -32,23 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     exit;
 }
 
-// Handle status toggle
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
-    $tour_id = $_POST['toggle_id'];
-    $status = $_POST['status'] === 'true' ? 'false' : 'true';
-    $stmt = $conn->prepare("UPDATE tours SET status = ? WHERE tour_id = ?");
-    $stmt->bind_param('si', $status, $tour_id);
-    if ($stmt->execute()) {
-        $_SESSION['flash_message'] = ['status' => 'success', 'message' => 'Cập nhật trạng thái nổi bật thành công!'];
-    } else {
-        $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Không thể cập nhật trạng thái nổi bật.'];
-    }
-    $stmt->close();
-    header('Location: tours.php');
-    $conn->close();
-    exit;
-}
-
 // Số bản ghi hiển thị mỗi trang
 $records_per_page = 10;
 
@@ -147,45 +130,6 @@ $conn->close();
         .thumbnail {
             max-width: 50px;
             max-height: 50px;
-        }
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        input:checked+.slider {
-            background-color: #007bff;
-        }
-        input:checked+.slider:before {
-            transform: translateX(26px);
         }
         .hotels-column {
             max-width: 200px;
@@ -300,6 +244,7 @@ $conn->close();
                                                 while ($row = $result->fetch_assoc()) {
                                                     $duration = $row['duration_days'] . ' ngày ' . $row['duration_nights'] . ' đêm';
                                                     $hotels = $row['hotels'] ? htmlspecialchars($row['hotels']) : 'Chưa có';
+                                                    $status_text = $row['status'] === 'active' ? 'Kích Hoạt' : 'Không Kích Hoạt';
                                                     echo "<tr class='text-center'>";
                                                     echo "<th scope='row'>" . $stt . "</th>";
                                                     echo "<td>" . htmlspecialchars($row['title']) . "</td>";
@@ -308,16 +253,7 @@ $conn->close();
                                                     echo "<td>" . htmlspecialchars($duration) . "</td>";
                                                     echo "<td>" . number_format($row['adult_price'], 0, ',', '.') . "</td>";
                                                     echo "<td class='hotels-column'>" . $hotels . "</td>";
-                                                    echo "<td>
-                                                        <form action='tours.php' method='POST' class='toggle-form'>
-                                                            <input type='hidden' name='toggle_id' value='" . htmlspecialchars($row['tour_id']) . "'>
-                                                            <input type='hidden' name='status' value='" . htmlspecialchars($row['status']) . "'>
-                                                            <label class='switch'>
-                                                                <input type='checkbox' " . ($row['status'] === 'true' ? 'checked' : '') . " onchange='this.closest(\".toggle-form\").submit()'>
-                                                                <span class='slider'></span>
-                                                            </label>
-                                                        </form>
-                                                    </td>";
+                                                    echo "<td>" . $status_text . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                                                     echo "<td>
                                                         <a href='edit_tour.php?id=" . urlencode($row['tour_id']) . "' class='btn btn-primary text-white btn-sm'>

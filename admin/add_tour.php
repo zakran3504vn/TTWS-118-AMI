@@ -2,7 +2,7 @@
 session_start();
 include '../config/db_connection.php';
 
-// Get all hotels for multi-select
+// Get all hotels for checkboxes
 $hotels = [];
 $result = $conn->query("SELECT hotel_id, hotel_name FROM hotels ORDER BY hotel_name");
 while ($row = $result->fetch_assoc()) {
@@ -28,7 +28,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $itinerary = trim($_POST['itinerary']);
     $description = trim($_POST['description']);
     $status = in_array($_POST['status'], ['active', 'inactive']) ? $_POST['status'] : 'active';
-    $status = isset($_POST['status']) ? 'true' : 'false';
     $transportation = in_array($_POST['transportation'], $transportations) ? $_POST['transportation'] : $transportations[0];
     $selected_hotels = isset($_POST['hotels']) && is_array($_POST['hotels']) ? $_POST['hotels'] : [];
 
@@ -39,8 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn->begin_transaction();
     try {
         // Insert tour
-        $stmt = $conn->prepare("INSERT INTO tours (title, continent, image_url, departure_location, destination, duration_days, duration_nights, regular_price, sale_price, adult_price, child_price, itinerary, slug, status, status, transportation, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('sssssiiddiddsssss', $title, $continent, $image_url, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $status, $transportation, $description);
+        $stmt = $conn->prepare("INSERT INTO tours (title, continent, image_url, departure_location, destination, duration_days, duration_nights, regular_price, sale_price, adult_price, child_price, itinerary, slug, status, transportation, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param('sssssiiddiddssss', $title, $continent, $image_url, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description);
         if (!$stmt->execute()) {
             throw new Exception('Không thể thêm tour.');
         }
@@ -191,12 +190,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             <textarea class="form-control" id="description" name="description" rows="4"></textarea>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="hotels" class="form-label">Khách Sạn</label>
-                                            <select class="form-control" id="hotels" name="hotels[]" multiple>
+                                            <label class="form-label">Khách Sạn</label>
+                                            <div class="hotel-list" style="max-height: 200px; overflow-y: auto;">
                                                 <?php foreach ($hotels as $hotel): ?>
-                                                    <option value="<?php echo htmlspecialchars($hotel['hotel_id']); ?>"><?php echo htmlspecialchars($hotel['hotel_name']); ?></option>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="hotels[]" value="<?php echo htmlspecialchars($hotel['hotel_id']); ?>" id="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>">
+                                                        <label class="form-check-label" for="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>">
+                                                            <?php echo htmlspecialchars($hotel['hotel_name']); ?>
+                                                        </label>
+                                                    </div>
                                                 <?php endforeach; ?>
-                                            </select>
+                                            </div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="status" class="form-label">Trạng Thái</label>
@@ -212,10 +216,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <option value="<?php echo htmlspecialchars($transport); ?>"><?php echo htmlspecialchars($transport); ?></option>
                                                 <?php endforeach; ?>
                                             </select>
-                                        </div>
-                                        <div class="mb-3 form-check">
-                                            <input type="checkbox" class="form-check-input" id="status" name="status">
-                                            <label class="form-check-label" for="status">Nổi Bật</label>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Thêm Tour</button>
                                         <a href="tours.php" class="btn btn-secondary">Hủy</a>
