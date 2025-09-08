@@ -30,46 +30,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $transportation = in_array($_POST['transportation'], $transportations) ? $_POST['transportation'] : $transportations[0];
     $selected_hotels = isset($_POST['hotels']) && is_array($_POST['hotels']) ? $_POST['hotels'] : [];
 
-    // Handle file upload
-    $image_url = '';
-    if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === UPLOAD_ERR_OK) {
-        $file = $_FILES['image_url'];
-        $allowed_extensions = ['jpg', 'jpeg', 'png'];
-        $max_file_size = 5 * 1024 * 1024; // 5MB
-        $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $upload_dir = 'assets/img/';
+    // Handle multiple file uploads
+    $image_urls = [];
+    $allowed_extensions = ['jpg', 'jpeg', 'png'];
+    $max_file_size = 5 * 1024 * 1024; // 5MB
+    $upload_dir = 'assets/img/';
+    
+    if (isset($_FILES['images']) && !empty($_FILES['images']['name'][0])) {
+        $files = $_FILES['images'];
+        $file_count = count($files['name']);
         
-        // Validate file
-        if (!in_array($file_extension, $allowed_extensions)) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Chỉ hỗ trợ định dạng JPG, JPEG, PNG.'];
-            header('Location: add_tour.php');
-            $conn->close();
-            exit;
-        }
-        if ($file['size'] > $max_file_size) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Kích thước file tối đa là 5MB.'];
-            header('Location: add_tour.php');
-            $conn->close();
-            exit;
-        }
+        for ($i = 0; $i < $file_count; $i++) {
+            if ($files['error'][$i] === UPLOAD_ERR_OK) {
+                $file_extension = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
+                
+                // Validate file
+                if (!in_array($file_extension, $allowed_extensions)) {
+                    $_SESSION['flash_message'] = ['status' => 'danger', 'message' => "Hình ảnh {$files['name'][$i]}: Chỉ hỗ trợ định dạng JPG, JPEG, PNG."];
+                    header('Location: add_tour.php');
+                    $conn->close();
+                    exit;
+                }
+                if ($files['size'][$i] > $max_file_size) {
+                    $_SESSION['flash_message'] = ['status' => 'danger', 'message' => "Hình ảnh {$files['name'][$i]}: Kích thước file tối đa là 5MB."];
+                    header('Location: add_tour.php');
+                    $conn->close();
+                    exit;
+                }
 
-        // Create upload directory if it doesn't exist
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0755, true);
+                // Generate unique filename
+                $filename = "tour_0_" . uniqid() . '.' . $file_extension; // Use 0 as placeholder for tour_id
+                $destination = $upload_dir . $filename;
+                if (!move_uploaded_file($files['tmp_name'][$i], $destination)) {
+                    $_SESSION['flash_message'] = ['status' => 'danger', 'message' => "Không thể tải lên hình ảnh {$files['name'][$i]}."];
+                    header('Location: add_tour.php');
+                    $conn->close();
+                    exit;
+                }
+                $image_urls[] = ['path' => "id.truongthanhweb.com/$destination", 'destination' => $destination];
+            }
         }
-
-        // Generate unique filename
-        $filename = uniqid('tour_') . '.' . $file_extension;
-        $destination = $upload_dir . $filename;
-        if (!move_uploaded_file($file['tmp_name'], $destination)) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Không thể tải lên hình ảnh.'];
-            header('Location: add_tour.php');
-            $conn->close();
-            exit;
-        }
-        $image_url = "id.truongthanhweb.com/$destination";
     } else {
-        $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Vui lòng chọn một hình ảnh.'];
+        $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Vui lòng chọn ít nhất một hình ảnh.'];
         header('Location: add_tour.php');
         $conn->close();
         exit;
@@ -81,13 +83,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $conn->begin_transaction();
     try {
-        // Insert tour
+        // Update filenames with actual tour_id
         $stmt = $conn->prepare("INSERT INTO tours (title, continent, image_url, departure_location, destination, duration_days, duration_nights, regular_price, sale_price, adult_price, child_price, itinerary, slug, status, transportation, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('sssssiiddiddssss', $title, $continent, $image_url, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description);
+        $image_url_string = implode(',', array_column($image_urls, 'path'));
+        $stmt->bind_param('sssssiiddiddssss', $title, $continent, $image_url_string, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description);
         if (!$stmt->execute()) {
             throw new Exception('Không thể thêm tour.');
         }
         $tour_id = $conn->insert_id;
+        $stmt->close();
+
+        // Rename files with correct tour_id
+        $new_image_urls = [];
+        foreach ($image_urls as $index => $img) {
+            $old_path = $img['destination'];
+            $old_filename = basename($old_path);
+            $new_filename = str_replace('tour_0_', "tour_{$tour_id}_", $old_filename);
+            $new_path = $upload_dir . $new_filename;
+            if (!rename($old_path, $new_path)) {
+                throw new Exception("Không thể đổi tên hình ảnh {$old_filename}.");
+            }
+            $new_image_urls[] = str_replace("tour_0_", "tour_{$tour_id}_", $img['path']);
+        }
+
+        // Update image_url with new filenames
+        $image_url_string = implode(',', $new_image_urls);
+        $stmt = $conn->prepare("UPDATE tours SET image_url = ? WHERE tour_id = ?");
+        $stmt->bind_param('si', $image_url_string, $tour_id);
+        if (!$stmt->execute()) {
+            throw new Exception('Không thể cập nhật danh sách hình ảnh.');
+        }
         $stmt->close();
 
         // Insert hotel mappings
@@ -105,11 +130,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: tours.php');
     } catch (Exception $e) {
         $conn->rollback();
-        // Delete uploaded file if transaction fails
-        if ($image_url && file_exists($destination)) {
-            unlink($destination);
+        // Delete uploaded files if transaction fails
+        foreach ($image_urls as $img) {
+            if (file_exists($img['destination'])) {
+                unlink($img['destination']);
+            }
         }
         $_SESSION['flash_message'] = ['status' => 'danger', 'message' => $e->getMessage()];
+        header('Location: add_tour.php');
     }
     $conn->close();
     exit;
@@ -201,8 +229,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="image_url" class="form-label">Hình Ảnh (JPG, JPEG, PNG, tối đa 5MB)</label>
-                                            <input type="file" class="form-control" id="image_url" name="image_url" accept=".jpg,.jpeg,.png" required>
+                                            <label for="images" class="form-label">Hình Ảnh (JPG, JPEG, PNG, tối đa 5MB, chọn nhiều file)</label>
+                                            <input type="file" class="form-control" id="images" name="images[]" accept=".jpg,.jpeg,.png" multiple required>
+                                            <small class="form-text text-muted">Hình ảnh đầu tiên sẽ là hình ảnh chính.</small>
                                         </div>
                                         <div class="mb-3">
                                             <label for="departure_location" class="form-label">Điểm Khởi Hành</label>

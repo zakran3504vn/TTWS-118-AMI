@@ -46,6 +46,9 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
+// Parse existing images
+$existing_images = !empty($tour['image_url']) ? explode(',', $tour['image_url']) : [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
     $continent = trim($_POST['continent']);
@@ -62,61 +65,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = in_array($_POST['status'], ['active', 'inactive']) ? $_POST['status'] : 'active';
     $transportation = in_array($_POST['transportation'], $transportations) ? $_POST['transportation'] : $transportations[0];
     $new_hotels = isset($_POST['hotels']) && is_array($_POST['hotels']) ? $_POST['hotels'] : [];
+    $delete_images = isset($_POST['delete_images']) && is_array($_POST['delete_images']) ? $_POST['delete_images'] : [];
 
-    // Handle file upload (optional)
-    $image_url = $tour['image_url'];
-    if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === UPLOAD_ERR_OK) {
-        $file = $_FILES['image_url'];
-        $allowed_extensions = ['jpg', 'jpeg', 'png'];
-        $max_file_size = 5 * 1024 * 1024; // 5MB
-        $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $upload_dir = 'assets/img/';
+    // Handle file uploads
+    $new_image_urls = [];
+    $allowed_extensions = ['jpg', 'jpeg', 'png'];
+    $max_file_size = 5 * 1024 * 1024; // 5MB
+    $upload_dir = 'assets/img/';
+    
+    if (isset($_FILES['images']) && !empty($_FILES['images']['name'][0])) {
+        $files = $_FILES['images'];
+        $file_count = count($files['name']);
         
-        // Validate file
-        if (!in_array($file_extension, $allowed_extensions)) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Chỉ hỗ trợ định dạng JPG, JPEG, PNG.'];
-            header('Location: edit_tour.php?id=' . urlencode($tour_id));
-            $conn->close();
-            exit;
-        }
-        if ($file['size'] > $max_file_size) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Kích thước file tối đa là 5MB.'];
-            header('Location: edit_tour.php?id=' . urlencode($tour_id));
-            $conn->close();
-            exit;
-        }
+        for ($i = 0; $i < $file_count; $i++) {
+            if ($files['error'][$i] === UPLOAD_ERR_OK) {
+                $file_extension = strtolower(pathinfo($files['name'][$i], PATHINFO_EXTENSION));
+                
+                // Validate file
+                if (!in_array($file_extension, $allowed_extensions)) {
+                    $_SESSION['flash_message'] = ['status' => 'danger', 'message' => "Hình ảnh {$files['name'][$i]}: Chỉ hỗ trợ định dạng JPG, JPEG, PNG."];
+                    header('Location: edit_tour.php?id=' . urlencode($tour_id));
+                    $conn->close();
+                    exit;
+                }
+                if ($files['size'][$i] > $max_file_size) {
+                    $_SESSION['flash_message'] = ['status' => 'danger', 'message' => "Hình ảnh {$files['name'][$i]}: Kích thước file tối đa là 5MB."];
+                    header('Location: edit_tour.php?id=' . urlencode($tour_id));
+                    $conn->close();
+                    exit;
+                }
 
-        // Create upload directory if it doesn't exist
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0755, true);
-        }
-
-        // Generate unique filename
-        $filename = uniqid('tour_') . '.' . $file_extension;
-        $destination = $upload_dir . $filename;
-        if (!move_uploaded_file($file['tmp_name'], $destination)) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Không thể tải lên hình ảnh.'];
-            header('Location: edit_tour.php?id=' . urlencode($tour_id));
-            $conn->close();
-            exit;
-        }
-        $image_url = "id.truongthanhweb.com/$destination";
-
-        // Delete old image if it exists and is not the default
-        if ($tour['image_url'] && file_exists(str_replace('id.truongthanhweb.com/', '', $tour['image_url']))) {
-            unlink(str_replace('id.truongthanhweb.com/', '', $tour['image_url']));
+                // Generate unique filename
+                $filename = "tour_{$tour_id}_" . uniqid() . '.' . $file_extension;
+                $destination = $upload_dir . $filename;
+                if (!move_uploaded_file($files['tmp_name'][$i], $destination)) {
+                    $_SESSION['flash_message'] = ['status' => 'danger', 'message' => "Không thể tải lên hình ảnh {$files['name'][$i]}."];
+                    header('Location: edit_tour.php?id=' . urlencode($tour_id));
+                    $conn->close();
+                    exit;
+                }
+                $new_image_urls[] = ['path' => "id.truongthanhweb.com/$destination", 'destination' => $destination];
+            }
         }
     }
 
-    // Generate slug from title
-    $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
-    $slug = trim($slug, '-');
-
     $conn->begin_transaction();
     try {
+        // Filter out deleted images
+        $remaining_images = array_diff($existing_images, $delete_images);
+        $remaining_images = array_values($remaining_images); // Reindex array
+
+        // Delete files for removed images
+        foreach ($delete_images as $image_url) {
+            $file_path = str_replace('id.truongthanhweb.com/', '', $image_url);
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+        }
+
+        // Combine remaining and new images
+        $all_images = array_merge($remaining_images, array_column($new_image_urls, 'path'));
+
         // Update tour
+        $image_url_string = !empty($all_images) ? implode(',', $all_images) : '';
         $stmt = $conn->prepare("UPDATE tours SET title = ?, continent = ?, image_url = ?, departure_location = ?, destination = ?, duration_days = ?, duration_nights = ?, regular_price = ?, sale_price = ?, adult_price = ?, child_price = ?, itinerary = ?, slug = ?, status = ?, transportation = ?, description = ? WHERE tour_id = ?");
-        $stmt->bind_param('sssssiiddiddssssi', $title, $continent, $image_url, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description, $tour_id);
+        $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
+        $slug = trim($slug, '-');
+        $stmt->bind_param('sssssiiddiddssssi', $title, $continent, $image_url_string, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description, $tour_id);
         if (!$stmt->execute()) {
             throw new Exception('Không thể cập nhật tour.');
         }
@@ -143,11 +158,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: tours.php');
     } catch (Exception $e) {
         $conn->rollback();
-        // Delete uploaded file if transaction fails
-        if ($image_url !== $tour['image_url'] && file_exists($destination)) {
-            unlink($destination);
+        // Delete newly uploaded files if transaction fails
+        foreach ($new_image_urls as $img) {
+            if (file_exists($img['destination'])) {
+                unlink($img['destination']);
+            }
         }
         $_SESSION['flash_message'] = ['status' => 'danger', 'message' => $e->getMessage()];
+        header('Location: edit_tour.php?id=' . urlencode($tour_id));
     }
     $conn->close();
     exit;
@@ -164,16 +182,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/ico" href="https://truongthanhweb.com/wp-content/uploads/sites/208/2020/06/favicon.ico">
     <link rel="stylesheet" href="./css/style1.css">
     <style>
+        .current-image {
+            max-width: 100px;
+            margin-bottom: 10px;
+        }
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .image-preview-item {
+            position: relative;
+        }
+        .image-preview-item img {
+            max-width: 100px;
+            height: auto;
+        }
+        .image-preview-item .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
         .hotel-list {
             max-height: 200px;
             overflow-y: auto;
             border: 1px solid #ced4da;
             padding: 10px;
             border-radius: 4px;
-        }
-        .current-image {
-            max-width: 100px;
-            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -252,14 +297,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="image_url" class="form-label">Hình Ảnh (JPG, JPEG, PNG, tối đa 5MB)</label>
-                                            <?php if ($tour['image_url']): ?>
-                                                <div>
-                                                    <img src="<?php echo htmlspecialchars($tour['image_url']); ?>" class="current-image" alt="Current Tour Image">
-                                                    <p>Hình ảnh hiện tại: <?php echo htmlspecialchars(basename($tour['image_url'])); ?></p>
-                                                </div>
-                                            <?php endif; ?>
-                                            <input type="file" class="form-control" id="image_url" name="image_url" accept=".jpg,.jpeg,.png">
+                                            <label class="form-label">Hình Ảnh Hiện Tại</label>
+                                            <div class="image-preview">
+                                                <?php foreach ($existing_images as $index => $image_url): ?>
+                                                    <div class="image-preview-item">
+                                                        <img src="<?php echo htmlspecialchars($image_url); ?>" class="current-image" alt="Tour Image">
+                                                        <input type="checkbox" name="delete_images[]" value="<?php echo htmlspecialchars($image_url); ?>" id="delete_image_<?php echo $index; ?>">
+                                                        <label for="delete_image_<?php echo $index; ?>" class="delete-btn">X</label>
+                                                        <p><?php echo htmlspecialchars(basename($image_url)); ?><?php echo $index === 0 ? ' (Hình ảnh chính)' : ''; ?></p>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="images" class="form-label">Thêm Hình Ảnh Mới (JPG, JPEG, PNG, tối đa 5MB, chọn nhiều file)</label>
+                                            <input type="file" class="form-control" id="images" name="images[]" accept=".jpg,.jpeg,.png" multiple>
+                                            <small class="form-text text-muted">Hình ảnh mới sẽ được thêm vào danh sách. Hình ảnh đầu tiên trong danh sách là hình ảnh chính.</small>
                                         </div>
                                         <div class="mb-3">
                                             <label for="departure_location" class="form-label">Điểm Khởi Hành</label>
@@ -279,35 +332,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                         <div class="mb-3">
                                             <label for="regular_price" class="form-label">Giá Thường (VNĐ)</label>
-                                            <input type="number" class="form-control" id="regular_price" name="regular_price" value="<?php echo htmlspecialchars($tour['regular_price']); ?>" step="1000" required>
+                                            <input type="number" class="form-control" id="regular_price" name="regular_price" step="1000" value="<?php echo htmlspecialchars($tour['regular_price']); ?>" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="sale_price" class="form-label">Giá Khuyến Mãi (VNĐ)</label>
-                                            <input type="number" class="form-control" id="sale_price" name="sale_price" value="<?php echo htmlspecialchars($tour['sale_price']); ?>" step="1000" required>
+                                            <input type="number" class="form-control" id="sale_price" name="sale_price" step="1000" value="<?php echo htmlspecialchars($tour['sale_price']); ?>" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="adult_price" class="form-label">Giá Người Lớn (VNĐ)</label>
-                                            <input type="number" class="form-control" id="adult_price" name="adult_price" value="<?php echo htmlspecialchars($tour['adult_price']); ?>" step="1000" required>
+                                            <input type="number" class="form-control" id="adult_price" name="adult_price" step="1000" value="<?php echo htmlspecialchars($tour['adult_price']); ?>" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="child_price" class="form-label">Giá Trẻ Em (VNĐ)</label>
-                                            <input type="number" class="form-control" id="child_price" name="child_price" value="<?php echo htmlspecialchars($tour['child_price']); ?>" step="1000" required>
+                                            <input type="number" class="form-control" id="child_price" name="child_price" step="1000" value="<?php echo htmlspecialchars($tour['child_price']); ?>" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="itinerary" class="form-label">Lịch Trình</label>
-                                            <textarea class="form-control" id="itinerary" name="itinerary" rows="6"><?php echo htmlspecialchars($tour['itinerary'] ?? ''); ?></textarea>
+                                            <textarea class="form-control" id="itinerary" name="itinerary" rows="6"><?php echo htmlspecialchars($tour['itinerary']); ?></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label for="description" class="form-label">Mô Tả</label>
-                                            <textarea class="form-control" id="description" name="description" rows="4"><?php echo htmlspecialchars($tour['description'] ?? ''); ?></textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="4"><?php echo htmlspecialchars($tour['description']); ?></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Khách Sạn</label>
-                                            <input type="text" class="form-control mb-2" id="hotel_search" placeholder="Tìm kiếm khách sạn...">
                                             <div class="hotel-list">
                                                 <?php foreach ($hotels as $hotel): ?>
                                                     <div class="form-check">
-                                                        <input class="form-check-input hotel-checkbox" type="checkbox" name="hotels[]" value="<?php echo htmlspecialchars($hotel['hotel_id']); ?>" id="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>" <?php echo in_array($hotel['hotel_id'], $selected_hotels) ? 'checked' : ''; ?> data-name="<?php echo htmlspecialchars($hotel['hotel_name']); ?>">
+                                                        <input class="form-check-input" type="checkbox" name="hotels[]" value="<?php echo htmlspecialchars($hotel['hotel_id']); ?>" id="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>" <?php echo in_array($hotel['hotel_id'], $selected_hotels) ? 'checked' : ''; ?>>
                                                         <label class="form-check-label" for="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>">
                                                             <?php echo htmlspecialchars($hotel['hotel_name']); ?>
                                                         </label>
@@ -341,21 +393,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </section>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('hotel_search');
-            const hotelCheckboxes = document.querySelectorAll('.hotel-checkbox');
-
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase();
-                hotelCheckboxes.forEach(checkbox => {
-                    const hotelName = checkbox.getAttribute('data-name').toLowerCase();
-                    const parentDiv = checkbox.closest('.form-check');
-                    parentDiv.style.display = hotelName.includes(searchTerm) ? 'block' : 'none';
-                });
-            });
-        });
-        </script>
     </body>
 </html>
 <?php $conn->close(); ?>
