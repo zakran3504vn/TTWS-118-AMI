@@ -1,5 +1,6 @@
 <!-- PHP -->
 <?php
+session_start(); // Start session
 include '../config/db_connection.php';
 
 // Handle deletion
@@ -8,17 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $stmt = $conn->prepare("DELETE FROM contact_messages WHERE id = ?");
     $stmt->bind_param('i', $id);
     if ($stmt->execute()) {
-        header('Location: contact_messages.php?status=success&message=' . urlencode('Xóa tin nhắn thành công!'));
+        $_SESSION['flash_message'] = ['status' => 'success', 'message' => 'Xóa tin nhắn thành công!'];
     } else {
-        header('Location: contact_messages.php?status=error&message=' . urlencode('Không thể xóa tin nhắn.'));
+        $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Không thể xóa tin nhắn.'];
     }
     $stmt->close();
+    header('Location: contact_messages.php'); // Clean URL
     $conn->close();
     exit;
 }
 
 // Số bản ghi hiển thị mỗi trang
-$records_per_page = 10;
+$records_per_page = 1;
 
 // Xác định trang hiện tại (nếu không có, mặc định là trang 1)
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -61,12 +63,13 @@ if (!empty($search_keyword)) {
 // Tính tổng số trang
 $total_pages = ceil($total_records / $records_per_page);
 
-// Handle success/error message
+// Handle flash message
 $message = '';
 $status = '';
-if (isset($_GET['status']) && isset($_GET['message'])) {
-    $message = htmlspecialchars($_GET['message']);
-    $status = $_GET['status'] === 'success' ? 'success' : 'danger';
+if (isset($_SESSION['flash_message'])) {
+    $message = htmlspecialchars($_SESSION['flash_message']['message']);
+    $status = $_SESSION['flash_message']['status'];
+    unset($_SESSION['flash_message']); // Clear after displaying
 }
 
 $conn->close();
@@ -163,7 +166,7 @@ $conn->close();
 
 <body class="crm_body_bg">
     <?php
-    $currentPage = 'contact_messagess';
+    $currentPage = 'contact_messages';
     include('./includes/sidebar.php');
     ?>
     <section class="main_content dashboard_part">
@@ -217,6 +220,12 @@ $conn->close();
                         </div>
                     </div>
                     <div class="col-12">
+                        <?php if ($message): ?>
+                            <div class="alert alert-<?php echo $status; ?> alert-dismissible fade show" role="alert">
+                                <?php echo $message; ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
                         <div class="QA_section">
                             <div class="white_box_tittle list_header">
                                 <div class="box_right d-flex lms_block">
@@ -315,7 +324,7 @@ $conn->close();
     </section>
 
     <script src="./js/popper1.min.js"></script>
-    <script src="./js/bootstrap1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/metisMenu.js"></script>
     <script src="./vendors/count_up/jquery.waypoints.min.js"></script>
     <script src="./vendors/chartlist/Chart.min.js"></script>
@@ -342,6 +351,7 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // SweetAlert2 for delete confirmation
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     Swal.fire({
@@ -358,6 +368,16 @@ $conn->close();
                             button.closest('.delete-form').submit();
                         }
                     });
+                });
+            });
+
+            // Manual alert dismissal
+            document.querySelectorAll('.btn-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    const alert = this.closest('.alert');
+                    if (alert) {
+                        alert.remove();
+                    }
                 });
             });
         });
