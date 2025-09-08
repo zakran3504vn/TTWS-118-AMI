@@ -37,13 +37,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $conn->begin_transaction();
     try {
-        // Insert tour
+        // Update filenames with actual tour_id
         $stmt = $conn->prepare("INSERT INTO tours (title, continent, image_url, departure_location, destination, duration_days, duration_nights, regular_price, sale_price, adult_price, child_price, itinerary, slug, status, transportation, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('sssssiiddiddssss', $title, $continent, $image_url, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description);
+        $image_url_string = implode(',', array_column($image_urls, 'path'));
+        $stmt->bind_param('sssssiiddiddssss', $title, $continent, $image_url_string, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description);
         if (!$stmt->execute()) {
             throw new Exception('Không thể thêm tour.');
         }
         $tour_id = $conn->insert_id;
+        $stmt->close();
+
+        // Rename files with correct tour_id
+        $new_image_urls = [];
+        foreach ($image_urls as $index => $img) {
+            $old_path = $img['destination'];
+            $old_filename = basename($old_path);
+            $new_filename = str_replace('tour_0_', "tour_{$tour_id}_", $old_filename);
+            $new_path = $upload_dir . $new_filename;
+            if (!rename($old_path, $new_path)) {
+                throw new Exception("Không thể đổi tên hình ảnh {$old_filename}.");
+            }
+            $new_image_urls[] = str_replace("tour_0_", "tour_{$tour_id}_", $img['path']);
+        }
+
+        // Update image_url with new filenames
+        $image_url_string = implode(',', $new_image_urls);
+        $stmt = $conn->prepare("UPDATE tours SET image_url = ? WHERE tour_id = ?");
+        $stmt->bind_param('si', $image_url_string, $tour_id);
+        if (!$stmt->execute()) {
+            throw new Exception('Không thể cập nhật danh sách hình ảnh.');
+        }
         $stmt->close();
 
         // Insert hotel mappings
@@ -62,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (Exception $e) {
         $conn->rollback();
         $_SESSION['flash_message'] = ['status' => 'danger', 'message' => $e->getMessage()];
+        header('Location: add_tour.php');
     }
     $conn->close();
     exit;

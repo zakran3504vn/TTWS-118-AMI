@@ -46,6 +46,9 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
+// Parse existing images
+$existing_images = !empty($tour['image_url']) ? explode(',', $tour['image_url']) : [];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
     $continent = trim($_POST['continent']);
@@ -70,9 +73,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $conn->begin_transaction();
     try {
+        // Filter out deleted images
+        $remaining_images = array_diff($existing_images, $delete_images);
+        $remaining_images = array_values($remaining_images); // Reindex array
+
+        // Delete files for removed images
+        foreach ($delete_images as $image_url) {
+            $file_path = str_replace('id.truongthanhweb.com/', '', $image_url);
+            if (file_exists($file_path)) {
+                unlink($file_path);
+            }
+        }
+
+        // Combine remaining and new images
+        $all_images = array_merge($remaining_images, array_column($new_image_urls, 'path'));
+
         // Update tour
+        $image_url_string = !empty($all_images) ? implode(',', $all_images) : '';
         $stmt = $conn->prepare("UPDATE tours SET title = ?, continent = ?, image_url = ?, departure_location = ?, destination = ?, duration_days = ?, duration_nights = ?, regular_price = ?, sale_price = ?, adult_price = ?, child_price = ?, itinerary = ?, slug = ?, status = ?, transportation = ?, description = ? WHERE tour_id = ?");
-        $stmt->bind_param('sssssiiddiddssssi', $title, $continent, $image_url, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description, $tour_id);
+        $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
+        $slug = trim($slug, '-');
+        $stmt->bind_param('sssssiiddiddssssi', $title, $continent, $image_url_string, $departure_location, $destination, $duration_days, $duration_nights, $regular_price, $sale_price, $adult_price, $child_price, $itinerary, $slug, $status, $transportation, $description, $tour_id);
         if (!$stmt->execute()) {
             throw new Exception('Không thể cập nhật tour.');
         }
@@ -100,6 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (Exception $e) {
         $conn->rollback();
         $_SESSION['flash_message'] = ['status' => 'danger', 'message' => $e->getMessage()];
+        header('Location: edit_tour.php?id=' . urlencode($tour_id));
     }
     $conn->close();
     exit;
@@ -116,6 +138,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="icon" type="image/ico" href="https://truongthanhweb.com/wp-content/uploads/sites/208/2020/06/favicon.ico">
     <link rel="stylesheet" href="./css/style1.css">
     <style>
+        .current-image {
+            max-width: 100px;
+            margin-bottom: 10px;
+        }
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .image-preview-item {
+            position: relative;
+        }
+        .image-preview-item img {
+            max-width: 100px;
+            height: auto;
+        }
+        .image-preview-item .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
         .hotel-list {
             max-height: 200px;
             overflow-y: auto;
@@ -214,35 +267,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         </div>
                                         <div class="mb-3">
                                             <label for="regular_price" class="form-label">Giá Thường (VNĐ)</label>
-                                            <input type="number" class="form-control" id="regular_price" name="regular_price" value="<?php echo htmlspecialchars($tour['regular_price']); ?>" step="1000" required>
+                                            <input type="number" class="form-control" id="regular_price" name="regular_price" step="1000" value="<?php echo htmlspecialchars($tour['regular_price']); ?>" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="sale_price" class="form-label">Giá Khuyến Mãi (VNĐ)</label>
-                                            <input type="number" class="form-control" id="sale_price" name="sale_price" value="<?php echo htmlspecialchars($tour['sale_price']); ?>" step="1000" required>
+                                            <input type="number" class="form-control" id="sale_price" name="sale_price" step="1000" value="<?php echo htmlspecialchars($tour['sale_price']); ?>" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="adult_price" class="form-label">Giá Người Lớn (VNĐ)</label>
-                                            <input type="number" class="form-control" id="adult_price" name="adult_price" value="<?php echo htmlspecialchars($tour['adult_price']); ?>" step="1000" required>
+                                            <input type="number" class="form-control" id="adult_price" name="adult_price" step="1000" value="<?php echo htmlspecialchars($tour['adult_price']); ?>" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="child_price" class="form-label">Giá Trẻ Em (VNĐ)</label>
-                                            <input type="number" class="form-control" id="child_price" name="child_price" value="<?php echo htmlspecialchars($tour['child_price']); ?>" step="1000" required>
+                                            <input type="number" class="form-control" id="child_price" name="child_price" step="1000" value="<?php echo htmlspecialchars($tour['child_price']); ?>" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="itinerary" class="form-label">Lịch Trình</label>
-                                            <textarea class="form-control" id="itinerary" name="itinerary" rows="6"><?php echo htmlspecialchars($tour['itinerary'] ?? ''); ?></textarea>
+                                            <textarea class="form-control" id="itinerary" name="itinerary" rows="6"><?php echo htmlspecialchars($tour['itinerary']); ?></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label for="description" class="form-label">Mô Tả</label>
-                                            <textarea class="form-control" id="description" name="description" rows="4"><?php echo htmlspecialchars($tour['description'] ?? ''); ?></textarea>
+                                            <textarea class="form-control" id="description" name="description" rows="4"><?php echo htmlspecialchars($tour['description']); ?></textarea>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Khách Sạn</label>
-                                            <input type="text" class="form-control mb-2" id="hotel_search" placeholder="Tìm kiếm khách sạn...">
                                             <div class="hotel-list">
                                                 <?php foreach ($hotels as $hotel): ?>
                                                     <div class="form-check">
-                                                        <input class="form-check-input hotel-checkbox" type="checkbox" name="hotels[]" value="<?php echo htmlspecialchars($hotel['hotel_id']); ?>" id="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>" <?php echo in_array($hotel['hotel_id'], $selected_hotels) ? 'checked' : ''; ?> data-name="<?php echo htmlspecialchars($hotel['hotel_name']); ?>">
+                                                        <input class="form-check-input" type="checkbox" name="hotels[]" value="<?php echo htmlspecialchars($hotel['hotel_id']); ?>" id="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>" <?php echo in_array($hotel['hotel_id'], $selected_hotels) ? 'checked' : ''; ?>>
                                                         <label class="form-check-label" for="hotel_<?php echo htmlspecialchars($hotel['hotel_id']); ?>">
                                                             <?php echo htmlspecialchars($hotel['hotel_name']); ?>
                                                         </label>
