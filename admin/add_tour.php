@@ -10,12 +10,13 @@ while ($row = $result->fetch_assoc()) {
 }
 
 // List of continents and transportation options
-$continents = ['Châu Á', 'Châu Âu', 'Châu Mỹ', 'Châu Phi', 'Châu Úc'];
+$continents = ['Châu Á', 'Châu Âu', 'Châu Mỹ', 'Châu Phi', 'Châu Úc']; // Adjust as needed
 $transportations = ['Máy bay', 'Xe du lịch', 'Máy bay & Xe du lịch', 'Tàu hỏa'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
     $continent = trim($_POST['continent']);
+    $image_url = trim($_POST['image_url']);
     $departure_location = trim($_POST['departure_location']);
     $destination = trim($_POST['destination']);
     $duration_days = intval($_POST['duration_days']);
@@ -29,51 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = in_array($_POST['status'], ['active', 'inactive']) ? $_POST['status'] : 'active';
     $transportation = in_array($_POST['transportation'], $transportations) ? $_POST['transportation'] : $transportations[0];
     $selected_hotels = isset($_POST['hotels']) && is_array($_POST['hotels']) ? $_POST['hotels'] : [];
-
-    // Handle file upload
-    $image_url = '';
-    if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === UPLOAD_ERR_OK) {
-        $file = $_FILES['image_url'];
-        $allowed_extensions = ['jpg', 'jpeg', 'png'];
-        $max_file_size = 5 * 1024 * 1024; // 5MB
-        $file_extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $upload_dir = 'assets/img/';
-        
-        // Validate file
-        if (!in_array($file_extension, $allowed_extensions)) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Chỉ hỗ trợ định dạng JPG, JPEG, PNG.'];
-            header('Location: add_tour.php');
-            $conn->close();
-            exit;
-        }
-        if ($file['size'] > $max_file_size) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Kích thước file tối đa là 5MB.'];
-            header('Location: add_tour.php');
-            $conn->close();
-            exit;
-        }
-
-        // Create upload directory if it doesn't exist
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0755, true);
-        }
-
-        // Generate unique filename
-        $filename = uniqid('tour_') . '.' . $file_extension;
-        $destination = $upload_dir . $filename;
-        if (!move_uploaded_file($file['tmp_name'], $destination)) {
-            $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Không thể tải lên hình ảnh.'];
-            header('Location: add_tour.php');
-            $conn->close();
-            exit;
-        }
-        $image_url = "id.truongthanhweb.com/$destination";
-    } else {
-        $_SESSION['flash_message'] = ['status' => 'danger', 'message' => 'Vui lòng chọn một hình ảnh.'];
-        header('Location: add_tour.php');
-        $conn->close();
-        exit;
-    }
 
     // Generate slug from title
     $slug = strtolower(preg_replace('/[^a-zA-Z0-9]+/', '-', $title));
@@ -105,10 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: tours.php');
     } catch (Exception $e) {
         $conn->rollback();
-        // Delete uploaded file if transaction fails
-        if ($image_url && file_exists($destination)) {
-            unlink($destination);
-        }
         $_SESSION['flash_message'] = ['status' => 'danger', 'message' => $e->getMessage()];
     }
     $conn->close();
@@ -180,14 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="col-lg-8">
                             <div class="card">
                                 <div class="card-body">
-                                    <?php if (isset($_SESSION['flash_message'])): ?>
-                                        <div class="alert alert-<?php echo $_SESSION['flash_message']['status']; ?> alert-dismissible fade show" role="alert">
-                                            <?php echo htmlspecialchars($_SESSION['flash_message']['message']); ?>
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                        </div>
-                                        <?php unset($_SESSION['flash_message']); ?>
-                                    <?php endif; ?>
-                                    <form action="add_tour.php" method="POST" enctype="multipart/form-data">
+                                    <form action="add_tour.php" method="POST">
                                         <div class="mb-3">
                                             <label for="title" class="form-label">Tiêu Đề</label>
                                             <input type="text" class="form-control" id="title" name="title" required>
@@ -201,8 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="image_url" class="form-label">Hình Ảnh (JPG, JPEG, PNG, tối đa 5MB)</label>
-                                            <input type="file" class="form-control" id="image_url" name="image_url" accept=".jpg,.jpeg,.png" required>
+                                            <label for="image_url" class="form-label">URL Hình Ảnh</label>
+                                            <input type="text" class="form-control" id="image_url" name="image_url" required>
                                         </div>
                                         <div class="mb-3">
                                             <label for="departure_location" class="form-label">Điểm Khởi Hành</label>
@@ -281,8 +226,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 </div>
             </div>
-        </section>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
 <?php $conn->close(); ?>
