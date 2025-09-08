@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 }
 
 // Số bản ghi hiển thị mỗi trang
-$records_per_page = 1;
+$records_per_page = 10;
 
 // Xác định trang hiện tại (nếu không có, mặc định là trang 1)
 $current_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
