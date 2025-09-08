@@ -260,9 +260,6 @@ $conn->close();
                                                     echo "<td class='news-content-preview'>" . htmlspecialchars($message_preview) . "</td>";
                                                     echo "<td>" . htmlspecialchars($row['created_at']) . "</td>";
                                                     echo "<td>
-                                                        <a href='contact_messages.php?current_page=edit_contact&id=" . urlencode($row['id']) . "' class='btn btn-primary text-white btn-sm'>
-                                                            <i class='fa-solid fa-pen-to-square'></i>
-                                                        </a>
                                                         <a href='delete_contact.php?id=" . urlencode($row['id']) . "' class='btn btn-danger text-white btn-sm delete-btn' data-id='" . urlencode($row['id']) . "'>
                                                             <i class='fa-solid fa-trash'></i>
                                                         </a>
