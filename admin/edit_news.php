@@ -10,7 +10,7 @@ if (!isset($_GET['id'])) {
 }
 
 $news_id = $_GET['id'];
-$stmt = $conn->prepare("SELECT * FROM news WHERE news_id = ?");
+$stmt = $conn->prepare("SELECT * FROM news WHERE id = ?");
 $stmt->bind_param('i', $news_id);
 $stmt->execute();
 $result = $stmt->get_result();
